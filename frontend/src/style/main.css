@@ -1,0 +1,22 @@
+body{
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Roboto-Regular;
+}
+
+.body{
+    position: relative;
+}
+
+@font-face {
+    font-family: Roboto-Bold;
+    src: url("../assets/fonts/roboto-v20-vietnamese_latin-500.woff2");
+}
+@font-face {
+    font-family: Roboto-Italic;
+    src: url("../assets/fonts/roboto-v20-vietnamese_latin-italic.woff2");
+}
+@font-face {
+    font-family: Roboto-Regular;
+    src: url("../assets/fonts/roboto-v20-vietnamese_latin-regular.woff2");
+}

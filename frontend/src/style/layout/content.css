@@ -1,0 +1,8 @@
+#content{
+    width: 100%;
+
+}
+.potentialContent{
+    display: flex;
+    align-items: center;
+}

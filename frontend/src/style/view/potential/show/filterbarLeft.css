@@ -1,0 +1,54 @@
+#filterbarLeft{
+    height: calc(100vh - 84px - 64px);
+    width: 240px;
+    padding: 0 10px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    font-family: Roboto-Regular;
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+}
+.filter-saved{
+    margin: 16px 0;
+    font-weight: 600;
+    color: #5E6679;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.fs-icon{
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -48px -32px;
+}
+.filter-search-box{
+   margin-top: 8px;
+}
+.fsb-container{
+    font-weight: 600;
+    color: #5E6679;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    padding-bottom: 8px;
+}
+.fsbc-icon{
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -32px 0px;
+}
+.fsb-item-box{
+    font-size: 13px;
+}
+.fsb-item{
+    display: flex;
+    margin: 8px 0;
+    padding: 4px 0;
+}
+.fsbi-icon{
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -192px -16px;
+    margin-right: 8px;
+}

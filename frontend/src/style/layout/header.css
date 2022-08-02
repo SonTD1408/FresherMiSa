@@ -1,0 +1,120 @@
+#header{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* header left  */
+.header-left{
+    display: flex;
+    align-items: center;
+}
+.hl-tongleBtn{
+    height: 24px;
+    width: 24px;
+    /* background-color: red; */
+    background-image: url("../../assets/img/toggle.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0 8px;    
+}
+.hl-img{
+    height: 32px;
+    width: 126px;
+    /* background-color: red; */
+    background-image: url("../../assets/img/Logo_Ban_hang.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin: 0 8px;
+}
+.hl-text{
+    font-weight: 800;
+    font-size: 16px;
+}
+
+/* header mid  */
+.hm-input-container{
+    position: relative;
+}
+.search-field{
+    width: 275px;
+}
+.hm-input-icon{
+    position: absolute;
+    top: 9px;
+    left: 10px;
+    width: 16px;
+    height: 16px;
+    background: url("../../assets/img/icon_collection.svg") no-repeat;
+    background-position: -32px 0;
+}
+
+/* header right  */
+.header-right{
+    display: flex;
+}
+.hr-icon-container{
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    /* margin: 0 4px; */
+}
+.hr-icon-container:hover{
+    background-color: #ccc;
+}
+.hr-face-icon{
+    background-image: url("../../assets/img/icon_collection.svg");
+    background-position: -288px -321px;
+    background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+}
+.hr-box-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat;
+    background-position: -368px -193px;
+	width: 15px;
+	height: 14px;
+}
+.hr-calendar-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat;
+    background-position: -95px -65px;
+	width: 16px;
+	height: 16px;
+}
+.hr-notify-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat;
+    background-position: 0 0;
+    width: 16px;
+    height: 16px;
+}
+.hr-setting-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat;
+    background-position: -16px 0;
+    width: 16px;
+    height: 16px;
+}
+.hr-about-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat;
+    width: 16px;
+    height: 16px;
+    background-position: -224px 0;
+}
+.hr-avatar-img{
+    background: url("../../assets/img/icon_collection.svg") no-repeat;
+    background-position: -96px -564px;
+    width: 32px;
+    height: 32px;
+    margin: 0 16px;
+    cursor: pointer;
+}

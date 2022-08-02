@@ -1,0 +1,19 @@
+.s-input{
+    height: 32px;
+    border: 1px solid #D3D7DE;
+    border-radius: 4px;
+    outline: none;
+    padding: 0 16px 0 32px;
+}
+.s-input:hover{
+    border: 1px solid #7C869C;
+}
+.s-input:focus{
+    border-color: #4262F0;
+}
+.hm-input-box{
+    display: flex;
+}
+.hm-input-container{
+    position: relative;
+}

@@ -1,0 +1,79 @@
+#toolbarRight{
+    height: calc(100vh - 84px - 64px);
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #ddd;
+}
+.tr-header{
+    display: flex;
+    height: 40px;
+}
+.trh-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+.trh-item:hover{
+    background-color: #eee;
+}
+.trh-item-icon{
+    width: 16px;
+    height: 16px;
+}
+.trh-item-icon1{
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -177px -322px;
+}
+.trh-item-icon2{
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -192px -322px;
+}
+.trh-item-icon3{
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -208px -322px;
+}
+.trh-item-icon4{
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat 0px -322px;
+}
+
+/* body  */
+.tr-body{
+    padding: 16px 8px  16px 16px;
+    display: flex;
+    flex-direction: column;
+}
+.tr-body-title{
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+.trb-item-box{
+    display: flex;
+    flex-direction: column;
+}
+.trb-item{
+    margin: 8px 0;
+    display: flex;
+}
+.trb-item-icon-box{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #42C3FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.trb-item-icon{
+    margin-left: 1px;
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -272px -112px;
+}
+.trb-item-content{
+    font-size: 13px;
+    margin-left: 16px;
+}
+.trbic-type{
+    font-weight: 600;
+}

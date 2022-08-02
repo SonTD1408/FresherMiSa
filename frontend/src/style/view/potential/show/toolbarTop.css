@@ -1,0 +1,101 @@
+#toolbarTop{
+    height: 64px;
+    padding: 0 10px;
+    background-color: #E2E4E9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tt-left{
+    display: flex;
+}
+.ttl-name{
+    display: flex;
+}
+.ttl-name-txt{
+    font-family: Roboto-Bold;
+    line-height: 24px;
+}
+.ttl-name-icon{
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -49px -27px;
+    width: 16px;
+    height: 16px;
+    margin: 0 16px 0 4px;
+}
+.ttl-action{
+    font-size: 13px;
+    color: #4262F0;
+    transform: translateY(4px);
+}
+.ttl-refresh{
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -240px -176px;
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    transform: translateY(3px);
+}
+.tt-right{
+    display: flex;
+}
+.icon-page{
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -240px -128px;
+}
+.ttr-option{
+    padding: 0 12px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 4px;
+    margin: 0 8px;
+    cursor: pointer;
+    border: 1px solid #D3D7DE;
+    box-sizing: border-box;
+}
+.ttr-option:hover{
+    background-color: #E2E4E9;
+}
+.ttr-option-icon{
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -48px 0px;
+}
+.ttr-option-combo{
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid #D3D7DE;
+    box-sizing: border-box;
+}
+.ttroc-list-icon-box{
+    padding: 0 6px 0 8px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.ttroc-list-icon-box:hover{
+    background-color: #E2E4E9;
+}
+.ttroc-list-icon{
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -128px -304px;
+}
+.ttroc-dropdown-icon-box{
+    padding: 0 6px 0 8px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.ttroc-dropdown-icon-box:hover{
+    background-color: #E2E4E9;
+}
+.ttroc-dropdown-icon{
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -336px -32px;
+}

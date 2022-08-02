@@ -1,0 +1,66 @@
+#navigation{
+    margin-top: 44px;
+    padding: 0 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-family: Roboto-Bold;
+}
+.nav-item{
+    background-color: #fff;
+    line-height: 40px;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+    margin-right: 32px;
+    cursor: pointer;
+}
+.nav-item-selected{
+    line-height: 38px;
+    border-bottom: 2px solid #4262F0;
+    color: #4262F0;
+}
+
+.nt-icon{
+    width: 16px;
+    height: 16px;
+    /* background-color: red; */
+    margin-right: 8px;
+}
+.nt-icon-1{
+    background: url(../../assets/img/icon_collection.svg) no-repeat 0 -272px;
+}
+.nt-icon-2{
+    background: url(../../assets/img/icon_collection.svg) no-repeat 0 -48px;
+}
+.nt-icon-2-selected{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -160px -288px;
+}
+.nt-icon-3{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -16px -272px;
+}
+.nt-icon-4{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -128px -48px;
+}
+.nt-icon-5{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -112px -48px;
+}
+.nt-icon-6{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -80px -48px;
+}
+.nt-icon-7{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -64px -48px;
+}
+.nt-icon-8{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -144px -48px;
+}
+.nt-icon-9{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -320px -176px;
+}
+.nt-icon-10{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -66px -305px;
+}
+.nt-icon-11{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -48px -273px;
+}
