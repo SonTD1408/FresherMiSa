@@ -22,7 +22,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin: 0 8px;    
+    margin: 0 8px;  
+    cursor: pointer;  
 }
 .hl-img{
     height: 32px;
@@ -33,6 +34,7 @@
     background-size: contain;
     background-position: center;
     margin: 0 8px;
+    cursor: pointer;
 }
 .hl-text{
     font-weight: 800;

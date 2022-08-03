@@ -16,6 +16,9 @@
     margin-right: 32px;
     cursor: pointer;
 }
+.nav-item:hover{
+    background-color: #F0F2F4;
+}
 .nav-item-selected{
     line-height: 38px;
     border-bottom: 2px solid #4262F0;

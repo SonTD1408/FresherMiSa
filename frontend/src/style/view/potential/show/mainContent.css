@@ -18,17 +18,117 @@
     overflow-x: auto;
     height: calc(100vh - 84px - 64px - 48px - 40px);
 }
-.s-tbody .s-tr:hover{
+.s-tbody .s-tr:hover .s-td{
     background-color: #E7EDFB;
 }
 .s-tr{
     display: grid;
-    grid-template-columns: 200px 200px 200px 200px 200px 200px 200px 200px 200px 200px 200px 200px;
+    grid-template-columns: 100px 200px 200px 200px 200px 200px 200px 200px 200px 200px 200px 200px;
     height: 40px;
-    border-bottom: 1px solid #ccc;
 }
 .s-td, .s-th{
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid #ccc;
+
+}
+.s-td{
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.s-th-export-icon{
+    cursor: pointer;
+    margin: 0 16px;
+    width: 16px;
+    height: 16px;
+    background: url('../../../../assets/img/icon_collection.svg') no-repeat 0px 0px;
+}
+.s-th-select-icon{
+    cursor: pointer;
+    margin-right: 32px;
+    width: 16px;
+    height: 16px;
+    background: url('../../../../assets/img/icon_collection.svg') no-repeat -192px -16px;
+}
+.cell-phone-icon{
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    background: url('../../../../assets/img/icon_collection.svg') no-repeat -320px -48px;
+}
+
+/* footer  */
+.footer{
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.footer-left{
+    padding: 0 16px
+}
+.footer-right{
+    display: flex;
+    align-items: center;
+}
+.footer-page-size{
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    border: 1px solid #ddd;
+    height: 32px;
+    border-radius: 4px;
+    margin-right: 16px;
+    cursor: pointer;
+}
+.footer-page-size span{
+    margin-right: 8px;
+}
+.fps-dropdown{
+    margin-left: 8px;
+    width: 16px;
+    height: 16px;
+    background: url('../../../../assets/img/icon_collection.svg') no-repeat -48px -32px;
+}
+
+.footer-paging{
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+}
+.fp-first{
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -112px -224px;
+}
+.fp-prev{
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -289px -32px;
+}
+.fp-txt{
+    margin: 0 4px;
+}
+.fp-txt .from{
+    margin-right: 4px;
+}
+.fp-txt .to{
+    margin-left: 4px;
+}
+.fp-next{
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -303px -32px;
+}
+.fp-last{
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -128px -224px;
 }

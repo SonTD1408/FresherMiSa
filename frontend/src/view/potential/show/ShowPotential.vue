@@ -96,7 +96,7 @@
         <div id="potential-table">
           <div class="s-thead">
             <div class="s-tr">
-                <div class="s-th">
+                <div class="s-th align-right">
                     <div class="s-th-export-icon"></div>
                     <div class="s-th-select-icon"></div>
                 </div>
@@ -115,12 +115,32 @@
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll">
             <div class="s-tr" v-for="(item, index) in items" :key="index">
-              <div class="hi"></div>
-              <div class="s-td" v-for="i of item" :key="i">{{ i }}</div>
+              <div class="s-td align-right">
+                    <div class="s-th-select-icon"></div>
+              </div>
+              <div class="s-td" v-for="(i,ind) in item" :key="ind">
+                  <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
+                  {{i}}
+              </div>
             </div>
           </div>
         </div>
-        <div class="footer"></div>
+        <div class="footer">
+          <div class="footer-left">Total: <span></span></div>
+          <div class="footer-right">
+            <div class="footer-page-size"><span>50 </span> 
+               Bản ghi trên Trang
+              <div class="fps-dropdown"></div>
+            </div>
+            <div class="footer-paging">
+                <div class="fp-first"></div>
+                <div class="fp-prev"></div>
+                <div class="fp-txt"><span class="from">1</span>đến<span class="to">50</span></div>
+                <div class="fp-next"></div>
+                <div class="fp-last"></div>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="toolbarRight">
         <div class="tr-header">

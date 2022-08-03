@@ -13,6 +13,7 @@
     display: flex;
 }
 .ttl-name-txt{
+    cursor: pointer;
     font-family: Roboto-Bold;
     line-height: 24px;
 }
@@ -21,11 +22,13 @@
     width: 16px;
     height: 16px;
     margin: 0 16px 0 4px;
+    cursor: pointer;
 }
 .ttl-action{
     font-size: 13px;
     color: #4262F0;
     transform: translateY(4px);
+    cursor: pointer;
 }
 .ttl-refresh{
     background: url("../../../../assets/img/icon_collection.svg") no-repeat -240px -176px;
@@ -33,6 +36,7 @@
     height: 16px;
     margin-left: 10px;
     transform: translateY(3px);
+    cursor: pointer;
 }
 .tt-right{
     display: flex;

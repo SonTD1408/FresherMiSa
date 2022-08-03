@@ -20,3 +20,12 @@ body{
     font-family: Roboto-Regular;
     src: url("../assets/fonts/roboto-v20-vietnamese_latin-regular.woff2");
 }
+
+.align-left{
+    display: flex;
+    justify-content: left;
+}
+.align-right{
+    display: flex;
+    justify-content: right;
+}
