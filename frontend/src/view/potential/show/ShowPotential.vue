@@ -1,5 +1,5 @@
 <template>
-  <div id="content">
+  <div id="contentShow">
     <div class="toolbarTop">
       <div id="toolbarTop">
         <div class="tt-left">
@@ -12,7 +12,7 @@
         </div>
         <div class="tt-right">
           <div class="s-button-combo-container">
-            <div class="sbcc-box">
+            <router-link to="/potential/add" class="sbcc-box">
               <button class="sbcc-button">
                 <div class="sbcc-icon icon-page"></div>
                 Thêm
@@ -21,7 +21,7 @@
               <div class="sbcc-type">
                 <div class="sbcc-type-dropdown-icon"></div>
               </div>
-            </div>
+            </router-link>
           </div>
           <div class="ttr-option">
             <div class="ttr-option-icon"></div>
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="potentialContent">
-      <div id="filterbarLeft">
+      <div id="filterbarLeft" v-if="isShowFilterbarLeft">
         <div class="filter-saved">
           <div class="fs-txt">BỘ LỌC ĐÃ LƯU</div>
           <div class="fs-icon"></div>
@@ -93,12 +93,19 @@
         </div>
       </div>
       <div id="mainContent">
+        <div class="filterbarLeftShowHideBtn" @click="hideShowFilterbarLeft">
+          <div class="filterbarLeftShowHideBtn-icon"></div>
+        </div>
+        <div class="toolbarRightShowHideBtn" @click="hideShowToolbarRight">
+          <div class="toolbarRightShowHideBtn-icon"></div>
+        </div>
         <div id="potential-table">
           <div class="s-thead">
             <div class="s-tr">
                 <div class="s-th align-right">
                     <div class="s-th-export-icon"></div>
-                    <div class="s-th-select-icon"></div>
+                    <!-- <div class="s-th-select-icon"></div> -->
+                    <input type="checkbox" class="s-th-select-icon">
                 </div>
               <div class="s-th">Thẻ</div>
               <div class="s-th">Xưng hô</div>
@@ -116,7 +123,8 @@
           <div class="s-tbody" v-on:scroll="handleScroll">
             <div class="s-tr" v-for="(item, index) in items" :key="index">
               <div class="s-td align-right">
-                    <div class="s-th-select-icon"></div>
+                    <!-- <div class="s-th-select-icon"></div> -->
+                    <input type="checkbox" class="s-th-select-icon" >
               </div>
               <div class="s-td" v-for="(i,ind) in item" :key="ind">
                   <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
@@ -128,9 +136,23 @@
         <div class="footer">
           <div class="footer-left">Total: <span></span></div>
           <div class="footer-right">
-            <div class="footer-page-size"><span>50 </span> 
+            <div class="footer-page-size" @click="pageSizeOnClick"><span>{{pageSize}}</span> 
                Bản ghi trên Trang
               <div class="fps-dropdown"></div>
+              <div class="fps-combobox" v-if="isShowPagesizeCombobox">
+                <div class="fpsc-item" Value="10" @click="changePageSizeOnClick">
+                  10 Bản ghi trên Trang
+                </div>
+                <div class="fpsc-item" Value="20" @click="changePageSizeOnClick">
+                  20 Bản ghi trên Trang
+                </div>
+                <div class="fpsc-item" Value="50" @click="changePageSizeOnClick">
+                  50 Bản ghi trên Trang
+                </div>
+                <div class="fpsc-item" Value="100" @click="changePageSizeOnClick">
+                  100 Bản ghi trên Trang
+                </div>
+              </div>
             </div>
             <div class="footer-paging">
                 <div class="fp-first"></div>
@@ -142,7 +164,7 @@
           </div>
         </div>
       </div>
-      <div id="toolbarRight">
+      <div id="toolbarRight" v-if="isShowToolbarRight">
         <div class="tr-header">
           <div class="trh-item">
             <div class="trh-item-icon trh-item-icon1"></div>
@@ -184,6 +206,10 @@
 export default {
   data() {
     return {
+      isShowPagesizeCombobox: false,
+      isShowFilterbarLeft: true,
+      isShowToolbarRight: true,
+      pageSize : "50",
       items: {
         1: [
           "hihi",
@@ -370,9 +396,15 @@ export default {
       },
     };
   },
+  created() {
+  },
   mounted() {
   },
   methods: {
+    /**
+     * hàm khi scroll thì kéo theo thead của table
+     * created by SONTD (04.08.2022)
+     */
     handleScroll(event){
         const thead = document.querySelector(".s-thead");
         if (event.target.scrollLeft>0){
@@ -381,6 +413,39 @@ export default {
         }else{
             thead.style.transform = "translateX(0)";
         }
+    },
+
+    /**
+     * hàm hiện combobox chọn page size 
+     * created by SONTD (04.08.2022)
+     */
+    pageSizeOnClick(){
+      this.isShowPagesizeCombobox = !this.isShowPagesizeCombobox
+    },
+
+    /**
+     * hàm lấy page size khi người dùng đổi page size
+     * Created by SONTD (04.08.2022)
+     */
+    changePageSizeOnClick(e){
+      this.pageSize = e.target.getAttribute("Value");
+    },
+
+    hideShowFilterbarLeft(){
+      if(this.isShowFilterbarLeft){
+        document.querySelector(".filterbarLeftShowHideBtn-icon").style.transform="rotate(180deg)"
+      }else{
+        document.querySelector(".filterbarLeftShowHideBtn-icon").style.transform="rotate(0)"
+      }
+      this.isShowFilterbarLeft = !this.isShowFilterbarLeft
+    },
+    hideShowToolbarRight(){
+      if(this.isShowToolbarRight){
+        document.querySelector(".toolbarRightShowHideBtn-icon").style.transform="rotate(180deg)"
+      }else{
+        document.querySelector(".toolbarRightShowHideBtn-icon").style.transform="rotate(0)"
+      }
+      this.isShowToolbarRight = !this.isShowToolbarRight
     }
   },
 };

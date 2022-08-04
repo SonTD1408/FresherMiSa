@@ -1,0 +1,74 @@
+/* ảnh tiềm năng  */
+#addMainContent{
+    padding: 18px 38px;
+    overflow: auto;
+    height: calc(100vh - 84px - 64px);
+    box-sizing: border-box;
+}
+.addMainContent-img-box{
+    margin: 8px 0 32px 0;
+}
+.add-section-title{
+    font-size: 18px;
+    font-family: Roboto-Bold;
+    margin-bottom: 16px;
+}
+.aimgb-img-box{
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid#ccc;
+    cursor: pointer;
+}
+.aimgb-img{
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background: transparent url("../../../../assets/img/icon_collection.svg") no-repeat  -198px -854px;
+}
+
+/* thông tin chung  */
+
+.add-items{
+    display: flex;
+}
+.add-item{
+    width: 450px;
+    height: 32px;
+    margin-right: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+.add-input-feild{
+    width: 280px;
+    padding: 0 8px 0 16px;
+}
+.validate-error{
+    color: red;
+    transform: translate(8px,-12px);
+    width: 500px;
+    display: flex;
+    justify-content: center;
+}
+.aib-txt{
+    display: flex;
+    align-items: center;
+}
+.add-item-icon{
+    cursor: pointer;
+    transform: translateY(1px);
+    margin-left: 8px;
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -209px -1px;
+}
+
+/* tổ chức  */
+.addMainContent-org-box{
+    margin: 48px 0;
+}

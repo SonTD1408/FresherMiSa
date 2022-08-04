@@ -1,4 +1,6 @@
+/* mẫu button 1  */
 .s-button{
+    height: 32px;
     font-size: 13px;
     font-weight: 500;
     line-height: 16px;
@@ -16,7 +18,26 @@
     background-color: #133BEC;
 }
 
-/* input combo  */
+/* mẫu button 2  */
+.s-button-gray{
+    height: 32px;
+
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    background-color: #fff;
+    padding: 7px 16px;
+    border: 1px solid #D3D7DE;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.s-button-gray:hover{
+    background-color: #E2E4E9;
+}
+.s-button-gray:active{
+    background-color: #D3D7DE;
+}
+/* button combo  */
 .s-button-combo-container{
     display: flex;
 }

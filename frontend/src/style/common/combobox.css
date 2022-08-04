@@ -1,0 +1,41 @@
+.combobox-feild-box{
+    position: relative;
+    width: 240px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 0 16px;
+    border-radius: 4px;
+    border: 1px solid #D3D7DE;
+}.combobox-feild-box:hover{
+    border: 1px solid #7C869C;
+}
+.combobox-icon{
+    width: 16px;
+    height: 16px;
+    background: url("../../assets/img/icon_collection.svg") no-repeat -335px -32px;
+}
+.combobox-item-box{
+    width: 100%;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 10;
+    top: 110%;
+    left: 0;
+    background-color: #fff;
+    height: 112px;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+.combobox-item{
+    height: 32px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.combobox-item:hover{
+    background-color: #ddd;
+}
