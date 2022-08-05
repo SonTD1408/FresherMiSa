@@ -43,12 +43,14 @@
 }
 .fsb-item{
     display: flex;
+    align-items: center;
     margin: 8px 0;
     padding: 4px 0;
+    cursor: pointer;
 }
 .fsbi-icon{
     width: 16px;
     height: 16px;
-    background: url("../../../../assets/img/icon_collection.svg") no-repeat -192px -16px;
+    /* background: url("../../../../assets/img/icon_collection.svg") no-repeat -192px -16px; */
     margin-right: 8px;
 }

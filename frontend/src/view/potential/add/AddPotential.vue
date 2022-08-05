@@ -8,7 +8,8 @@
           <div class="al-changeConstruct">Sửa bố cục</div>
         </div>
         <div class="addTopbar-right">
-          <button class="s-button-gray">Hủy bỏ</button>
+          <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
+          <!-- <button class="s-button-gray">Hủy bỏ</button> -->
           <button class="s-button-gray">Lưu và thêm</button>
           <button class="s-button">Lưu</button>
         </div>
@@ -142,7 +143,6 @@
             </div>
           </div>
         </div>
-
         <div class="addMainContent-org-box">
           <div class="add-section-title">Thông tin tổ chức</div>
           <div class="add-items">
@@ -204,9 +204,97 @@
             </div>
           </div>
         </div>
-        <div class="addMainContent-address-box"></div>
-        <div class="addMainContent-description-box"></div>
-        <div class="addMainContent-system-infor"></div>
+        <div class="addMainContent-address-box">
+          <div class="add-section-title">Thông tin địa chỉ</div>
+          <div class="add-items">
+            <div class="add-items-site">
+              <div class="add-item">
+                <div class="aib-txt">Quốc gia</div>
+                <div class="combobox-feild-box add-input-feild">
+                  <div class="combobox-defalt">- Không chọn -</div>
+                  <div class="combobox-icon"></div>
+                  <div class="combobox-item-box" style="display: none">
+                    <div class="combobox-item">- Không chọn -</div>
+                    <div class="combobox-item">Quốc gia 1</div>
+                    <div class="combobox-item">Quốc gia 2</div>
+                  </div>
+                </div>
+              </div>
+              <div class="add-item">
+                <div class="aib-txt">Quận/Huyện</div>
+                <div class="combobox-feild-box add-input-feild">
+                  <div class="combobox-defalt">- Không chọn -</div>
+                  <div class="combobox-icon"></div>
+                  <div class="combobox-item-box" style="display: none">
+                    <div class="combobox-item">- Không chọn -</div>
+                    <div class="combobox-item">Quận/Huyện 1</div>
+                    <div class="combobox-item">Quận/Huyện 2</div>
+                  </div>
+                </div>
+              </div>
+              <div class="add-item">
+                <div class="aib-txt">Số nhà, Đường phố</div>
+                <input class="add-input-feild s-input" />
+              </div>
+              <div class="add-item add-item-txtarea">
+                <div class="aib-txt">Địa chỉ</div>
+                <textarea class="s-input add-txtarea"></textarea>
+              </div>
+            </div>
+            <div class="add-items-site">
+              <div class="add-item">
+                <div class="aib-txt">Tỉnh/Thành phố</div>
+                <div class="combobox-feild-box add-input-feild">
+                  <div class="combobox-defalt">- Không chọn -</div>
+                  <div class="combobox-icon"></div>
+                  <div class="combobox-item-box" style="display: none">
+                    <div class="combobox-item">- Không chọn -</div>
+                    <div class="combobox-item">Tỉnh/Thành phố 1</div>
+                    <div class="combobox-item">Tỉnh/Thành phố 2</div>
+                  </div>
+                </div>
+              </div>
+              <div class="add-item">
+                <div class="aib-txt">Phường/Xã</div>
+                <div class="combobox-feild-box add-input-feild">
+                  <div class="combobox-defalt">- Không chọn -</div>
+                  <div class="combobox-icon"></div>
+                  <div class="combobox-item-box" style="display: none">
+                    <div class="combobox-item">- Không chọn -</div>
+                    <div class="combobox-item">Phường/Xã 1</div>
+                    <div class="combobox-item">Phường/Xã 2</div>
+                  </div>
+                </div>
+              </div>
+              <div class="add-item">
+                <div class="aib-txt">Mã vùng</div>
+                <input class="add-input-feild s-input" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="addMainContent-description-box">
+           <div class="add-section-title">Thông tin mô tả</div>
+            <div class="add-item add-item-des">
+              <div class="aib-txt">Địa chỉ</div>
+                <textarea class="s-input add-txtarea"></textarea>
+            </div>
+        </div>
+        <div class="addMainContent-system-infor">
+          <div class="add-section-title">Thông tin hệ thống</div>
+          <div class="add-items">
+            <div class="add-items-site">
+              <div class="add-item">
+                <div class="aib-txt">Dùng chung</div>
+                <input type="checkbox" class="add-input-checkbox"/>
+              </div>
+              <div class="add-item">
+                <div class="aib-txt">Dùng chung</div>
+                <input class="add-input-feild s-input" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@
 .add-section-title{
     font-size: 18px;
     font-family: Roboto-Bold;
+    font-weight: 600;
     margin-bottom: 16px;
 }
 .aimgb-img-box{
@@ -58,6 +59,7 @@
 .aib-txt{
     display: flex;
     align-items: center;
+    font-weight: 600;
 }
 .add-item-icon{
     cursor: pointer;
@@ -71,4 +73,34 @@
 /* tổ chức  */
 .addMainContent-org-box{
     margin: 48px 0;
+}
+
+/* địa chỉ  */
+.add-item-txtarea{
+    margin-top: 38px;
+}
+.add-item-des{
+    margin-top: 38px;
+    width: 1000px;
+}
+.add-item-des .add-txtarea{
+    height: 76px;
+    width: 832px;
+}
+.add-txtarea{
+    height: 76px;
+    width: 280px;
+}
+
+/* thông tin mô tả  */
+.addMainContent-description-box{
+    margin: 48px 0;
+}
+
+/* thông tin hệ thống  */
+.add-input-checkbox{
+    width: 18px;
+    height: 18px;
+    margin-right: 262px;
+    cursor: pointer;
 }

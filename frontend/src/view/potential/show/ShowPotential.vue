@@ -50,44 +50,92 @@
           </div>
           <div class="fsb-item-box">
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon">
               <div class="fsbi-label">Thẻ</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon">
               <div class="fsbi-label">Xưng hô</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon">
               <div class="fsbi-label">Họ và tên</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon"/>
               <div class="fsbi-label">Chức danh</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon"/>
               <div class="fsbi-label">ĐT di động</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon"/>
               <div class="fsbi-label">ĐT cơ quan</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon"/>
               <div class="fsbi-label">Email cơ quan</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon"/>
               <div class="fsbi-label">Email cá nhân</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon"/>
               <div class="fsbi-label">Tổ chức</div>
             </div>
             <div class="fsb-item">
-              <div class="fsbi-icon"></div>
+              <input type="checkbox" class="fsbi-icon"/>
               <div class="fsbi-label">Địa chỉ</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Tỉnh/Thành phố</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Quận/Huyện</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Phường/Xã</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Nguồn gốc</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Loại hình</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Lĩnh vực</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Mô tả</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Bố cục</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Chủ sở hữu</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Doanh thu</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Dùng chung</div>
+            </div>
+            <div class="fsb-item">
+              <input type="checkbox" class="fsbi-icon"/>
+              <div class="fsbi-label">Facebook</div>
             </div>
           </div>
         </div>
