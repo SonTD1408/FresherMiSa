@@ -6,6 +6,8 @@
     justify-content: space-between;
     align-items: center;
 }
+/* tool bar top left  */
+/* tool bar top left v1  */
 .tt-left{
     display: flex;
 }
@@ -38,6 +40,37 @@
     transform: translateY(3px);
     cursor: pointer;
 }
+/* toolbar top left v2  */
+.ttl-choosed{
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+.ttl-choosed span{
+    margin-left: 4px;
+}
+.tll-fogot-choose{
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    margin: 0 24px;
+    cursor: pointer;
+    color: #4262F0;
+}
+.ttl-button-update{
+    display: flex;
+    align-items: center;
+    font-weight: 600 !important;
+}
+.ttlbu-icon{
+    background: url('../../../../assets/img/icon_collection.svg') no-repeat -128px -0px;
+	width: 16px;
+	height: 16px;
+    margin-right: 8px;
+}
+
+
+/* toolbar top right  */
 .tt-right{
     display: flex;
 }

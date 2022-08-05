@@ -2,7 +2,8 @@
   <div id="contentShow">
     <div class="toolbarTop">
       <div id="toolbarTop">
-        <div class="tt-left">
+        <!-- tool bar top left  -->
+        <div class="tt-left" v-if="toolbarTopLeftStatus=='normal'">
           <div class="ttl-name">
             <div class="ttl-name-txt">Tất cả tiềm năng</div>
             <div class="ttl-name-icon"></div>
@@ -10,6 +11,13 @@
           <div class="ttl-action">Sửa</div>
           <div class="ttl-refresh"></div>
         </div>
+        <div class="tt-left" v-if="toolbarTopLeftStatus=='rowSelected'">
+          <div class="ttl-choosed">Đã chọn <span>{{numberOfRowSelected}}</span></div>
+          <div class="tll-fogot-choose" @click="forgotChoosed">Bỏ chọn</div>
+          <button class="s-button-gray ttl-button-update"><div class="ttlbu-icon"></div> Cập nhật thông tin</button>
+          <div class="ttl-option"></div>
+        </div>
+        <!-- toolbar top right  -->
         <div class="tt-right">
           <div class="s-button-combo-container">
             <router-link to="/potential/add" class="sbcc-box">
@@ -169,10 +177,9 @@
             </div>
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll">
-            <div class="s-tr" v-for="(item, index) in items" :key="index">
+            <div class="s-tr" v-for="(item, index) in items" :key="index" :idOfRow="index">
               <div class="s-td align-right">
-                    <!-- <div class="s-th-select-icon"></div> -->
-                    <input type="checkbox" class="s-th-select-icon" >
+                    <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
               <div class="s-td" v-for="(i,ind) in item" :key="ind">
                   <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
@@ -246,14 +253,12 @@
   </div>
 </template>
 <script>
-// import ToolbarTop from "./ToolbarTop.vue"
-// import MainContent from "./MainContent.vue"
-// import FilterbarLeft from "./FilterbarLeft.vue"
-// import ToolbarRight from "./ToolbarRight.vue"
 
 export default {
   data() {
     return {
+      numberOfRowSelected: 0,
+      toolbarTopLeftStatus: "normal",
       isShowPagesizeCombobox: false,
       isShowFilterbarLeft: true,
       isShowToolbarRight: true,
@@ -479,6 +484,10 @@ export default {
       this.pageSize = e.target.getAttribute("Value");
     },
 
+    /**
+     * hàm ẩn hiện thanh lọc dữ liệu
+     * Created by SONTD (04.08.2022)
+     */
     hideShowFilterbarLeft(){
       if(this.isShowFilterbarLeft){
         document.querySelector(".filterbarLeftShowHideBtn-icon").style.transform="rotate(180deg)"
@@ -487,6 +496,11 @@ export default {
       }
       this.isShowFilterbarLeft = !this.isShowFilterbarLeft
     },
+
+    /**
+     * hàm ẩn hiện thanh toolbar bên phải
+     * Created by SONTD (04.08.2022)
+     */
     hideShowToolbarRight(){
       if(this.isShowToolbarRight){
         document.querySelector(".toolbarRightShowHideBtn-icon").style.transform="rotate(180deg)"
@@ -494,6 +508,49 @@ export default {
         document.querySelector(".toolbarRightShowHideBtn-icon").style.transform="rotate(0)"
       }
       this.isShowToolbarRight = !this.isShowToolbarRight
+    },
+
+    /**
+     * hàm đổi màu cho hàng đó khi chọn 1 dòng,
+     * tính số dòng đã chọn,
+     * thay dổi thanh toolbar top khi chọn 1 dòng,
+     * Created by SONTD (04.08.2022)
+     * @param {event} event 
+     */
+    gridCheckboxOnClick(event){
+      let me = event.target;
+      if (me.getAttribute("isChecked")=="false"){
+        me.setAttribute("isChecked","true");
+        me.parentElement.parentElement.querySelectorAll(".s-td").forEach(function(child){
+          child.classList.add("row-selected");
+        })
+        this.numberOfRowSelected++;
+        if (this.numberOfRowSelected > 1){
+          this.toolbarTopLeftStatus="rowSelected";
+        }
+        me.setAttribute("isChecked","true");
+      }
+      else{
+        me.parentElement.parentElement.querySelectorAll(".s-td").forEach(function(child){
+          child.classList.remove("row-selected");
+        })
+        this.numberOfRowSelected--;
+        if (this.numberOfRowSelected <= 1){
+          this.toolbarTopLeftStatus="normal";
+        }
+        me.setAttribute("isChecked","false");
+      }
+    },
+
+    forgotChoosed(){
+      this.toolbarTopLeftStatus="normal";
+      document.querySelectorAll(".s-tr").forEach(function(tr){
+        let input = tr.querySelector("input");
+        if (input.getAttribute("isChecked")=="true"){
+          input.click();
+          input.setAttribute("isChecked","false");
+        }
+      })
     }
   },
 };
