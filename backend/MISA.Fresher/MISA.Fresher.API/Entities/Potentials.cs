@@ -15,7 +15,7 @@
         /// <summary>
         /// id vơi bảng xưng hô
         /// </summary>
-        public int VocationID { get; set; }
+        public int VocativeID { get; set; }
 
         /// <summary>
         /// tên
@@ -57,10 +57,10 @@
         public string OfficeEmail { get; set; }
         public string Taxcode { get; set; }
         public int OrganizationID { get; set; }
-        public string Description { get; set; }
+        public string DescriptionP { get; set; }
         public string Address { get; set; }
         public string Tag { get; set; }
-        public int Shared { get; set; }
+        public int SharedP { get; set; }
         public string Facebook { get; set; }
         public int NationID { get; set; }
         public int DistrictID { get; set; }

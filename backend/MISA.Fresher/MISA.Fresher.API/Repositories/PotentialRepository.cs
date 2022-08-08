@@ -43,5 +43,17 @@ namespace MISA.Fresher.API.Repositories
 
             return page;
         }
+        
+
+        public int Add(DynamicParameters param)
+        {
+            var mysqlConnection = new MySqlConnection(DBConfig._CONNECTION_STRING);
+            string sql = "insert into Potentials(PotentialCode, VocativeID, LastName, FirstName, DepartmentID, PositionID, PhoneNumber, OfficePhoneNumber, SourceID, Zalo, Email, OfficeEmail, Taxcode, OrganizationID, DescriptionP, Address, Tag, SharedP, Facebook, NationID, CityID, DistrictID, WardID, Gender, NoCall, NoEmail, DateOfBirth)" +
+                "values(@PotentialCode, @VocativeID, @LastName, @FirstName, @DepartmentID, @PositionID, @PhoneNumber, @OfficePhoneNumber, @SourceID, @Zalo, @Email, @OfficeEmail, @Taxcode, @OrganizationID, @DescriptionP, @Address, @Tag, @SharedP, @Facebook, @NationID, @CityID, @DistrictID, @WardID, @Gender, @NoCall, @NoEmail, @DateOfBirth)";
+
+            var res = mysqlConnection.Execute(sql, param);
+            
+            return res;
+        }
     }
 }

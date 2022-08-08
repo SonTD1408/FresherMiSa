@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MISA.Fresher.API.Services;
+using MISA.Fresher.API.Entities.DTO;
 
 namespace MISA.Fresher.API.Controllers
 {
@@ -30,6 +31,25 @@ namespace MISA.Fresher.API.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status200OK,"e001");
+            }
+        }
+        
+        
+        
+        [HttpPost]
+        public IActionResult Add([FromBody] AddPotentialDTO addPotential)
+        {
+            try
+            {
+                var potentialService = new PotentialService();
+               
+                int res1 = potentialService.add(addPotential.Potential);
+                return StatusCode(StatusCodes.Status201Created, "s");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status201Created, "e");
+
             }
         }
         

@@ -325,7 +325,6 @@ export default {
         .get(`http://localhost:5091/api/Potential?pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`)
         .then((response) => {
             this.data = response.data.PotentialList;
-            console.log(this.data[0]);
             this.numberOfRecord = response.data.NumberOfRecord;
         });
       }catch(error){
@@ -453,7 +452,6 @@ export default {
      * @param {*} value 
      */
     formatNullData(value){
-      console.log(value);
       if (value=="" || value==null || value==undefined){
         return "-"
       }
