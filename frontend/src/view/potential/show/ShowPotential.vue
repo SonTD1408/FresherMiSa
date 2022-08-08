@@ -14,7 +14,9 @@
         <div class="tt-left" v-if="toolbarTopLeftStatus=='rowSelected'">
           <div class="ttl-choosed">Đã chọn <span>{{numberOfRowSelected}}</span></div>
           <div class="tll-fogot-choose" @click="forgotChoosed">Bỏ chọn</div>
-          <button class="s-button-gray ttl-button-update"><div class="ttlbu-icon"></div> Cập nhật thông tin</button>
+          <button class="s-button-gray ttl-button-update" @click="hideShowUpdateMany(true)">
+            <div class="ttlbu-icon"></div> Cập nhật thông tin
+          </button>
           <div class="ttl-option"></div>
         </div>
         <!-- toolbar top right  -->
@@ -171,25 +173,31 @@
               <div class="s-th">ĐT cơ quan</div>
               <div class="s-th">Email cơ quan</div>
               <div class="s-th">Email cá nhân</div>
-              <div class="s-th">MS thuế</div>
-              <div class="s-th">Loại tiềm năng</div>
-              <div class="s-th">@@</div>
+              <div class="s-th">Tổ chức</div>
+              <div class="s-th">Địa chỉ</div>
+              <div class="s-th">Tỉnh/Thành phố</div>
+              <div class="s-th">Quận/Huyện</div>
+              <div class="s-th">Phường/Xã</div>
+              <div class="s-th">Nguồn gốc</div>
+              <div class="s-th">Mô tả</div>
+              <div class="s-th">Dùng chung</div>
             </div>
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll">
-            <div class="s-tr" v-for="(item, index) in items" :key="index" :idOfRow="index">
+            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID">
               <div class="s-td align-right">
                     <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
-              <div class="s-td" v-for="(i,ind) in item" :key="ind">
+              <div class="s-td" v-for="(i,ind) in columns" :key="ind">
                   <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
-                  {{i}}
+                  <div v-if="ind!=2">{{formatNullData(item[i])}}</div>
+                  <div v-if="ind==2">{{formatNullData(`${item['LastName']} ${item['FirstName']}`)}}</div>
               </div>
             </div>
           </div>
         </div>
         <div class="footer">
-          <div class="footer-left">Total: <span></span></div>
+          <div class="footer-left">Total: <span :innerHTML="numberOfRecord"></span></div>
           <div class="footer-right">
             <div class="footer-page-size" @click="pageSizeOnClick"><span>{{pageSize}}</span> 
                Bản ghi trên Trang
@@ -250,210 +258,80 @@
         </div>
       </div>
     </div>
+    <UpdateMany :isShow="isShowUpdateMany" @hideShowStatus="hideShowUpdateMany"></UpdateMany>
   </div>
+
 </template>
 <script>
-
+import UpdateMany from "../update/UpdateMany.vue"
+import axios from "axios"
 export default {
+  components:{
+    UpdateMany
+  },
   data() {
     return {
+      // biến đếm số dòng được chọn
       numberOfRowSelected: 0,
+      // biến thay đổi trạng thái của toolbar top
       toolbarTopLeftStatus: "normal",
+      // biến chọn page size
       isShowPagesizeCombobox: false,
+      // biến ẩn hiện thanh bên trái
       isShowFilterbarLeft: true,
+      //biến ẩn hiện thanh bên phải
       isShowToolbarRight: true,
+      // biến ẩn hiện update many dialog
+      isShowUpdateMany: false,
+      //số bản ghi trên trang
       pageSize : "50",
-      items: {
-        1: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        2: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        3: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        4: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        5: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        6: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        7: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        8: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        9: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        10: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        11: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        12: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        13: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-        14: [
-          "hihi",
-          "Anh",
-          "Trần Nhật Vũ",
-          "Trưởng phòng",
-          "123098123",
-          "098123099",
-          "tadinhson@gmail.com",
-          "sonn@gmail.c.cc.c",
-          "12309812309",
-          "Loại tiềm năng",
-          "vũ cc",
-        ],
-      },
+      // số trang 
+      pageNumber: 1,
+      // các cột trong 1 dòng dữ liệu 
+      columns: [
+        "PotentialCode",
+        "Vocative",
+        "FirstName",
+        "PositionName",
+        "PhoneNumber",
+        "OfficePhoneNumber",
+        "OfficeEmail",
+        "Email",
+        "OrganizationName",
+        "Address",
+        "CityName",
+        "DistrictName",
+        "WardName",
+        "SourceName",
+        "DescriptionP",
+        "SharedP"
+      ],
+      // data của bảng lấy từ server 
+      data: {},
+      // số lượng bản ghi lấy từ db 
+      numberOfRecord: 0,
+
     };
   },
-  created() {
-  },
-  mounted() {
-  },
+
   methods: {
+    /**
+     * hàm lấy tiềm năng từ serve
+     * created by SONTD (07.08.2022)
+     */
+    getPotentialFromServer(){
+      try{
+        axios
+        .get(`http://localhost:5091/api/Potential?pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`)
+        .then((response) => {
+            this.data = response.data.PotentialList;
+            console.log(this.data[0]);
+            this.numberOfRecord = response.data.NumberOfRecord;
+        });
+      }catch(error){
+        console.log(error);
+      }
+    },
     /**
      * hàm khi scroll thì kéo theo thead của table
      * created by SONTD (04.08.2022)
@@ -482,6 +360,8 @@ export default {
      */
     changePageSizeOnClick(e){
       this.pageSize = e.target.getAttribute("Value");
+      this.pageNumber =1;
+      this.getPotentialFromServer();
     },
 
     /**
@@ -525,7 +405,8 @@ export default {
           child.classList.add("row-selected");
         })
         this.numberOfRowSelected++;
-        if (this.numberOfRowSelected > 1){
+        // kiểm tra nếu số dòng chọn lớn hơn 1 thì thay đổi trạng thái thanh toolbar top
+        if (this.numberOfRowSelected > 0){
           this.toolbarTopLeftStatus="rowSelected";
         }
         me.setAttribute("isChecked","true");
@@ -535,13 +416,18 @@ export default {
           child.classList.remove("row-selected");
         })
         this.numberOfRowSelected--;
-        if (this.numberOfRowSelected <= 1){
+        // kiểm tra nếu số dòng chọn lớn hơn 1 thì thay đổi trạng thái thanh toolbar top
+        if (this.numberOfRowSelected < 1){
           this.toolbarTopLeftStatus="normal";
         }
         me.setAttribute("isChecked","false");
       }
     },
 
+    /**
+     * hàm bỏ chọn tất cả các dòng đã chọn
+     * Created by SONTD (05.08.2022)
+     */
     forgotChoosed(){
       this.toolbarTopLeftStatus="normal";
       document.querySelectorAll(".s-tr").forEach(function(tr){
@@ -551,7 +437,33 @@ export default {
           input.setAttribute("isChecked","false");
         }
       })
+    },
+
+    /**
+     * hàm ẩn hiện dialog update nhiều dòng 1 lúc
+     * Created by SONTD (05.08.2022)
+     * @param {*} param 
+     */
+    hideShowUpdateMany(param){
+      this.isShowUpdateMany = param;
+    },
+
+    /**
+     * hàm check value, nếu null thì chuyển thành -
+     * @param {*} value 
+     */
+    formatNullData(value){
+      console.log(value);
+      if (value=="" || value==null || value==undefined){
+        return "-"
+      }
+      else{
+        return value;
+      }
     }
+  },
+  created() {
+    this.getPotentialFromServer();
   },
 };
 </script>

@@ -1,3 +1,6 @@
+#contentShow{
+    position: relative;
+}
 .potentialContent{
     display: flex;
     align-items: center;

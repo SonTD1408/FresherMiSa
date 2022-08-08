@@ -23,6 +23,5 @@ export default {
 <style scoped>
 @import url("./style/main.css");
 @import url("./style/common/scrollBar.css");
-@import url("./style/common/combobox.css");
 
 </style>
