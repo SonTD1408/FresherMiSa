@@ -8,9 +8,8 @@
         </div>
         <div class="addTopbar-right">
           <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
-          <!-- <button class="s-button-gray">Hủy bỏ</button> -->
           <button class="s-button-gray">Lưu và thêm</button>
-          <button class="s-button">Lưu</button>
+          <button class="s-button" @click="test">Lưu</button>
         </div>
       </div>
       <div id="addMainContent">
@@ -27,13 +26,14 @@
               <div class="add-item">
                 <div class="aib-txt">Xưng hô</div>
                 <div class="add-select-feild">
-                  <SelectInput :isActive="true" :col="{0:'VocativeID', 1: 'Vocative'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput"/>
+                  <SelectInput :col="{0:'VocativeID', 1: 'Vocative'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput"/>
                 </div>
               </div>
               <div class="add-item">
-                <div class="aib-txt">Tên <span>*</span></div>
+                <div class="aib-txt">Tên <span style="color: red">*</span></div>
                 <input
                   class="add-input-feild s-input"
+                  v-model="dataForm['FirstName']"
                 />
               </div>
               <div class="validate-error">Tên không được để trống</div>
@@ -77,11 +77,14 @@
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Họ và tên đệm</div>
-                <input class="add-input-feild s-input" />
+                <input class="add-input-feild s-input" 
+                v-model="dataForm['LastName']"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Họ và tên</div>
-                <input class="add-input-feild s-input" disabled />
+                <input class="add-input-feild s-input" 
+                disabled 
+                v-bind:value="(dataForm['LastName']!=undefined? dataForm['LastName']:'')+' '+(dataForm['FirstName']!=undefined? dataForm['FirstName']:'')"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
@@ -172,13 +175,18 @@
               <div class="add-item">
                 <div class="aib-txt">Quốc gia</div>
                 <div class="add-select-feild">
-                  <SelectInput/>
+                  <SelectInput :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Quận/Huyện</div>
                 <div class="add-select-feild">
-                  <SelectInput/>
+                  <SelectInput 
+                  :data="districts" 
+                  :col="{0:'DistrictID', 1:'DistrictName'}" 
+                  :variable="'DistrictID'" 
+                  @emitValue="getValueSelectInput"
+                  :isActive="checkIsActiveAddress.district"/>
                 </div>
               </div>
               <div class="add-item">
@@ -194,13 +202,23 @@
               <div class="add-item">
                 <div class="aib-txt">Tỉnh/Thành phố</div>
                 <div class="add-select-feild">
-                  <SelectInput/>
+                  <SelectInput 
+                  :data="cities" 
+                  :col="{0:'CityID', 1:'CityName'}" 
+                  :variable="'CityID'" 
+                  @emitValue="getValueSelectInput"
+                  :isActive="checkIsActiveAddress.city"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Phường/Xã</div>
                 <div class="add-select-feild">
-                  <SelectInput/>
+                  <SelectInput
+                  :data="wards" 
+                  :col="{0:'WardID', 1:'WardName'}" 
+                  :variable="'WardID'" 
+                  @emitValue="getValueSelectInput"
+                  :isActive="checkIsActiveAddress.ward"/>
                 </div>
               </div>
               <div class="add-item">
@@ -226,7 +244,7 @@
                 <input type="checkbox" class="add-input-checkbox"/>
               </div>
               <div class="add-item">
-                <div class="aib-txt">Dùng chung</div>
+                <div class="aib-txt">Mã tiềm năng</div>
                 <input class="add-input-feild s-input" />
               </div>
             </div>
@@ -244,13 +262,23 @@ export default {
   },
   data() {
     return {
-      dataForm: {},
+      dataForm: {
+      },
       vocatives: {},
       departments: {},
       positions: {},
       sources: {},
       organizationTypes: {},
       incomes: {},
+      nations: {},
+      districts: {},
+      cities: {},
+      wards: {},
+      checkIsActiveAddress: {
+        city: false,
+        district: false,
+        ward: false,
+      }
     };
   },
   methods: {
@@ -345,13 +373,81 @@ export default {
       }
     },
     /**
+     * lấy tên quốc gia từ server
+     * Created by SonTD (08.08.2022)
+     */
+    getNationFromServer(){
+      try{
+        this.axios
+          .get("http://localhost:5091/api/Nation")
+          .then((response) => {
+            this.nations = response.data;
+          })
+      }catch(error){
+        console.log(error);
+      }
+    },
+    /**
+     * lấy tên huyện từ server
+     * Created by SonTD (08.08.2022)
+     */
+    getDistrictFromServer(){
+      try{
+        this.axios
+          .get("http://localhost:5091/api/District?cityID="+this.dataForm.CityID)
+          .then((response) => {
+            this.districts = response.data;
+          })
+      }catch(error){
+        console.log(error);
+      }
+    },
+    /**
+     * lấy tên thành phố từ server
+     * Created by SonTD (08.08.2022)
+     */
+    getCityFromServer(){
+      try{
+        this.axios
+          .get("http://localhost:5091/api/City?nationID="+this.dataForm.NationID)
+          .then((response) => {
+            this.cities = response.data;
+            console.log(this.cities)
+          })
+      }catch(error){
+        console.log(error);
+      }
+    },
+    /**
+     * lấy tên xã từ server
+     * Created by SonTD (08.08.2022)
+     */
+    getWardFromServer(){
+      try{
+        this.axios
+          .get("http://localhost:5091/api/Ward?districtID="+this.dataForm.DistrictID)
+          .then((response) => {
+            this.wards = response.data;
+            console.log(this.wards)
+          })
+      }catch(error){
+        console.log(error);
+      }
+    },
+
+
+    test(){
+      console.log(this.dataForm)
+    },
+
+
+    /**
      * lấy gia trị từ select input component
      * createdby SONTD (08.08.2022)
      * @param {*} vocative 
      */
     getValueSelectInput(vocative, variable){
       this.dataForm[variable] = vocative;
-      console.log(this.dataForm);
     },
     
   },
@@ -362,7 +458,53 @@ export default {
     this.getSourceFromServer();
     this.getOrganizationTypeFromServer();
     this.getIncomeFromServer();
+    this.getNationFromServer();
   },
+  watch: {
+      //check sự thay đổi của quốc gia
+      'dataForm.NationID':function(newValue){
+         if (newValue>0 && newValue!="" && newValue!=undefined){
+            // khởi tạo lại id của tỉnh, huyện, xã
+            this.dataForm.CityID ="";
+            this.dataForm.DistrictID ="";
+            this.dataForm.WardID ="";
+            // khởi tạo lại giá trị của tỉnh huyện xã 
+            this.cities ={};
+            this.districts = {};
+            this.wards ={};
+
+            this.checkIsActiveAddress.city=true;
+            this.getCityFromServer();
+         }
+      },
+      //check tỉnh thay đổi
+      'dataForm.CityID':function(newValue){
+          if (newValue>0 && newValue!="" && newValue!=undefined){
+              // khởi tạo lại id của huyện, xã
+              this.dataForm.DistrictID ="";
+              this.dataForm.WardID ="";
+              // khởi tạo lại giá trị của huyện xã 
+              this.districts = {};
+              this.wards ={};
+              this.checkIsActiveAddress.district=true;
+              this.getDistrictFromServer();
+          }
+      },
+      //check huyện thay đổi
+      'dataForm.DistrictID':function(newValue){
+          if (newValue>0 && newValue!="" && newValue!=undefined){
+              // khởi tạo lại id của xã
+              this.dataForm.WardID ="";
+              // khởi tạo lại giá trị của xã 
+              this.wards ={};
+              this.checkIsActiveAddress.ward=true;
+              this.getWardFromServer();
+          }
+      },
+      'dataForm':function(newValue){
+          console.log(newValue)
+      }
+  }
 };
 </script>
 <style scoped>

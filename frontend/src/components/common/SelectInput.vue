@@ -22,7 +22,7 @@ export default {
         variable: String,
         isActive: {
             type: Boolean,
-            default: false
+            default: true
         },
     },
     data() {
@@ -32,7 +32,6 @@ export default {
     },
     methods: {
         selectInputOnClick(){
-            console.log(this.isActive);
             if (!this.isShowSelectBox){
                 this.$refs.selectInputField.style.border= "1px solid #4262F0";
             }

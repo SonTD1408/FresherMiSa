@@ -19,7 +19,7 @@
     width: 100%;
     padding: 8px 0;
     position: absolute;
-    z-index: 10;
+    z-index: 11;
     top: 110%;
     left: 0;
     background-color: #fff;
@@ -42,7 +42,7 @@
     position: absolute;
     top :0; left: 0; right: 0; bottom: 0;
     background-color: #E2E4E9;
-    z-index: 11;
+    z-index: 10;
     height: 32px;
     display: flex;
     align-items: center;
