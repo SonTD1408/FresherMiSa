@@ -1,0 +1,16 @@
+.dialog-delete{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 0; right: 0; left: 0; bottom: 0;
+    /* background-color: #ccc; */
+    z-index: 1;
+}
+.dialog-d-container{
+    width: 500px;
+    height: 32px;
+    /* background-color: #999; */
+    position: absolute;
+    top:20%;
+    z-index: 1;
+}

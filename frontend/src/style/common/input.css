@@ -14,3 +14,10 @@
 .s-input:disabled{
     background-color: #E2E4E9;
 }
+
+.input-validate-error{
+    border: 1px solid red;
+}
+.input-validate-error:hover{
+    border: 1px solid red;
+}

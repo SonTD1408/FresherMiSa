@@ -32,11 +32,13 @@
               <div class="add-item">
                 <div class="aib-txt">Tên <span style="color: red">*</span></div>
                 <input
+                  FieldSet="FirstName"
                   class="add-input-feild s-input"
-                  v-model="dataForm['FirstName']"
+                  v-model="dataForm.Potential['FirstName']"
+                  @blur="validateRequired($event)"
                 />
               </div>
-              <div class="validate-error">Tên không được để trống</div>
+              <div class="validate-error" v-if="validate.required.FirstName==false">Tên không được để trống</div>
               <div class="add-item">
                 <div class="aib-txt">Phòng ban</div>
                 <div class="add-select-feild">
@@ -46,6 +48,8 @@
               <div class="add-item">
                 <div class="aib-txt">ĐT di động <div class="add-item-icon"></div></div>
                 <input
+                  v-model="dataForm.Potential['PhoneNumber']"
+                  FieldSet="PhoneNumber"
                   class="add-input-feild s-input"
                 />
               </div>
@@ -58,19 +62,25 @@
               <div class="add-item">
                 <div class="aib-txt">Zalo</div>
                 <input
+                  v-model="dataForm.Potential['Zalo']"
+                  FieldSet="Zalo"
                   class="add-input-feild s-input"
                 />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Email cơ quan</div>
                 <input
+                  FieldSet="OfficeEmail"
                   class="add-input-feild s-input"
+                  v-model = "dataForm.Potential['OfficeEmail']"
                 />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Mã số thuế</div>
                 <input
+                  FieldSet="Taxcode"
                   class="add-input-feild s-input"
+                  v-model="dataForm.Potential['Taxcode']"
                 />
               </div>
             </div>
@@ -78,13 +88,14 @@
               <div class="add-item">
                 <div class="aib-txt">Họ và tên đệm</div>
                 <input class="add-input-feild s-input" 
-                v-model="dataForm['LastName']"/>
+                v-model="dataForm.Potential['LastName']"
+                FieldSet="LastName"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Họ và tên</div>
                 <input class="add-input-feild s-input" 
                 disabled 
-                v-bind:value="(dataForm['LastName']!=undefined? dataForm['LastName']:'')+' '+(dataForm['FirstName']!=undefined? dataForm['FirstName']:'')"/>
+                v-bind:value="(dataForm.Potential['LastName']!=undefined? dataForm.Potential['LastName']:'')+' '+(dataForm.Potential['FirstName']!=undefined? dataForm.Potential['FirstName']:'')"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
@@ -95,24 +106,32 @@
               <div class="add-item">
                 <div class="aib-txt">ĐT cơ quan <div class="add-item-icon"></div></div>
                 <input
+                  v-model="dataForm.Potential['OfficePhoneNumber']"
+                  FieldSet = "OfficePhoneNumber"
                   class="add-input-feild s-input"
                 />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Loại tiềm năng</div>
                 <input
+                  v-model = "dataForm.Potential['PotentialType']"
+                  FieldSet="PotentialType"
                   class="add-input-feild s-input"
                 />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Email cá nhân</div>
                 <input
+                  v-model="dataForm.Potential['Email']"
+                  FieldSet="Email"
                   class="add-input-feild s-input"
                 />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Tổ chức</div>
                 <input
+                  v-model="dataForm.Potential['OrganizationName']"
+                  FieldSet="OrganizationName"
                   class="add-input-feild s-input"
                 />
               </div>
@@ -126,18 +145,23 @@
               <div class="add-item">
                 <div class="aib-txt">Tài khoản ngân hàng</div>
                 <input
+                  v-model="dataForm.Potential['BankAccount']"
+                  FieldSet="BankAccount"
                   class="add-input-feild s-input"
                 />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Ngày thành lập</div>
                 <input type="date"
+                  v-model="dataForm.Potential['FoundingDate']"
+                  FieldSet="FoundingDate"
                   class="add-input-feild s-input"
                 />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Lĩnh vực</div>
                 <input type="text"
+                FieldSet="Field" 
                   class="add-input-feild s-input"
                 />
               </div>
@@ -151,7 +175,10 @@
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Ngân hàng</div>
-                <input class="add-input-feild s-input" />
+                <input class="add-input-feild s-input" 
+                FieldSet="BankName"
+                v-model="dataForm.Potential['BankName']"
+                />
               </div>
               <div class="add-item">
                 <div class="aib-txt">Loại hình</div>
@@ -162,6 +189,8 @@
               <div class="add-item">
                 <div class="aib-txt">Ngành nghề</div>
                 <input
+                  v-model="dataForm.Potential['OrganizationCareer']"
+                  FieldSet="OrganizationCareer"
                   class="add-input-feild s-input"
                 />
               </div>
@@ -195,7 +224,7 @@
               </div>
               <div class="add-item add-item-txtarea">
                 <div class="aib-txt">Địa chỉ</div>
-                <textarea class="s-input add-txtarea"></textarea>
+                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['Address']"></textarea>
               </div>
             </div>
             <div class="add-items-site">
@@ -232,7 +261,7 @@
            <div class="add-section-title">Thông tin mô tả</div>
             <div class="add-item add-item-des">
               <div class="aib-txt">Địa chỉ</div>
-                <textarea class="s-input add-txtarea"></textarea>
+                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['DesciptionP']"></textarea>
             </div>
         </div>
         <div class="addMainContent-system-infor">
@@ -241,20 +270,22 @@
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Dùng chung</div>
-                <input type="checkbox" class="add-input-checkbox"/>
+                <input type="checkbox" class="add-input-checkbox" v-model="dataForm.Potential['SharedP']"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Mã tiềm năng</div>
-                <input class="add-input-feild s-input" />
+                <input class="add-input-feild s-input" 
+                FieldSet="PotentialCode"
+                v-model="dataForm.Potential['PotentialCode']"/>
               </div>
             </div>
           </div>
         </div>
       </div>
+
   </div>
 </template>
 <script>
-// import axios from "axios";
 import SelectInput from "../../../components/common/SelectInput.vue";
 export default {
   components: {
@@ -263,6 +294,12 @@ export default {
   data() {
     return {
       dataForm: {
+        Potential: {}
+      },
+      validate:{
+        required: {
+          FirstName : true,
+        }
       },
       vocatives: {},
       departments: {},
@@ -394,7 +431,7 @@ export default {
     getDistrictFromServer(){
       try{
         this.axios
-          .get("http://localhost:5091/api/District?cityID="+this.dataForm.CityID)
+          .get("http://localhost:5091/api/District?cityID="+this.dataForm.Potential.CityID)
           .then((response) => {
             this.districts = response.data;
           })
@@ -409,7 +446,7 @@ export default {
     getCityFromServer(){
       try{
         this.axios
-          .get("http://localhost:5091/api/City?nationID="+this.dataForm.NationID)
+          .get("http://localhost:5091/api/City?nationID="+this.dataForm.Potential.NationID)
           .then((response) => {
             this.cities = response.data;
             console.log(this.cities)
@@ -425,7 +462,7 @@ export default {
     getWardFromServer(){
       try{
         this.axios
-          .get("http://localhost:5091/api/Ward?districtID="+this.dataForm.DistrictID)
+          .get("http://localhost:5091/api/Ward?districtID="+this.dataForm.Potential.DistrictID)
           .then((response) => {
             this.wards = response.data;
             console.log(this.wards)
@@ -437,17 +474,51 @@ export default {
 
 
     test(){
-      console.log(this.dataForm)
+      let val = this.checkValidate();
+      console.log(val);
+      if (val){
+        try{
+          this.axios
+            .post("http://localhost:5091/api/Potential", this.dataForm)
+            .then((response) => {
+              console.log(response);
+            });
+        }catch(error){
+            console.log(error);
+        }
+        console.log(this.dataForm)
+        this.$router.push("/")
+      }
     },
 
+    checkValidate(){
+      // this.validate.required.forEach(function(item){
+      //   console.log(item);
+      // })
+      for (let key in this.validate.required){
+        if (this.validate.required[key]==false){
+          return false;
+        }
+      }
+      return true;
+    },
+    validateRequired(event){
+      if (!event.target.value){
+        event.target.classList.add("input-validate-error");
+        this.validate.required[event.target.getAttribute("FieldSet")] = false;
+      }else{
+        event.target.classList.remove("input-validate-error");
+        this.validate.required[event.target.getAttribute("FieldSet")] = true;
+      }
+    },
 
     /**
      * lấy gia trị từ select input component
      * createdby SONTD (08.08.2022)
      * @param {*} vocative 
      */
-    getValueSelectInput(vocative, variable){
-      this.dataForm[variable] = vocative;
+    getValueSelectInput(val, variable){
+      this.dataForm.Potential[variable] = val;
     },
     
   },
@@ -462,12 +533,12 @@ export default {
   },
   watch: {
       //check sự thay đổi của quốc gia
-      'dataForm.NationID':function(newValue){
+      'dataForm.Potential.NationID':function(newValue){
          if (newValue>0 && newValue!="" && newValue!=undefined){
             // khởi tạo lại id của tỉnh, huyện, xã
-            this.dataForm.CityID ="";
-            this.dataForm.DistrictID ="";
-            this.dataForm.WardID ="";
+            this.dataForm.Potential.CityID ="";
+            this.dataForm.Potential.DistrictID ="";
+            this.dataForm.Potential.WardID ="";
             // khởi tạo lại giá trị của tỉnh huyện xã 
             this.cities ={};
             this.districts = {};
@@ -478,11 +549,11 @@ export default {
          }
       },
       //check tỉnh thay đổi
-      'dataForm.CityID':function(newValue){
+      'dataForm.Potential.CityID':function(newValue){
           if (newValue>0 && newValue!="" && newValue!=undefined){
               // khởi tạo lại id của huyện, xã
-              this.dataForm.DistrictID ="";
-              this.dataForm.WardID ="";
+              this.dataForm.Potential.DistrictID ="";
+              this.dataForm.Potential.WardID ="";
               // khởi tạo lại giá trị của huyện xã 
               this.districts = {};
               this.wards ={};
@@ -491,23 +562,21 @@ export default {
           }
       },
       //check huyện thay đổi
-      'dataForm.DistrictID':function(newValue){
+      'dataForm.Potential.DistrictID':function(newValue){
           if (newValue>0 && newValue!="" && newValue!=undefined){
               // khởi tạo lại id của xã
-              this.dataForm.WardID ="";
+              this.dataForm.Potential.WardID ="";
               // khởi tạo lại giá trị của xã 
               this.wards ={};
               this.checkIsActiveAddress.ward=true;
               this.getWardFromServer();
           }
       },
-      'dataForm':function(newValue){
-          console.log(newValue)
-      }
   }
 };
 </script>
 <style scoped>
+@import url("../../../style/view/potential/add/addPotential.css");
 @import url("../../../style/view/potential/add/addTopbar.css");
 @import url("../../../style/view/potential/add/addMainContent.css");
 </style>
