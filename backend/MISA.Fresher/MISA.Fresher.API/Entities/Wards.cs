@@ -2,8 +2,19 @@
 {
     public class Wards
     {
-        public int WardID { get; set; }
+        /// <summary>
+        /// id của bảng xã
+        /// </summary>
+        public Guid WardID { get; set; }
+
+        /// <summary>
+        /// tên phường xã
+        /// </summary>
         public string WardName { get; set; }
-        public int DistrictID { get; set; }
+
+        /// <summary>
+        /// id FK đến bảng huyện
+        /// </summary>
+        public Guid DistrictID { get; set; }
     }
 }

@@ -3,14 +3,33 @@
     public class Departments
     {
         /// <summary>
-        /// id phòng ban
+        /// id của bảng phòng ban
         /// </summary>
-        public int DepartmentID { get; set; }
+        public Guid DepartmentID { get; set; }
 
         /// <summary>
         /// tên phòng ban
         /// </summary>
         public string DepartmentName { get; set; }
 
+        /// <summary>
+        /// ngày tạo
+        /// </summary>
+        public DateTime CreatedDate { get; set; }
+
+        /// <summary>
+        /// người tạo
+        /// </summary>
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// ngày sửa
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// người sửa
+        /// </summary>
+        public string ModifiedBy { get; set; }
     }
 }

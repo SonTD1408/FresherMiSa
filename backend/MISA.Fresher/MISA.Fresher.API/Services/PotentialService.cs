@@ -37,20 +37,15 @@ namespace MISA.Fresher.API.Services
             param.Add("@Zalo", potential.Zalo);
             param.Add("@Email", potential.Email);
             param.Add("@OfficeEmail", potential.OfficeEmail);
-            param.Add("@Taxcode", potential.Taxcode);
-            param.Add("@OrganizationID", potential.OrganizationID);
-            param.Add("@DescriptionP", potential.DescriptionP);
+            param.Add("@Taxcode", potential.TaxCode);
+            param.Add("@OrganizationID", potential.Organization);
             param.Add("@Address", potential.Address);
-            param.Add("@Tag", potential.Tag);
-            param.Add("@SharedP", potential.SharedP);
             param.Add("@Facebook", potential.Facebook);
             param.Add("@NationID", potential.NationID);
             param.Add("@DistrictID", potential.DistrictID);
             param.Add("@CityID", potential.CityID);
             param.Add("@WardID", potential.WardID);
             param.Add("@Gender", potential.Gender);
-            param.Add("@NoCall", potential.NoCall);
-            param.Add("@NoEmail", potential.NoEmail);
             param.Add("@DateOfBirth", potential.DateOfBirth);
 
             //gọi repository 

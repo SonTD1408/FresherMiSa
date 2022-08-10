@@ -2,7 +2,14 @@
 {
     public class Nations
     {
-        public int NationID { get; set; }
+        /// <summary>
+        /// id của bảng nation
+        /// </summary>
+        public Guid NationID { get; set; }
+
+        /// <summary>
+        /// tên quốc gia
+        /// </summary>
         public string NationName { get; set; }
     }
 }

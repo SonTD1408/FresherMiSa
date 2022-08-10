@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MISA.Fresher.API.Services;
+using MISA.Fresher.API.Entities;
 using MISA.Fresher.API.ActionResult;
 using MISA.Fresher.API.Config;
 
@@ -8,30 +9,29 @@ namespace MISA.Fresher.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NationController : ControllerBase
+    public class TurnoverController : ControllerBase
     {
         /// <summary>
-        /// api lấy dữ liệu từ bảng Nations
-        /// createdby SONTD (10.08.2022)
+        /// api lấy tất cả dữ liệu doanh thu
+        /// createdby SONTD(10.08.2022)
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult getAll()
         {
-
             try
             {
-                var service = new NationService();
-                return Ok(service.getAll());
+                var turnoverService = new TurnoverService();
+                return Ok(turnoverService.getAll());
             }
             catch (Exception)
             {
-                var tmp = new ActionResults<object>()
+                var ex = new ActionResults<Turnovers>()
                 {
                     Status = 0,
                     StatusMsg = ResultMessage._CONTROLLER_EXCEPTION_MSG,
                 };
-                return StatusCode(StatusCodes.Status400BadRequest, tmp);
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
         }
     }

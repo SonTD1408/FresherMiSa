@@ -24,6 +24,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 var app = builder.Build();
+IConfiguration configuration = app.Configuration;
+//IWebHostEnvironment environment = app.Environment;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

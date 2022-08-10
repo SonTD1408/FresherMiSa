@@ -3,72 +3,203 @@
     public class Potentials
     {
         /// <summary>
-        /// id của bảng tiềm năng
+        /// 1. id của bảng tiềm năng
         /// </summary>
-        public int? PotentialID { get; set; }
+        public Guid PotentialID { get; set; }
 
         /// <summary>
-        /// mã tiềm năng
+        /// 2. mã tiềm năng
         /// </summary>
-        public string? PotentialCode { get; set; }
+        public string PotentialCode { get; set; }
 
         /// <summary>
-        /// id vơi bảng xưng hô
+        /// 3. họ và đệm
         /// </summary>
-        public int? VocativeID { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
-        /// tên
+        /// 4. tên
         /// </summary>
-        public string? LastName { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
-        /// họ và tên đệm
+        /// 5. họ và tên
         /// </summary>
-        public string? FirstName { get; set; }
+        public string FullName { get; set; }
 
         /// <summary>
-        /// id phòng ban
+        /// 6. số điện thoại
         /// </summary>
-        public int? DepartmentID { get; set; }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// id chức vụ
+        /// 7. số điện thoại cơ quan
         /// </summary>
-        public int? PositionID { get; set; }
+        public string OfficePhoneNumber { get; set; }
 
         /// <summary>
-        /// số điện thoại
+        /// 8. số điện thoại khác
         /// </summary>
-        public string? PhoneNumber { get; set; }
+        public string OtherPhoneNumber { get; set; }
 
         /// <summary>
-        /// số điện thoại cơ quan
+        /// 9. email cá nhân
         /// </summary>
-        public string? OfficePhoneNumber { get; set; }
-        
-        /// <summary>
-        /// id nguồn gốc
-        /// </summary>
-        public int? SourceID { get; set; }
+        public string Email { get; set; }
 
-        public string? Zalo { get; set; }
-        public string? Email { get; set; }
-        public string? OfficeEmail { get; set; }
-        public string? Taxcode { get; set; }
-        public int? OrganizationID { get; set; }
-        public string? DescriptionP { get; set; }
-        public string? Address { get; set; }
-        public string? Tag { get; set; }
-        public int? SharedP { get; set; }
-        public string? Facebook { get; set; }
-        public int? NationID { get; set; }
-        public int? DistrictID { get; set; }
-        public int? CityID { get; set; }
-        public int? WardID { get; set; }
-        public int? Gender { get; set; }
-        public int? NoCall { get; set; }
-        public int? NoEmail { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        /// <summary>
+        /// 10. email cơ quan
+        /// </summary>
+        public string OfficeEmail { get; set; }
+
+        /// <summary>
+        /// 11. mã số thuế
+        /// </summary>
+        public string TaxCode { get; set; }
+
+        /// <summary>
+        /// 12. zalo
+        /// </summary>
+        public string Zalo { get; set; }
+
+        /// <summary>
+        /// 13. tổ chức
+        /// </summary>
+        public string Organization { get; set; }
+
+        /// <summary>
+        /// 14. tài khoản ngân hàng
+        /// </summary>
+        public string BankAccount { get; set; }
+
+        /// <summary>
+        /// 15. tên ngân hàng
+        /// </summary>
+        public string BankName { get; set; }
+
+        /// <summary>
+        /// 16. ngày thành lập
+        /// </summary>
+        public DateTime FoundingDate { get; set; }
+
+        /// <summary>
+        /// 17. địa chỉ
+        /// </summary>
+        public string Address { get; set; }
+
+        /// <summary>
+        /// 18. id FK đến bảng quốc gia
+        /// </summary>
+        public Guid NationID { get; set; }
+
+        /// <summary>
+        /// 19. id FK đến bảng thành phố
+        /// </summary>
+        public Guid CityID { get; set; }
+
+        /// <summary>
+        /// 20. id FK đến bảng huyện
+        /// </summary>
+        public Guid DistrictID { get; set; }
+
+        /// <summary>
+        /// 21. id FK đến bảng phường/ xã
+        /// </summary>
+        public Guid WardID { get; set; }
+
+        /// <summary>
+        /// 22. số nhà, tên đường
+        /// </summary>
+        public string ApartmentNumber { get; set; }
+
+        /// <summary>
+        /// 23. mã vùng
+        /// </summary>
+        public string RegionCode { get; set; }
+
+        /// <summary>
+        /// 24. mô tả
+        /// </summary>
+        public string PotentialDescription { get; set; }
+
+        /// <summary>
+        /// 25. có gọi điện hay không
+        /// </summary>
+        public int IsCall { get; set; }
+
+        /// <summary>
+        /// 26. có được gửi email hay không
+        /// </summary>
+        public int IsSendEmail { get; set; }
+
+        /// <summary>
+        /// 27. giới tính
+        /// </summary>
+        public int Gender { get; set; }
+
+        /// <summary>
+        /// 28. ngày sinh
+        /// </summary>
+        public DateTime DateOfBirth { get; set; }
+
+        /// <summary>
+        /// 29. facebook
+        /// </summary>
+        public string Facebook { get; set; }
+
+        /// <summary>
+        /// 30. dùng chung
+        /// </summary>
+        public int IsShare { get; set; }
+
+        /// <summary>
+        /// 31. FK đến bảng xưng hô
+        /// </summary>
+        public Guid VocativeID { get; set; }
+
+        /// <summary>
+        /// 32. FK đên bảng phòng ban
+        /// </summary>
+        public Guid DepartmentID { get; set; }
+
+        /// <summary>
+        /// 33. FK đến bảng chức vụ
+        /// </summary>
+        public Guid PositionID { get; set; }
+
+        /// <summary>
+        /// 34. FK đến bảng nguồn gốc
+        /// </summary>
+        public Guid SourceID { get; set; }
+
+        /// <summary>
+        /// 35. FK đến bảng loại tổ chức
+        /// </summary>
+        public Guid OrganizationTypeID { get; set; }
+
+        /// <summary>
+        /// 36. FK đến bảng doanh thu
+        /// </summary>
+        public Guid TurnoverID { get; set; }
+
+        /// <summary>
+        /// 37. ngày tạo
+        /// </summary>
+        public DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// 38. người tạo
+        /// </summary>
+        public string? CreatedBy { get; set; }
+
+        /// <summary>
+        /// 39. ngày sửa
+        /// </summary>
+        public DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// 40. người sửa
+        /// </summary>
+        public string? ModifiedBy { get; set; }
     }
 }

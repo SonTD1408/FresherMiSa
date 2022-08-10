@@ -1,16 +1,16 @@
 ﻿namespace MISA.Fresher.API.Entities
 {
-    public class OrganizationTypes
+    public class Turnovers
     {
         /// <summary>
-        /// id của bảng loại tổ chức
+        /// id của bảng doanh thu
         /// </summary>
-        public Guid OrganizationTypeID { get; set; }
+        public Guid TurnoverID { get; set; }
 
         /// <summary>
-        /// tên loại tổ chức
+        /// doanh thu
         /// </summary>
-        public string OrganizationTypeName { get; set; }
+        public string TurnoverName { get; set; }
 
         /// <summary>
         /// ngày tạo
@@ -31,5 +31,6 @@
         /// người sửa
         /// </summary>
         public string? ModifiedBy { get; set; }
+
     }
 }

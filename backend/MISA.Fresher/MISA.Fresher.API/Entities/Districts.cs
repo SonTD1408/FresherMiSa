@@ -2,9 +2,19 @@
 {
     public class Districts
     {
-        public int DistrictID { get; set; }
-        public string DistrictName { get; set; }
-        public int CityID { get; set; }
+        /// <summary>
+        /// id của bảng huyện
+        /// </summary>
+        public Guid DistrictID { get; set; }
 
+        /// <summary>
+        /// tên huyện
+        /// </summary>
+        public string DistrictName { get; set; }
+
+        /// <summary>
+        /// id FK đến bảng thành phố
+        /// </summary>
+        public Guid CityID { get; set; }
     }
 }

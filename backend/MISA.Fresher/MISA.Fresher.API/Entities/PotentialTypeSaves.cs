@@ -1,16 +1,21 @@
 ﻿namespace MISA.Fresher.API.Entities
 {
-    public class OrganizationTypes
+    public class PotentialTypeSaves
     {
         /// <summary>
-        /// id của bảng loại tổ chức
+        /// id của bảng
         /// </summary>
-        public Guid OrganizationTypeID { get; set; }
+        public Guid PotentialTypeSaveID { get; set; }
 
         /// <summary>
-        /// tên loại tổ chức
+        /// FK đến bảng loại tiềm năng
         /// </summary>
-        public string OrganizationTypeName { get; set; }
+        public Guid PotentialTypeID { get; set; }
+
+        /// <summary>
+        /// FK đến bảng tiềm năng
+        /// </summary>
+        public Guid PotentialID { get; set; }
 
         /// <summary>
         /// ngày tạo
