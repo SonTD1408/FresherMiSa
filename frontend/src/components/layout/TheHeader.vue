@@ -1,7 +1,7 @@
 <template>
   <div id="header">
     <div class="header-left">
-      <div class="hl-tongleBtn"></div>
+      <div class="hl-tongle-btn"></div>
       <div class="hl-img"></div>
     </div>
     <div class="header-mid">

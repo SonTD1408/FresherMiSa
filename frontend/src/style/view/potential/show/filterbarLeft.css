@@ -1,4 +1,4 @@
-#filterbarLeft{
+#filterbar-left{
     height: calc(100vh - 84px - 64px);
     width: 240px;
     padding: 0 10px;

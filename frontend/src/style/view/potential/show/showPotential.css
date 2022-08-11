@@ -1,7 +1,7 @@
-#contentShow{
+#content-show{
     position: relative;
 }
-.potentialContent{
+.potential-content{
     display: flex;
     align-items: center;
 }

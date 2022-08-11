@@ -1,4 +1,4 @@
-#mainContent{
+#main-content{
     position: relative;
     flex: 1;
     height: calc(100vh - 84px - 64px);
@@ -8,7 +8,7 @@
 }
 
 /* ẩn hiện filter bar left  */
-.filterbarLeftShowHideBtn{
+.filterbar-left-show-hide-btn{
     position: absolute;
     top: 40%;
     left: 0;
@@ -22,17 +22,17 @@
     border-bottom-right-radius: 4px;
     box-shadow: 3px 1px 6px rgb(0 0 0 / 30%);
 }
-.filterbarLeftShowHideBtn-icon{
+.filterbar-left-show-hide-btn-icon{
     width: 16px;
     height: 16px;
     background: url("../../../../assets/img/icon_collection.svg") no-repeat -289px -32px;
 }
-.filterbarLeftShowHideBtn:hover{
+.filterbar-left-show-hide-btn:hover{
     width: 20px;
     height: 50px;
 }
 /* ẩn hiện filter bar right  */
-.toolbarRightShowHideBtn{
+.toolbar-right-show-hide-btn{
     position: absolute;
     top: 40%;
     right: 0;
@@ -46,12 +46,12 @@
     border-bottom-left-radius: 4px;
     box-shadow: -3px -1px 6px rgb(0 0 0 / 30%);
 }
-.toolbarRightShowHideBtn-icon{
+.toolbar-right-show-hide-btn-icon{
     width: 16px;
     height: 14px;
     background: url("../../../../assets/img/icon_collection.svg") no-repeat -302px -34px;
 }
-.toolbarRightShowHideBtn:hover{
+.toolbar-right-show-hide-btn:hover{
     width: 20px;
     height: 50px;
 }

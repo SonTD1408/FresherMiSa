@@ -1,4 +1,4 @@
-#toolbarRight{
+#toolbar-right{
     height: calc(100vh - 84px - 64px);
     width: 320px;
     display: flex;

@@ -1,7 +1,7 @@
 <template>
-  <div id="contentShow">
-    <div class="toolbarTop">
-      <div id="toolbarTop">
+  <div id="content-show">
+    <div class="toolbar-top">
+      <div id="toolbar-top">
         <!-- tool bar top left  -->
         <div class="tt-left" v-if="toolbarTopLeftStatus=='normal'">
           <div class="ttl-name">
@@ -47,8 +47,8 @@
         </div>
       </div>
     </div>
-    <div class="potentialContent">
-      <div id="filterbarLeft" v-if="isShowFilterbarLeft">
+    <div class="potential-content">
+      <div id="filterbar-left" v-if="isShowFilterbarLeft">
         <div class="filter-saved">
           <div class="fs-txt">BỘ LỌC ĐÃ LƯU</div>
           <div class="fs-icon"></div>
@@ -150,12 +150,12 @@
           </div>
         </div>
       </div>
-      <div id="mainContent">
-        <div class="filterbarLeftShowHideBtn" @click="hideShowFilterbarLeft">
-          <div class="filterbarLeftShowHideBtn-icon"></div>
+      <div id="main-content">
+        <div class="filterbar-left-show-hide-btn" @click="hideShowFilterbarLeft">
+          <div class="filterbar-left-show-hide-btn-icon"></div>
         </div>
-        <div class="toolbarRightShowHideBtn" @click="hideShowToolbarRight">
-          <div class="toolbarRightShowHideBtn-icon"></div>
+        <div class="toolbar-right-show-hide-btn" @click="hideShowToolbarRight">
+          <div class="toolbar-right-show-hide-btn-icon"></div>
         </div>
         <div id="potential-table">
           <div class="s-thead">
@@ -227,7 +227,7 @@
           </div>
         </div>
       </div>
-      <div id="toolbarRight" v-if="isShowToolbarRight">
+      <div id="toolbar-right" v-if="isShowToolbarRight">
         <div class="tr-header">
           <div class="trh-item">
             <div class="trh-item-icon trh-item-icon1"></div>
@@ -369,9 +369,9 @@ export default {
      */
     hideShowFilterbarLeft(){
       if(this.isShowFilterbarLeft){
-        document.querySelector(".filterbarLeftShowHideBtn-icon").style.transform="rotate(180deg)"
+        document.querySelector(".filterbar-left-show-hide-btn-icon").style.transform="rotate(180deg)"
       }else{
-        document.querySelector(".filterbarLeftShowHideBtn-icon").style.transform="rotate(0)"
+        document.querySelector(".filterbar-left-show-hide-btn-icon").style.transform="rotate(0)"
       }
       this.isShowFilterbarLeft = !this.isShowFilterbarLeft
     },
@@ -382,9 +382,9 @@ export default {
      */
     hideShowToolbarRight(){
       if(this.isShowToolbarRight){
-        document.querySelector(".toolbarRightShowHideBtn-icon").style.transform="rotate(180deg)"
+        document.querySelector(".toolbar-right-show-hide-btn-icon").style.transform="rotate(180deg)"
       }else{
-        document.querySelector(".toolbarRightShowHideBtn-icon").style.transform="rotate(0)"
+        document.querySelector(".toolbar-right-show-hide-btn-icon").style.transform="rotate(0)"
       }
       this.isShowToolbarRight = !this.isShowToolbarRight
     },

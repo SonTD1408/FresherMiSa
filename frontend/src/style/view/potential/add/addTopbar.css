@@ -1,4 +1,4 @@
-#addTopbar{
+#add-topbar{
     height: 64px;
     padding: 0 10px;
     background-color: #E2E4E9;
@@ -7,7 +7,7 @@
     align-items: center;
     /* margin-top: 84px */
 }
-.addTopbar-left{
+.add-topbar-left{
     display: flex;
 }
 .al-txt1{
@@ -19,15 +19,15 @@
     font-size: 16px;
     transform: translateY(3px);
 }
-.al-changeConstruct{
+.al-change-construct{
     font-size: 13px;
     transform: translateY(7px);
     color: #4262F0;
     cursor: pointer;
 }
-.al-changeConstruct:hover{
+.al-change-construct:hover{
     text-decoration: underline;
 }
-.addTopbar-right button:nth-child(2){
+.add-topbar-right button:nth-child(2){
     margin: 0 8px;
 }

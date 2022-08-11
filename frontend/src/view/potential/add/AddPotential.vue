@@ -1,32 +1,32 @@
 <template>
-  <div id="contentAdd">
-      <div id="addTopbar">
-        <div class="addTopbar-left">
+  <div id="content-add">
+      <div id="add-topbar">
+        <div class="add-topbar-left">
           <div class="al-txt1">Thêm Tiềm năng -</div>
           <div class="al-txt2">Mẫu tiêu chuẩn</div>
-          <div class="al-changeConstruct">Sửa bố cục</div>
+          <div class="al-change-construct">Sửa bố cục</div>
         </div>
-        <div class="addTopbar-right">
+        <div class="add-topbar-right">
           <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
           <button class="s-button-gray">Lưu và thêm</button>
           <button class="s-button" @click="test">Lưu</button>
         </div>
       </div>
-      <div id="addMainContent">
-        <div class="addMainContent-img-box">
+      <div id="add-main-content">
+        <div class="add-main-content-img-box">
           <div class="add-section-title">Ảnh tiềm năng</div>
           <div class="aimgb-img-box">
             <div class="aimgb-img"></div>
           </div>
         </div>
-        <div class="addMainContent-infor-box">
+        <div class="add-main-content-infor-box">
           <div class="add-section-title">Thông tin chung</div>
           <div class="add-items">
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Xưng hô</div>
                 <div class="add-select-feild">
-                  <SelectInput :col="{0:'VocativeID', 1: 'Vocative'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput"/>
+                  <SelectInput :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput"/>
                 </div>
               </div>
               <div class="add-item">
@@ -138,7 +138,7 @@
             </div>
           </div>
         </div>
-        <div class="addMainContent-org-box">
+        <div class="add-main-content-org-box">
           <div class="add-section-title">Thông tin tổ chức</div>
           <div class="add-items">
             <div class="add-items-site">
@@ -197,7 +197,7 @@
             </div>
           </div>
         </div>
-        <div class="addMainContent-address-box">
+        <div class="add-main-content-address-box">
           <div class="add-section-title">Thông tin địa chỉ</div>
           <div class="add-items">
             <div class="add-items-site">
@@ -257,14 +257,14 @@
             </div>
           </div>
         </div>
-        <div class="addMainContent-description-box">
+        <div class="add-main-content-description-box">
            <div class="add-section-title">Thông tin mô tả</div>
             <div class="add-item add-item-des">
               <div class="aib-txt">Địa chỉ</div>
                 <textarea class="s-input add-txtarea" v-model="dataForm.Potential['DesciptionP']"></textarea>
             </div>
         </div>
-        <div class="addMainContent-system-infor">
+        <div class="add-main-content-system-infor">
           <div class="add-section-title">Thông tin hệ thống</div>
           <div class="add-items">
             <div class="add-items-site">
@@ -328,7 +328,7 @@ export default {
         this.axios.
           get("http://localhost:5091/api/Vocative")
           .then((response) => {
-            this.vocatives = response.data;
+            this.vocatives = response.data.DataList;
           })
       }catch(error){
         console.log(error);
@@ -486,6 +486,7 @@ export default {
         }catch(error){
             console.log(error);
         }
+
         console.log(this.dataForm)
         this.$router.push("/")
       }
@@ -496,7 +497,7 @@ export default {
       //   console.log(item);
       // })
       for (let key in this.validate.required){
-        if (this.validate.required[key]==false){
+        if (this.validate.required[key]==false ||this.validate.required[key]==undefined){
           return false;
         }
       }

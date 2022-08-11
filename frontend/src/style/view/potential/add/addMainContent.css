@@ -1,16 +1,16 @@
 /* ảnh tiềm năng  */
-#addMainContent{
+#add-main-content{
     padding: 18px 38px;
     overflow: auto;
     height: calc(100vh - 84px - 64px);
     box-sizing: border-box;
 }
-.addMainContent-img-box{
+.add-main-content-img-box{
     margin: 8px 0 32px 0;
 }
 .add-section-title{
     font-size: 18px;
-    font-family: Roboto-Bold;
+    font-family: Roboto;
     font-weight: 600;
     margin-bottom: 16px;
 }
@@ -74,7 +74,7 @@
 }
 
 /* tổ chức  */
-.addMainContent-org-box{
+.add-main-content-org-box{
     margin: 48px 0;
 }
 
@@ -96,7 +96,7 @@
 }
 
 /* thông tin mô tả  */
-.addMainContent-description-box{
+.add-main-content-description-box{
     margin: 48px 0;
 }
 
