@@ -14,6 +14,9 @@
 
         /// <summary>
         /// Status có thực hiện thành công không hay nhảy vào exception
+        /// 0: không trả về data
+        /// 1: trả về 1 list data
+        /// 2: trả về 1 data
         /// </summary>
         public int Status { get; set; }
 

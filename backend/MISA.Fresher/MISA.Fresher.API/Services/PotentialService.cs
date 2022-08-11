@@ -1,6 +1,9 @@
 ﻿using MISA.Fresher.API.Repositories;
 using MISA.Fresher.API.Entities.DTO;
+using MISA.Fresher.API.ActionResult;
 using MISA.Fresher.API.Entities;
+using MISA.Fresher.API.Config;
+
 using Dapper;
 
 namespace MISA.Fresher.API.Services
@@ -15,42 +18,92 @@ namespace MISA.Fresher.API.Services
         /// <param name="where"></param> lọc
         /// <param name="sort"></param> sắp xếp
         /// <returns></returns>
-        public Paging getAll(int pageSize, int pageNumber, string where, string sort)
+        public ActionResults<Paging> getAll(int pageSize, int pageNumber, string where, string sort)
         {
-            var potentialRepository = new PotentialRepository();
-            int take = (pageNumber - 1) * pageSize;
-            return potentialRepository.getAll(take, pageSize, where, sort);
+            try
+            {
+                var potentialRepository = new PotentialRepository();
+                int take = (pageNumber - 1) * pageSize;
+                return potentialRepository.getAll(take, pageSize, where, sort);
+            }
+            catch (Exception)
+            {
+                return new ActionResults<Paging>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                };
+            }
         }
-    
-        public int add(Potentials potential)
-        {
-            var param = new DynamicParameters();
-            param.Add("@PotentialCode", potential.PotentialCode);
-            param.Add("@VocativeID", potential.VocativeID);
-            param.Add("@LastName", potential.LastName);
-            param.Add("@FirstName", potential.FirstName);
-            param.Add("@DepartmentID", potential.DepartmentID);
-            param.Add("@PositionID", potential.PositionID);
-            param.Add("@PhoneNumber", potential.PhoneNumber);
-            param.Add("@OfficePhoneNumber", potential.OfficePhoneNumber);
-            param.Add("@SourceID", potential.SourceID);
-            param.Add("@Zalo", potential.Zalo);
-            param.Add("@Email", potential.Email);
-            param.Add("@OfficeEmail", potential.OfficeEmail);
-            param.Add("@Taxcode", potential.TaxCode);
-            param.Add("@OrganizationID", potential.Organization);
-            param.Add("@Address", potential.Address);
-            param.Add("@Facebook", potential.Facebook);
-            param.Add("@NationID", potential.NationID);
-            param.Add("@DistrictID", potential.DistrictID);
-            param.Add("@CityID", potential.CityID);
-            param.Add("@WardID", potential.WardID);
-            param.Add("@Gender", potential.Gender);
-            param.Add("@DateOfBirth", potential.DateOfBirth);
 
-            //gọi repository 
-            var potentialRepository = new PotentialRepository();
-            return potentialRepository.Add(param);
+        /// <summary>
+        /// xử lí logic thêm 1 tiềm năng
+        /// created by SONTD (11.08.2022)
+        /// </summary>
+        /// <param name="potential"></param>
+        /// <returns></returns>
+        public ActionResults<Guid> add(Potentials potential)
+        {
+            try
+            {
+                //gọi repository 
+                var potentialRepository = new PotentialRepository();
+                var newID = Guid.NewGuid();
+                var now = DateTime.Now;
+                potential.PotentialID = newID;
+                potential.CreatedDate = now;
+                potential.ModifiedDate = now;
+                return potentialRepository.add(potential);
+            }
+            catch (Exception)
+            {
+                return new ActionResults<Guid>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                };
+            }
+        }
+
+        /// <summary>
+        /// xử lí logic xóa 1 tiềm năng
+        /// created by SONTD (11.08.2022)
+        /// </summary>
+        /// <param name="potentialID"></param>
+        /// <returns></returns>
+        public ActionResults<Guid> delete(Guid potentialID)
+        {
+            try
+            {
+                var repository = new PotentialRepository();
+                var res = repository.delete(potentialID);
+                return res;
+            }
+            catch (Exception)
+            {
+                return new ActionResults<Guid>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                };
+            }
+        }
+
+        public ActionResults<Potentials> getById(Guid id)
+        {
+            try
+            {
+                var repository = new PotentialRepository();
+                return repository.getById(id);
+            }
+            catch (Exception)
+            {
+                return new ActionResults<Potentials>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                };
+            }
         }
     }
 }

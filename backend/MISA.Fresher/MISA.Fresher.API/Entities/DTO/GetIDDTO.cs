@@ -2,7 +2,6 @@
 {
     public class GetIDDTO
     {
-        public int Index { get; set; }
-        public int ID { get; set; }
+        public Guid ID { get; set; }
     }
 }
