@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "click-outside-vue3": "^4.0.1",
     "core-js": "^3.8.3",
+    "v-click-outside": "^3.2.0",
     "vue": "^3.2.13",
     "vue-axios": "^3.4.1",
     "vue-router": "^4.1.3"

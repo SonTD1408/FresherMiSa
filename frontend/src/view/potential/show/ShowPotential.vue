@@ -220,7 +220,7 @@
             <div class="footer-paging">
                 <div class="fp-first"></div>
                 <div class="fp-prev"></div>
-                <div class="fp-txt"><span class="from">1</span>đến<span class="to">50</span></div>
+                <div class="fp-txt"><span class="from">{{(pageNumber-1)*pageSize+1}}</span>đến<span class="to">{{(pageNumber)*pageSize}}</span></div>
                 <div class="fp-next"></div>
                 <div class="fp-last"></div>
             </div>
@@ -264,7 +264,7 @@
 </template>
 <script>
 import UpdateMany from "../update/UpdateMany.vue"
-import axios from "axios"
+import axiosConfig  from "@/script/config/axiosConfig";
 export default {
   components:{
     UpdateMany
@@ -286,25 +286,25 @@ export default {
       //số bản ghi trên trang
       pageSize : "50",
       // số trang 
-      pageNumber: 1,
+      pageNumber: 2,
       // các cột trong 1 dòng dữ liệu 
       columns: [
         "PotentialCode",
-        "Vocative",
+        "VocativeName",
         "FirstName",
         "PositionName",
         "PhoneNumber",
         "OfficePhoneNumber",
         "OfficeEmail",
         "Email",
-        "OrganizationName",
+        "Organization",
         "Address",
         "CityName",
         "DistrictName",
         "WardName",
         "SourceName",
-        "DescriptionP",
-        "SharedP"
+        "PotentialDescription",
+        "IsShare"
       ],
       // data của bảng lấy từ server 
       data: {},
@@ -319,16 +319,19 @@ export default {
      * hàm lấy tiềm năng từ serve
      * created by SONTD (07.08.2022)
      */
-    getPotentialFromServer(){
+    getDataFromServer(){
+      let me = this,
+          url = `?pageSize=${me.pageSize}&pageNumber=${this.pageNumber}`;
       try{
-        axios
-        .get(`http://localhost:5091/api/Potential?pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`)
-        .then((response) => {
-            this.data = response.data.PotentialList;
-            this.numberOfRecord = response.data.NumberOfRecord;
-        });
+          axiosConfig.call("get", axiosConfig.Potentials+url, "", function(response){
+            if (response.data){
+              me.data = response.data.Data.PotentialList;
+              console.log(me.data)
+              me.numberOfRecord = response.data.Data.NumberOfRecord;
+            }
+          });
       }catch(error){
-        console.log(error);
+          console.log(error);
       }
     },
     /**
@@ -360,7 +363,7 @@ export default {
     changePageSizeOnClick(e){
       this.pageSize = e.target.getAttribute("Value");
       this.pageNumber =1;
-      this.getPotentialFromServer();
+      this.getDataFromServer();
     },
 
     /**
@@ -461,7 +464,7 @@ export default {
     }
   },
   created() {
-    this.getPotentialFromServer();
+    this.getDataFromServer();
   },
 };
 </script>
