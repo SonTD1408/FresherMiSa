@@ -5,7 +5,7 @@ import UpdateById from "../view/potential/update/UpdateById"
 const routes = [
     {path: '/', component: ShowPotential},
     {path: '/potential/add', component: AddPotential},
-    {path: '/potential/update', component: UpdateById}
+    {path: '/potential/update', component: UpdateById, name: "potential.update"}
 ]
 
 const router = createRouter({

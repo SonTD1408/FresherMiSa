@@ -50,7 +50,7 @@
 
 .dcc-button-box{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     padding: 24px 8px;
 }
 .dccbb-delete-button{

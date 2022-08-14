@@ -5,15 +5,15 @@
     height: calc(100vh - 84px - 64px);
     box-sizing: border-box;
 }
-.add-main-content-img-box{
+.update-main-content-img-box{
     margin: 8px 0 32px 0;
 }
-.add-section-title{
+.update-section-title{
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 16px;
 }
-.aimgb-img-box{
+.uimgb-img-box{
     width: 48px;
     height: 48px;
     display: flex;
@@ -23,7 +23,7 @@
     border: 1px solid#ccc;
     cursor: pointer;
 }
-.aimgb-img{
+.uimgb-img{
     display: inline-block;
     width: 36px;
     height: 36px;
@@ -32,10 +32,10 @@
 
 /* thông tin chung  */
 
-.add-items{
+.update-items{
     display: flex;
 }
-.add-item{
+.update-item{
     width: 450px;
     height: 32px;
     margin-right: 100px;
@@ -44,11 +44,11 @@
     justify-content: space-between;
     margin-bottom: 16px;
 }
-.add-input-feild{
+.update-input-feild{
     width: 280px;
     padding: 0 16px;
 }
-.add-select-feild{
+.update-select-feild{
     width: 280px;
 }
 .validate-error{
@@ -58,12 +58,12 @@
     display: flex;
     justify-content: center;
 }
-.aib-txt{
+.uib-txt{
     display: flex;
     align-items: center;
     font-weight: 600;
 }
-.add-item-icon{
+.update-item-icon{
     cursor: pointer;
     transform: translateY(1px);
     margin-left: 8px;

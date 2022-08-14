@@ -133,7 +133,13 @@ namespace MISA.Fresher.API.Controllers
             }
         }
 
-        [HttpGet("/{potentialID}")]
+        /// <summary>
+        /// hàm lấy ra 1 bản ghi theo id
+        /// created by SONTD(14.08.2022)
+        /// </summary>
+        /// <param name="potentialID"></param>
+        /// <returns></returns>
+        [HttpGet("{potentialID}")]
         public IActionResult getById([FromRoute] Guid potentialID)
         {
             try
@@ -150,6 +156,21 @@ namespace MISA.Fresher.API.Controllers
                 };
                 return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
+        }
+
+        /// <summary>
+        /// hàm update 1 potential theo id
+        /// created by SONTD(14.08.2022)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="potential"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public IActionResult update([FromRoute] Guid id, [FromBody] UpdatePotentialDTO potential)
+        {
+            var service = new PotentialService();
+            var res = service.update(id, potential);
+            return Ok(res);
         }
     }
 }

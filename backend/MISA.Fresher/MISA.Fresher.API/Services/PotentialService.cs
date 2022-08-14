@@ -4,8 +4,7 @@ using MISA.Fresher.API.ActionResult;
 using MISA.Fresher.API.Entities;
 using MISA.Fresher.API.Config;
 using Dapper;
-
-using Dapper;
+using Newtonsoft.Json;
 
 namespace MISA.Fresher.API.Services
 {
@@ -100,6 +99,12 @@ namespace MISA.Fresher.API.Services
             }
         }
 
+        /// <summary>
+        /// xử lí logic lấy ra 1 bản ghi theo id
+        /// created by SONTD(14.08.2022)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResults<Potentials> getById(Guid id)
         {
             try
@@ -110,6 +115,48 @@ namespace MISA.Fresher.API.Services
             catch (Exception)
             {
                 return new ActionResults<Potentials>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                };
+            }
+        }
+
+        /// <summary>
+        /// hàm xử lí logic để update dữ liệu cho 1 tiềm năng
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="potential"></param>
+        /// <returns></returns>
+        public ActionResults<Guid> update(Guid id, UpdatePotentialDTO potential)
+        {
+            try
+            {
+                var param = new DynamicParameters();
+                param.Add("@PotentialID", id);
+                string query = "update Potentials " +
+                                "Set ";
+                foreach (var prop in potential.GetType().GetProperties())
+                {
+                    if(prop.Name != "PotentialID")
+                    {
+                        var value = prop.GetValue(potential, null);
+                        if (value != null)
+                        {
+                            param.Add("@" + prop.Name, value);
+                            query += $"{prop.Name} = @{prop.Name}, ";
+                        } 
+                    }
+                }
+                string query1 = query.Remove(query.Length-2);
+                string query2 = string.Concat(query1, " where PotentialID = @PotentialID");
+                var repository = new PotentialRepository();
+                var res = repository.update(query2, param);
+                return res;
+            }
+            catch (Exception)
+            {
+                return new ActionResults<Guid>()
                 {
                     Status = 0,
                     StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,

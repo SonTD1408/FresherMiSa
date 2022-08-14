@@ -479,7 +479,7 @@ export default {
         let me =this;
         let val = me.checkValidate();
         // console.log(val);
-        // console.log(me.dataForm);
+        console.log(me.dataForm);
         if (val){
           try{
             me.axios
@@ -554,9 +554,9 @@ export default {
       'dataForm.Potential.NationID':function(newValue){
          if (newValue!=null && newValue!="" && newValue!=undefined){
             // khởi tạo lại id của tỉnh, huyện, xã
-            this.dataForm.Potential.CityID ="";
-            this.dataForm.Potential.DistrictID ="";
-            this.dataForm.Potential.WardID ="";
+            this.dataForm.Potential.CityID ="00000000-0000-0000-0000-000000000000";
+            this.dataForm.Potential.DistrictID ="00000000-0000-0000-0000-000000000000";
+            this.dataForm.Potential.WardID ="00000000-0000-0000-0000-000000000000";
             // khởi tạo lại giá trị của tỉnh huyện xã 
             this.cities ={};
             this.districts = {};
@@ -565,31 +565,46 @@ export default {
             this.checkIsActiveAddress.city=true;
             this.getCityFromServer();
          }
+         else{
+            this.dataForm.Potential.NationID="00000000-0000-0000-0000-000000000000"
+         }
       },
       //check tỉnh thay đổi
       'dataForm.Potential.CityID':function(newValue){
           if (newValue!=null && newValue!="" && newValue!=undefined){
               // khởi tạo lại id của huyện, xã
-              this.dataForm.Potential.DistrictID ="";
-              this.dataForm.Potential.WardID ="";
+              this.dataForm.Potential.DistrictID ="00000000-0000-0000-0000-000000000000";
+              this.dataForm.Potential.WardID ="00000000-0000-0000-0000-000000000000";
               // khởi tạo lại giá trị của huyện xã 
               this.districts = {};
               this.wards ={};
               this.checkIsActiveAddress.district=true;
               this.getDistrictFromServer();
           }
+          else{
+              this.dataForm.Potential.CityID="00000000-0000-0000-0000-000000000000"
+          }
       },
       //check huyện thay đổi
       'dataForm.Potential.DistrictID':function(newValue){
           if (newValue!=null && newValue!="" && newValue!=undefined){
               // khởi tạo lại id của xã
-              this.dataForm.Potential.WardID ="";
+              this.dataForm.Potential.WardID ="00000000-0000-0000-0000-000000000000";
               // khởi tạo lại giá trị của xã 
               this.wards ={};
               this.checkIsActiveAddress.ward=true;
               this.getWardFromServer();
           }
+          else{
+              this.dataForm.Potential.CityID="00000000-0000-0000-0000-000000000000"
+          }
       },
+      // check phường thay đổi 
+      'dataForm.Potential.WardID':function(newValue){
+          if (newValue==null || newValue== "" || newValue==undefined){
+              this.dataForm.Potential.WardID="00000000-0000-0000-0000-000000000000"
+          }
+      }
   }
 };
 </script>

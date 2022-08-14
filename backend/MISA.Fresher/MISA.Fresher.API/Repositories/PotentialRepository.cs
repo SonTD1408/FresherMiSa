@@ -237,5 +237,35 @@ namespace MISA.Fresher.API.Repositories
                 };
             }
         }
+
+        public ActionResults<Guid> update(string query, DynamicParameters param)
+        {
+            try
+            {
+                using(var mysqlConnection = new MySqlConnection(DBConfig._CONNECTION_STRING))
+                {
+                    var result = mysqlConnection.Execute(query, param);
+                    var res = new ActionResults<Guid>();
+                    if (result > 0)
+                    {
+                        res.Status = 1;
+                        res.StatusMsg = ResultMessage._SUCCESS_MSG;
+                    }
+                    else
+                    {
+                        res.Status = 0;
+                        res.StatusMsg = ResultMessage._SUCCESS_NULL_MSG;
+                    }
+                    return res;
+                }
+            }catch(Exception e)
+            {
+                return new ActionResults<Guid>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._REPOSITORY_EXCEPTION_MSG,
+                };
+            }
+        }
     }
 }

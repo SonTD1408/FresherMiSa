@@ -7,14 +7,14 @@
     align-items: center;
     /* margin-top: 84px */
 }
-.add-topbar-left{
+.update-topbar-left{
     display: flex;
 }
-.al-txt1{
+.ul-txt1{
     font-family: Roboto-Bold;
     font-size: 20px;
 }
-.al-change-construct{
+.ul-change-construct{
     margin-left: 8px;
     font-size: 13px;
     transform: translateY(7px);
@@ -24,6 +24,6 @@
 .al-change-construct:hover{
     text-decoration: underline;
 }
-.add-topbar-right button:nth-child(2){
+.update-topbar-right button:nth-child(2){
     margin: 0 8px;
 }

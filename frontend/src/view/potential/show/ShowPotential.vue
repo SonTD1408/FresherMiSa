@@ -190,7 +190,7 @@
             </div>
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
-            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID">
+            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID" @dblclick="rowOnDblClick($event)">
               <div class="s-td align-right">
                     <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
@@ -555,6 +555,16 @@ export default {
     optionOutSideOnClick(){
       let me = this;
       me.isShowOptionTtleft = false;
+    },
+
+    /**
+     * hàm xử lí khi nhấn đúp vào 1 dòng db
+     * created by SONTD(14.08.2022)
+     */
+    rowOnDblClick(event){
+        let me = this;
+        // me.$emit("emitPotentialID", event.target.closest(".s-tr").getAttribute("idOfRow"))
+        me.$router.push({/*path: "/potential/update" ,*/name: "potential.update", query: {PotentialID : ""+event.target.closest(".s-tr").getAttribute("idOfRow")}})
     }
   },
   created() {
