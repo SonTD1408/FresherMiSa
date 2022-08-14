@@ -1,0 +1,29 @@
+#update-topbar{
+    height: 64px;
+    padding: 0 10px;
+    background-color: #E2E4E9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* margin-top: 84px */
+}
+.add-topbar-left{
+    display: flex;
+}
+.al-txt1{
+    font-family: Roboto-Bold;
+    font-size: 20px;
+}
+.al-change-construct{
+    margin-left: 8px;
+    font-size: 13px;
+    transform: translateY(7px);
+    color: #4262F0;
+    cursor: pointer;
+}
+.al-change-construct:hover{
+    text-decoration: underline;
+}
+.add-topbar-right button:nth-child(2){
+    margin: 0 8px;
+}

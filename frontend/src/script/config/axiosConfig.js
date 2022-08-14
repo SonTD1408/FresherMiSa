@@ -29,6 +29,9 @@ axiosConfig.call = (method, url, data, fnCallBack)=>{
     .then((response)=>{
         fnCallBack(response);
     })
+    .catch((error)=>{
+        console.log(error);
+    })
 }
 
 export default axiosConfig;

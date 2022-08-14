@@ -362,6 +362,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * hàm khởi tạo lấy dữ liệu cho các ô select input
+     * created by SONTD(14.08.2022)
+     */
     init(){
         let me = this;
         try{
@@ -418,7 +422,7 @@ export default {
      */
     getDistrictFromServer(){
       let me = this,
-          url = `?cityID=${this.dataForm.Potential.CityID}`
+          url = `?cityID=${me.dataForm.Potential.CityID}`
       try{
 
         axiosConfig.call("get", axiosConfig.Districts+url , "", function(response){
@@ -436,7 +440,7 @@ export default {
      */
     getCityFromServer(){
       let me = this,
-          url = `?nationID=${this.dataForm.Potential.NationID}`
+          url = `?nationID=${me.dataForm.Potential.NationID}`
       try{
 
         axiosConfig.call("get", axiosConfig.Cities+url , "", function(response){
@@ -454,7 +458,7 @@ export default {
      */
     getWardFromServer(){
       let me = this,
-          url = `?districtID=${this.dataForm.Potential.DistrictID}`
+          url = `?districtID=${me.dataForm.Potential.DistrictID}`
       try{
 
         axiosConfig.call("get", axiosConfig.Wards+url , "", function(response){
@@ -473,13 +477,13 @@ export default {
      */
     saveButtonOnClick(){
         let me =this;
-        let val = this.checkValidate();
+        let val = me.checkValidate();
         // console.log(val);
         // console.log(me.dataForm);
         if (val){
           try{
-            this.axios
-              .post("http://localhost:5091/api/Potential", this.dataForm)
+            me.axios
+              .post("http://localhost:5091/api/Potential", me.dataForm)
               .then((response) => {
                   if (response.status==201){
                     me.$emit("showToastMessage",3);
@@ -504,11 +508,12 @@ export default {
      * created by SONTD (12.08.2022)
      */
     checkValidate(){
-      for (let key in this.validate.required){
-        if (this.validate.required[key]==0 || this.validate.required[key]==-1 ||this.validate.required[key]==undefined){
+      let me = this;
+      for (let key in me.validate.required){
+        if (me.validate.required[key]==0 || me.validate.required[key]==-1 ||me.validate.required[key]==undefined){
           document.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
           document.querySelector(`[FieldSet=${key}]`).focus();
-          this.validate.required[key]=0;
+          me.validate.required[key]=0;
           return false;
         }else{
           document.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");

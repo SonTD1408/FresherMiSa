@@ -517,9 +517,6 @@ export default {
                     }else{
                         me.$emit("showToastMessage",4);
                     }
-                }).catch((error)=>{
-                    console.log(error);
-                    me.$emit("showToastMessage",4);
                 })
             }catch(error){
                 console.log(error);
