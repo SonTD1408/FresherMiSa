@@ -15,11 +15,17 @@ var axiosConfig = {
     Fields: "http://localhost:5091/api/Field",
     Departments: "http://localhost:5091/api/Department",
     Positions: "http://localhost:5091/api/Position", 
+    Turnovers: "http://localhost:5091/api/Turnover",
+    MultiDelete: "http://localhost:5091/api/Potential/MultiDelete"
 }
 
 axiosConfig.call = (method, url, data, fnCallBack)=>{
 
-    axios[method](url,data)
+    axios[method](url,data,{
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
     .then((response)=>{
         fnCallBack(response);
     })

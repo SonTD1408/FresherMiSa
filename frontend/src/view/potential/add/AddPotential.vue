@@ -9,7 +9,7 @@
         <div class="add-topbar-right">
           <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
           <button class="s-button-gray">Lưu và thêm</button>
-          <button class="s-button" @click="test">Lưu</button>
+          <button class="s-button" @click="saveButtonOnClick">Lưu</button>
         </div>
       </div>
       <div id="add-main-content">
@@ -38,7 +38,7 @@
                   @blur="validateRequired($event)"
                 />
               </div>
-              <div class="validate-error" v-if="validate.required.FirstName==false">Tên không được để trống</div>
+              <div class="validate-error" v-if="validate.required.FirstName==0">Tên không được để trống</div>
               <div class="add-item">
                 <div class="aib-txt">Phòng ban</div>
                 <div class="add-select-feild">
@@ -168,7 +168,7 @@
               <div class="add-item">
                 <div class="aib-txt">Doanh thu</div>
                 <div class="add-select-feild">
-                  <SelectInput :data="incomes" :variable="'IncomeID'" @emitValue="getValueSelectInput" :col="{0: 'IncomeID' , 1:'Income'}"/>
+                  <SelectInput :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}"/>
                 </div>
               </div>
             </div>
@@ -286,6 +286,7 @@
   </div>
 </template>
 <script>
+import axiosConfig from "../../../script/config/axiosConfig.js";
 import SelectInput from "../../../components/common/SelectInput.vue";
 export default {
   components: {
@@ -294,11 +295,53 @@ export default {
   data() {
     return {
       dataForm: {
-        Potential: {}
+        Potential: {
+            PotentialID: "00000000-0000-0000-0000-000000000000",
+            // PotentialID: null,
+            PotentialCode: "",
+            LastName: "",
+            FirstName: "",
+            FullName: "",
+            PhoneNumber: "",
+            OfficePhoneNumber: "",
+            OtherPhoneNumber: "",
+            Email: "",
+            OfficeEmail: "",
+            TaxCode: "",
+            Zalo: "",
+            Organization: "",
+            BankAccount: "",
+            BankName: "",
+            FoundingDate: null,
+            Address: "",
+            NationID: "00000000-0000-0000-0000-000000000000",
+            CityID: "00000000-0000-0000-0000-000000000000",
+            DistrictID: "00000000-0000-0000-0000-000000000000",
+            WardID: "00000000-0000-0000-0000-000000000000",
+            ApartmentNumber: "",
+            RegionCode: "",
+            PotentialDescription: "",
+            IsCall: null,
+            IsSendEmail: null,
+            Gender: null,
+            DateOfBirth: null,
+            Facebook: "",
+            IsShare: null,
+            VocativeID: "00000000-0000-0000-0000-000000000000",
+            DepartmentID: "00000000-0000-0000-0000-000000000000",
+            PositionID: "00000000-0000-0000-0000-000000000000",
+            SourceID: "00000000-0000-0000-0000-000000000000",
+            OrganizationTypeID: "00000000-0000-0000-0000-000000000000",
+            TurnoverID: "00000000-0000-0000-0000-000000000000",
+            CreatedDate: null,
+            CreatedBy: "",
+            ModifiedDate: null,
+            ModifiedBy: "",
+        }
       },
       validate:{
         required: {
-          FirstName : true,
+          FirstName : -1,
         }
       },
       vocatives: {},
@@ -306,7 +349,7 @@ export default {
       positions: {},
       sources: {},
       organizationTypes: {},
-      incomes: {},
+      turnovers: {},
       nations: {},
       districts: {},
       cities: {},
@@ -319,122 +362,70 @@ export default {
     };
   },
   methods: {
-    /**
-     * lấy xưng hô từ server
-     * Created by SonTD (08.08.2022)
-     */
-    getVocativesFromServer(){
-      try{
-        this.axios.
-          get("http://localhost:5091/api/Vocative")
-          .then((response) => {
-            this.vocatives = response.data.DataList;
-          })
-      }catch(error){
-        console.log(error);
-      }
+    init(){
+        let me = this;
+        try{
+            // lấy dữ liệu vocative
+            axiosConfig.call("get", axiosConfig.Vocatives, "", function(response){
+              if (response.data){
+                me.vocatives = response.data.DataList;
+              }
+            });
+            // lây dữ liệu phòng ban 
+            axiosConfig.call("get", axiosConfig.Departments, "", function(response){
+              if (response.data){
+                me.departments = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu chức vụ
+            axiosConfig.call("get", axiosConfig.Positions, "", function(response){
+              if (response.data){
+                me.positions = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu nguồn gốc
+            axiosConfig.call("get", axiosConfig.Sources, "", function(response){
+              if (response.data){
+                me.sources = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu doanh thu
+            axiosConfig.call("get", axiosConfig.Turnovers, "", function(response){
+              if (response.data){
+                me.turnovers = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu loại tổ chức 
+            axiosConfig.call("get", axiosConfig.OrganizationTypes, "", function(response){
+              if (response.data){
+                me.organizationTypes = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu tên các quốc gia
+            axiosConfig.call("get", axiosConfig.Nations, "", function(response){
+              if (response.data){
+                me.nations = response.data.DataList;
+              }
+            });
+        }catch(error){
+            console.log(error);
+        }
     },
-    /**
-     * lấy phòng ban từ server
-     * Created by SonTD (08.08.2022)
-     */
-    getDepartmentFromServer(){
-      try{
-        this.axios
-          .get("http://localhost:5091/api/Department")
-          .then((response) => {
-            this.departments = response.data;
-          })
-      }catch(error){
-        console.log(error);
-      }
-    },
-    /**
-     * lấy chức danh từ server
-     * Created by SonTD (08.08.2022)
-     */
-    getPositionFromServer(){
-      try{
-        this.axios
-          .get("http://localhost:5091/api/Position")
-          .then((response) => {
-            this.positions = response.data;
-          })
-      }catch(error){
-        console.log(error);
-      }
-    },
-    /**
-     * lấy nguồn gốc từ server
-     * Created by SonTD (08.08.2022)
-     */
-    getSourceFromServer(){
-      try{
-        this.axios
-          .get("http://localhost:5091/api/Source")
-          .then((response) => {
-            this.sources = response.data;
-          })
-      }catch(error){
-        console.log(error);
-      }
-    },
-    /**
-     * lấy loại tổ chức từ server
-     * Created by SonTD (08.08.2022)
-     */
-    getOrganizationTypeFromServer(){
-      try{
-        this.axios
-          .get("http://localhost:5091/api/OrganizationType")
-          .then((response) => {
-            this.organizationTypes = response.data;
-          })
-      }catch(error){
-        console.log(error);
-      }
-    },
-    /**
-     * lấy doanh thu từ server
-     * Created by SonTD (08.08.2022)
-     */
-    getIncomeFromServer(){
-      try{
-        this.axios
-          .get("http://localhost:5091/api/InCome")
-          .then((response) => {
-            this.incomes = response.data;
-          })
-      }catch(error){
-        console.log(error);
-      }
-    },
-    /**
-     * lấy tên quốc gia từ server
-     * Created by SonTD (08.08.2022)
-     */
-    getNationFromServer(){
-      try{
-        this.axios
-          .get("http://localhost:5091/api/Nation")
-          .then((response) => {
-            this.nations = response.data;
-          })
-      }catch(error){
-        console.log(error);
-      }
-    },
+
     /**
      * lấy tên huyện từ server
      * Created by SonTD (08.08.2022)
      */
     getDistrictFromServer(){
+      let me = this,
+          url = `?cityID=${this.dataForm.Potential.CityID}`
       try{
-        this.axios
-          .get("http://localhost:5091/api/District?cityID="+this.dataForm.Potential.CityID)
-          .then((response) => {
-            this.districts = response.data;
-          })
+
+        axiosConfig.call("get", axiosConfig.Districts+url , "", function(response){
+          if (response.data){
+                me.districts = response.data.DataList;
+              }
+        })
       }catch(error){
         console.log(error);
       }
@@ -444,13 +435,15 @@ export default {
      * Created by SonTD (08.08.2022)
      */
     getCityFromServer(){
+      let me = this,
+          url = `?nationID=${this.dataForm.Potential.NationID}`
       try{
-        this.axios
-          .get("http://localhost:5091/api/City?nationID="+this.dataForm.Potential.NationID)
-          .then((response) => {
-            this.cities = response.data;
-            console.log(this.cities)
-          })
+
+        axiosConfig.call("get", axiosConfig.Cities+url , "", function(response){
+          if (response.data){
+                me.cities = response.data.DataList;
+              }
+        })
       }catch(error){
         console.log(error);
       }
@@ -460,56 +453,81 @@ export default {
      * Created by SonTD (08.08.2022)
      */
     getWardFromServer(){
+      let me = this,
+          url = `?districtID=${this.dataForm.Potential.DistrictID}`
       try{
-        this.axios
-          .get("http://localhost:5091/api/Ward?districtID="+this.dataForm.Potential.DistrictID)
-          .then((response) => {
-            this.wards = response.data;
-            console.log(this.wards)
-          })
+
+        axiosConfig.call("get", axiosConfig.Wards+url , "", function(response){
+          if (response.data){
+                me.wards = response.data.DataList;
+              }
+        })
       }catch(error){
         console.log(error);
       }
     },
 
-
-    test(){
-      let val = this.checkValidate();
-      console.log(val);
-      if (val){
-        try{
-          this.axios
-            .post("http://localhost:5091/api/Potential", this.dataForm)
-            .then((response) => {
-              console.log(response);
-            });
-        }catch(error){
-            console.log(error);
-        }
-
-        console.log(this.dataForm)
-        this.$router.push("/")
+    /**
+     * sự kiện ấn vào nút save
+     * Created by SONTD (12.08.2022)
+     */
+    saveButtonOnClick(){
+        let me =this;
+        let val = this.checkValidate();
+        // console.log(val);
+        // console.log(me.dataForm);
+        if (val){
+          try{
+            this.axios
+              .post("http://localhost:5091/api/Potential", this.dataForm)
+              .then((response) => {
+                  if (response.status==201){
+                    me.$emit("showToastMessage",3);
+                    me.$router.push("/")
+                  }
+                  else{
+                    me.$emit("showToastMessage",4);
+                  }
+              })
+              .catch(function(error){
+                  me.$emit("showToastMessage",4);
+                  console.log(error);
+              });
+          }catch(error){
+              console.log(error);
+          }
       }
     },
 
+    /**
+     * trức khi lưu check lại xem có hàng nào dính validate không, nếu có thì chưa được lưu
+     * created by SONTD (12.08.2022)
+     */
     checkValidate(){
-      // this.validate.required.forEach(function(item){
-      //   console.log(item);
-      // })
       for (let key in this.validate.required){
-        if (this.validate.required[key]==false ||this.validate.required[key]==undefined){
+        if (this.validate.required[key]==0 || this.validate.required[key]==-1 ||this.validate.required[key]==undefined){
+          document.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
+          document.querySelector(`[FieldSet=${key}]`).focus();
+          this.validate.required[key]=0;
           return false;
+        }else{
+          document.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");
         }
       }
       return true;
     },
+
+    /**
+     * check validate của các hàng có blur validateRequire()
+     * created by SONTD(12.08.2022)
+     */
     validateRequired(event){
       if (!event.target.value){
         event.target.classList.add("input-validate-error");
-        this.validate.required[event.target.getAttribute("FieldSet")] = false;
+        this.validate.required[event.target.getAttribute("FieldSet")] = 0;
       }else{
         event.target.classList.remove("input-validate-error");
-        this.validate.required[event.target.getAttribute("FieldSet")] = true;
+        this.validate.required[event.target.getAttribute("FieldSet")] = 1;
       }
     },
 
@@ -524,18 +542,12 @@ export default {
     
   },
   created() {
-    this.getVocativesFromServer();
-    this.getDepartmentFromServer();
-    this.getPositionFromServer();
-    this.getSourceFromServer();
-    this.getOrganizationTypeFromServer();
-    this.getIncomeFromServer();
-    this.getNationFromServer();
+    this.init();
   },
   watch: {
       //check sự thay đổi của quốc gia
       'dataForm.Potential.NationID':function(newValue){
-         if (newValue>0 && newValue!="" && newValue!=undefined){
+         if (newValue!=null && newValue!="" && newValue!=undefined){
             // khởi tạo lại id của tỉnh, huyện, xã
             this.dataForm.Potential.CityID ="";
             this.dataForm.Potential.DistrictID ="";
@@ -551,7 +563,7 @@ export default {
       },
       //check tỉnh thay đổi
       'dataForm.Potential.CityID':function(newValue){
-          if (newValue>0 && newValue!="" && newValue!=undefined){
+          if (newValue!=null && newValue!="" && newValue!=undefined){
               // khởi tạo lại id của huyện, xã
               this.dataForm.Potential.DistrictID ="";
               this.dataForm.Potential.WardID ="";
@@ -564,7 +576,7 @@ export default {
       },
       //check huyện thay đổi
       'dataForm.Potential.DistrictID':function(newValue){
-          if (newValue>0 && newValue!="" && newValue!=undefined){
+          if (newValue!=null && newValue!="" && newValue!=undefined){
               // khởi tạo lại id của xã
               this.dataForm.Potential.WardID ="";
               // khởi tạo lại giá trị của xã 

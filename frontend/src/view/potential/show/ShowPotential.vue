@@ -12,12 +12,18 @@
           <div class="ttl-refresh"></div>
         </div>
         <div class="tt-left" v-if="toolbarTopLeftStatus=='rowSelected'">
-          <div class="ttl-choosed">Đã chọn <span>{{numberOfRowSelected}}</span></div>
+          <div class="ttl-choosed">Đã chọn <span>{{ numberOfRowSelected }}</span></div>
           <div class="tll-fogot-choose" @click="forgotChoosed">Bỏ chọn</div>
           <button class="s-button-gray ttl-button-update" @click="hideShowUpdateMany(true)">
             <div class="ttlbu-icon"></div> Cập nhật thông tin
           </button>
-          <div class="ttl-option"></div>
+          <div class="s-button-gray ttl-option" @click="hideShowOptionDialogToolbarLeft">
+              <div class="ttl-option-icon"></div>
+              <div class="ttl-option-item-box" v-if="isShowOptionTtleft" v-click-outside="optionOutSideOnClick">
+                <div class="s-button-gray ttl-option-item"><div class="ttloi-icon-export"></div> <span>Xuất khẩu</span></div>
+                <div class="s-button-gray ttl-option-item" @click="deleteButtonOnClick"><div class="ttloi-icon-delete"></div> <span style="color: red">Xóa</span></div>
+              </div>
+          </div>
         </div>
         <!-- toolbar top right  -->
         <div class="tt-right">
@@ -48,7 +54,7 @@
       </div>
     </div>
     <div class="potential-content">
-      <div id="filterbar-left" v-if="isShowFilterbarLeft">
+      <div id="filterbar-left" v-if="isShowFilterbarLeft==1">
         <div class="filter-saved">
           <div class="fs-txt">BỘ LỌC ĐÃ LƯU</div>
           <div class="fs-icon"></div>
@@ -183,7 +189,7 @@
               <div class="s-th">Dùng chung</div>
             </div>
           </div>
-          <div class="s-tbody" v-on:scroll="handleScroll">
+          <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
             <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID">
               <div class="s-td align-right">
                     <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
@@ -259,34 +265,46 @@
       </div>
     </div>
     <UpdateMany :isShow="isShowUpdateMany" @hideShowStatus="hideShowUpdateMany"></UpdateMany>
+    <DialogComponent :isShow="isShowDialogComponent" @confirm="confirmDialog"></DialogComponent>
   </div>
 
 </template>
 <script>
-import UpdateMany from "../update/UpdateMany.vue"
+import vClickOutside from "click-outside-vue3";
+import UpdateMany from "../update/UpdateMany.vue";
+import DialogComponent from "../../../components/dialog/DialogComponent.vue"
 import axiosConfig  from "@/script/config/axiosConfig";
 export default {
+  directives: {
+      clickOutside: vClickOutside.directive
+  },
   components:{
-    UpdateMany
+    UpdateMany,
+    DialogComponent
   },
   data() {
     return {
+      isShowDataInTable: 1,
       // biến đếm số dòng được chọn
       numberOfRowSelected: 0,
       // biến thay đổi trạng thái của toolbar top
       toolbarTopLeftStatus: "normal",
       // biến chọn page size
       isShowPagesizeCombobox: false,
+      // biến ẩn hiện dialog xuất khẩu và xóa
+      isShowOptionTtleft: false,
       // biến ẩn hiện thanh bên trái
       isShowFilterbarLeft: true,
       //biến ẩn hiện thanh bên phải
       isShowToolbarRight: true,
       // biến ẩn hiện update many dialog
       isShowUpdateMany: false,
+      // ẩn hiện dialog component
+      isShowDialogComponent: 0,
       //số bản ghi trên trang
       pageSize : "50",
       // số trang 
-      pageNumber: 2,
+      pageNumber: 1,
       // các cột trong 1 dòng dữ liệu 
       columns: [
         "PotentialCode",
@@ -326,7 +344,6 @@ export default {
           axiosConfig.call("get", axiosConfig.Potentials+url, "", function(response){
             if (response.data){
               me.data = response.data.Data.PotentialList;
-              console.log(me.data)
               me.numberOfRecord = response.data.Data.NumberOfRecord;
             }
           });
@@ -364,6 +381,15 @@ export default {
       this.pageSize = e.target.getAttribute("Value");
       this.pageNumber =1;
       this.getDataFromServer();
+    },
+
+    /**
+     * hàm ẩn hiện dialog xuất khẩu và xóa trên thanh toolbar left
+     * created by SONTD(13.08.2022) 
+     */
+    hideShowOptionDialogToolbarLeft(){
+        let me = this;
+        me.isShowOptionTtleft = !me.isShowOptionTtleft;
     },
 
     /**
@@ -461,6 +487,77 @@ export default {
       else{
         return value;
       }
+    },
+
+    /**
+     * hàm đóng dialog component
+     * created by SONTD (13.08.2022)
+     */
+    confirmDialog(confirm){
+        let me = this;
+        if(!confirm){
+          me.isShowDialogComponent =0;
+        }else{
+            try{
+                let rowIDList = [];
+                me.isShowDialogComponent =0;
+                document.querySelectorAll("[isChecked=true]").forEach(function(item){
+                    console.log(item.closest("[idOfRow]"));
+                    rowIDList.push(item.closest("[idOfRow]").getAttribute("idOfRow"));
+                });
+                // tạo mảng id cần xóa để đẩy vào server
+                let idArray = {
+                  "ListID" : rowIDList
+                };
+                axiosConfig.call("post",axiosConfig.MultiDelete, idArray, function(response){
+                    console.log(response);
+                    if (response.data.StatusMsg == "s"){
+                        me.$emit("showToastMessage",3);
+                        me.reloadDataGrid();
+                    }else{
+                        me.$emit("showToastMessage",4);
+                    }
+                }).catch((error)=>{
+                    console.log(error);
+                    me.$emit("showToastMessage",4);
+                })
+            }catch(error){
+                console.log(error);
+            }
+        }
+    },
+
+    /**
+     * sự kiện khi nhấn vào nút delete
+     * created by SONTD(13.08.2022)
+     */
+    deleteButtonOnClick(){
+        let me = this;
+        me.isShowDialogComponent = 1;
+        
+    },
+
+    /**
+     * hàm reload data trong bảng
+     * createdby SonTD(13.08.2022)
+     */
+    reloadDataGrid(){
+        let me = this;
+        me.isShowDataInTable =0;
+        //load lại data
+        me.getDataFromServer();
+        me.isShowDataInTable =1;
+        // bỏ những hàng đã chọn 
+        me.forgotChoosed();
+    },
+
+    /**
+     * hàm xử lí khi click ra ngoài element
+     * created by SONTD(14.08.2022)
+     */
+    optionOutSideOnClick(){
+      let me = this;
+      me.isShowOptionTtleft = false;
     }
   },
   created() {
@@ -469,10 +566,10 @@ export default {
 };
 </script>
 <style scoped>
+@import url("../../../style/common/button.css");
 @import url("../../../style/view/potential/show/showPotential.css");
 @import url("../../../style/view/potential/show/toolbarTop.css");
 @import url("../../../style/view/potential/show/filterbarLeft.css");
 @import url("../../../style/view/potential/show/mainContent.css");
 @import url("../../../style/view/potential/show/toolbarRight.css");
-@import url("../../../style/common/button.css");
 </style>

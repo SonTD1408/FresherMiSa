@@ -61,26 +61,35 @@ namespace MISA.Fresher.API.Controllers
                 {
                     //lưu ngành nghề vào bảng careerSaves
                     var careerSaveData = addPotentialDTO.Career; 
-                    var careerSaveService = new CareerSaveService();
-                    foreach(var item in careerSaveData)
+                    if (careerSaveData != null)
                     {
-                        var res2 = careerSaveService.add(item.ID, res1.Data);
+                        var careerSaveService = new CareerSaveService();
+                        foreach(var item in careerSaveData)
+                        {
+                            var res2 = careerSaveService.add(item.ID, res1.Data);
+                        }
                     }
 
                     //lưu lĩnh vực vào bảng FieldSaves
                     var fieldSaveData = addPotentialDTO.Field;
-                    var fieldSaveService = new FieldSaveService();
-                    foreach (var item in fieldSaveData)
+                    if (fieldSaveData != null)
                     {
-                        var res3 = fieldSaveService.add(item.ID, res1.Data);
+                        var fieldSaveService = new FieldSaveService();
+                        foreach (var item in fieldSaveData)
+                        {
+                            var res3 = fieldSaveService.add(item.ID, res1.Data);
+                        }
                     }
 
                     //lưu ngành nghề vào bảng careerSaves
                     var potentialTypeSaveData = addPotentialDTO.PotentialType;
-                    var potentialTypeSaveService = new PotentialTypeSaveService();
-                    foreach (var item in potentialTypeSaveData)
+                    if(potentialTypeSaveData != null)
                     {
-                        var res2 = potentialTypeSaveService.add(item.ID, res1.Data);
+                        var potentialTypeSaveService = new PotentialTypeSaveService();
+                        foreach (var item in potentialTypeSaveData)
+                        {
+                            var res2 = potentialTypeSaveService.add(item.ID, res1.Data);
+                        }
                     }
                 }
 
@@ -104,13 +113,13 @@ namespace MISA.Fresher.API.Controllers
         /// </summary>
         /// <param name="potentialID"></param>
         /// <returns></returns>
-        [HttpDelete("{potentialID}")]
-        public IActionResult delete([FromRoute] Guid potentialID)
+        [HttpPost("multiDelete")]
+        public IActionResult delete([FromBody] GetListIDDTO potentialIDList)
         {
             try
             {
                 var service = new PotentialService();
-                var result = service.delete(potentialID);
+                var result = service.delete(potentialIDList);
                 return Ok(result);
             }
             catch (Exception)

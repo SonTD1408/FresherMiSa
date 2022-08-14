@@ -5,6 +5,8 @@ body{
 }
 
 body *{
+
+    scroll-behavior: smooth;
     box-sizing: border-box;
 }
 

@@ -1,0 +1,82 @@
+.toast-message{
+    height: 40px;
+    position: absolute;
+    top: -130px;
+    right: 70px;
+    border-radius: 4px;
+    /* animation: fadein 5s ease; */
+}
+@keyframes fadein {
+    0%{
+        transform: translateY(0);
+    }
+    10%{
+        transform: translateY(100px);
+    }
+    80%{
+        transform: translateY(100px);
+    }
+    100%{
+        transform: translateY(-100px);
+    }
+}
+
+/* common  */
+.toast-message-box{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+}
+.toast-message-icon{
+    width: 16px;
+    height: 16px;
+    margin: 0 16px;
+}
+.toast-message-txt{
+    color: #fff;
+    font-weight: 500;
+}
+.toast-message-close{
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    margin: 0 12px 0 16px;
+    background: url("../../assets/img/icon_collection.svg") no-repeat -320px -473px;
+
+}
+
+/* infor  */
+.tmb-infor{
+    background-color: #4262F0;
+    /* background-color: black; */
+}
+.tmb-infor-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat -368px -144px;
+}
+
+/* warning  */
+.tmb-warning{
+    background-color: #F07D42;
+}
+.tmb-warning-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat -368px -128px;
+}
+
+/* success  */
+.tmb-success{
+    background-color: #31B491;
+}
+.tmb-success-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat -384px -144px;
+}
+
+/* error  */
+.tmb-error{
+    background-color: #EC4141;
+}
+.tmb-error-icon{
+    background: url("../../assets/img/icon_collection.svg") no-repeat -384px -128px;
+}

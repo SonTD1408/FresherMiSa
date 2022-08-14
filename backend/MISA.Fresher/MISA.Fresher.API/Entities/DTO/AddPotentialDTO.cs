@@ -7,7 +7,7 @@ namespace MISA.Fresher.API.Entities.DTO
         /// <summary>
         /// thông tin về potentials
         /// </summary>
-        public Potentials Potential { get; set; }
+        public Potentials? Potential { get; set; }
 
         /// <summary>
         /// thông tin về nghề nghiệp của tiềm năng

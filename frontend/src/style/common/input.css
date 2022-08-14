@@ -21,3 +21,6 @@
 .input-validate-error:hover{
     border: 1px solid red;
 }
+.input-validate-error:focus{
+    border: 1px solid red;
+}

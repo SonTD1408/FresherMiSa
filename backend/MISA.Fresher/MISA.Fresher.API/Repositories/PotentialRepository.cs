@@ -165,15 +165,14 @@ namespace MISA.Fresher.API.Repositories
         /// </summary>
         /// <param name="potentialID"></param>
         /// <returns></returns>
-        public ActionResults<Guid> delete(Guid potentialID)
+        public ActionResults<Guid> delete(DynamicParameters param, string where)
         {
             try
             {
                 using(var mysqlConnection = new MySqlConnection(DBConfig._CONNECTION_STRING))
                 {
-                    string sql = "delete from Potentials where PotentialID = @PotentialID";
-                    var param = new DynamicParameters();
-                    param.Add("@PotentialID", potentialID);
+                    string sql = "delete from Potentials "+where;
+                    
                     var res = mysqlConnection.Execute(sql,param);
                     if (res>0)
                     {
@@ -181,7 +180,6 @@ namespace MISA.Fresher.API.Repositories
                         {
                             Status = 2,
                             StatusMsg = ResultMessage._SUCCESS_MSG,
-                            Data = potentialID,
                         };
                         return result;
                     }

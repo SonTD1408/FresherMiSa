@@ -18,7 +18,7 @@
     background-color: #133BEC;
 }
 
-/* mẫu button 2  */
+/* mẫu button 2 gray */
 .s-button-gray{
     height: 32px;
 
@@ -36,6 +36,26 @@
 }
 .s-button-gray:active{
     background-color: #D3D7DE;
+}
+
+/* mẫu button 3 red  */
+.s-button-red{
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #fff;
+    background-color: #EC4141;
+    padding: 7px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.s-button-red:hover{
+    background-color: #EA2E2E;
+}
+.s-button-red:active{
+    background-color: #E81717;
 }
 /* button combo  */
 .s-button-combo-container{

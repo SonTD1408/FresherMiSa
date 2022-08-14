@@ -27,3 +27,4 @@ D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\MISA.
 D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\ref\MISA.Fresher.API.dll
 D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\Dapper.dll
 D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\MySqlConnector.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\Newtonsoft.Json.dll
