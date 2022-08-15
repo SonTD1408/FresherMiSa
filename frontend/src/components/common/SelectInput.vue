@@ -70,6 +70,8 @@ export default {
                 this.$refs.selectInputFieldIcon.classList.add("fa-arrow-down-close")
         }
     },
+    mounted(){
+    }
 }
 </script>
 <style scoped>

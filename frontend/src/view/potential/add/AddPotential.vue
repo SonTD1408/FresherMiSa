@@ -373,6 +373,7 @@ export default {
             axiosConfig.call("get", axiosConfig.Vocatives, "", function(response){
               if (response.data){
                 me.vocatives = response.data.DataList;
+                console.log(me.vocatives);
               }
             });
             // lây dữ liệu phòng ban 

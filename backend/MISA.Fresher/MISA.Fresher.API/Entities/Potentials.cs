@@ -82,8 +82,6 @@ namespace MISA.Fresher.API.Entities
         /// <summary>
         /// 16. ngày thành lập
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include,
-            NullValueHandling = NullValueHandling.Include)]
         public DateTime? FoundingDate { get; set; }
 
         /// <summary>

@@ -168,9 +168,46 @@ namespace MISA.Fresher.API.Controllers
         [HttpPut("{id}")]
         public IActionResult update([FromRoute] Guid id, [FromBody] UpdatePotentialDTO potential)
         {
-            var service = new PotentialService();
-            var res = service.update(id, potential);
-            return Ok(res);
+            try
+            {
+                var service = new PotentialService();
+                var res = service.update(id, potential);
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+                var ex = new ActionResults<Guid>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._CONTROLLER_EXCEPTION_MSG,
+                };
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
+            }
+        }
+
+        /// <summary>
+        /// hàm update nhiều tiềm năng
+        /// created by SONTD(15.08.2022)
+        /// </summary>
+        /// <param name="multiUpdatePotentialDTO"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public IActionResult multiUpdate([FromBody] MultiUpdatePotentialDTO multiUpdatePotentialDTO)
+        {
+            try
+            {
+                var service = new PotentialService();
+                return Ok(service.multiUpdate(multiUpdatePotentialDTO));
+            }
+            catch (Exception)
+            {
+                var ex = new ActionResults<Guid>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._CONTROLLER_EXCEPTION_MSG,
+                };
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
+            }
         }
     }
 }

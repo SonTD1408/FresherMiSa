@@ -194,7 +194,7 @@
               <div class="s-td align-right">
                     <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
-              <div class="s-td" v-for="(i,ind) in columns" :key="ind">
+              <div class="s-td" v-for="(i,ind) in gridColumns" :key="ind">
                   <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
                   <div v-if="ind!=2">{{formatNullData(item[i])}}</div>
                   <div v-if="ind==2">{{formatNullData(`${item['LastName']} ${item['FirstName']}`)}}</div>
@@ -305,8 +305,8 @@ export default {
       pageSize : "50",
       // số trang 
       pageNumber: 1,
-      // các cột trong 1 dòng dữ liệu 
-      columns: [
+      // các cột trong 1 dòng dữ liệu trên grid
+      gridColumns: [
         "PotentialCode",
         "VocativeName",
         "FirstName",
@@ -563,8 +563,7 @@ export default {
      */
     rowOnDblClick(event){
         let me = this;
-        // me.$emit("emitPotentialID", event.target.closest(".s-tr").getAttribute("idOfRow"))
-        me.$router.push({/*path: "/potential/update" ,*/name: "potential.update", query: {PotentialID : ""+event.target.closest(".s-tr").getAttribute("idOfRow")}})
+        me.$router.push({name: "potential.update", query: {PotentialID : ""+event.target.closest(".s-tr").getAttribute("idOfRow")}})
     }
   },
   created() {

@@ -4,7 +4,7 @@ using MISA.Fresher.API.Entities;
 using MISA.Fresher.API.ActionResult;
 using MySqlConnector;
 using Dapper;
-
+using System.Text;
 
 namespace MISA.Fresher.API.Repositories
 {
@@ -206,6 +206,7 @@ namespace MISA.Fresher.API.Repositories
 
         /// <summary>
         /// repository truy vấn lấy 1 tiềm năng theo id
+        /// created by SONTD(15.08.2022)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -238,6 +239,13 @@ namespace MISA.Fresher.API.Repositories
             }
         }
 
+        /// <summary>
+        /// hàm xử lí logic cho update potentials api
+        /// created by SONTD(15.08.2022)
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
         public ActionResults<Guid> update(string query, DynamicParameters param)
         {
             try
@@ -261,6 +269,45 @@ namespace MISA.Fresher.API.Repositories
             }catch(Exception e)
             {
                 return new ActionResults<Guid>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._REPOSITORY_EXCEPTION_MSG,
+                };
+            }
+        }
+
+
+        /// <summary>
+        /// hàm gọi truy vấn vào db cho update nhiều bản ghi
+        /// created by SONTD(15.08.2022)
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public ActionResults<int> multiUpdate(string query, DynamicParameters param)
+        {
+            try
+            {
+                using (var mysqlConnection = new MySqlConnection(DBConfig._CONNECTION_STRING))
+                {
+                    var result = mysqlConnection.Execute(query, param);
+                    var res = new ActionResults<int>();
+                    if (result > 0)
+                    {
+                        res.Status = 1;
+                        res.StatusMsg = ResultMessage._SUCCESS_MSG;
+                    }
+                    else
+                    {
+                        res.Status = 0;
+                        res.StatusMsg = ResultMessage._SUCCESS_NULL_MSG;
+                    }
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                return new ActionResults<int>()
                 {
                     Status = 0,
                     StatusMsg = ResultMessage._REPOSITORY_EXCEPTION_MSG,

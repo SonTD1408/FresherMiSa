@@ -5,6 +5,7 @@ using MISA.Fresher.API.Entities;
 using MISA.Fresher.API.Config;
 using Dapper;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace MISA.Fresher.API.Services
 {
@@ -124,6 +125,7 @@ namespace MISA.Fresher.API.Services
 
         /// <summary>
         /// hàm xử lí logic để update dữ liệu cho 1 tiềm năng
+        /// created by SONTD(15.08.2022)
         /// </summary>
         /// <param name="id"></param>
         /// <param name="potential"></param>
@@ -157,6 +159,50 @@ namespace MISA.Fresher.API.Services
             catch (Exception)
             {
                 return new ActionResults<Guid>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                };
+            }
+        }
+
+        /// <summary>
+        /// xử lí logic cho api update nhiều bản ghi 1 lúc
+        /// created by SONTD(15.08.2022)
+        /// </summary>
+        /// <param name="multiUpdatePotentialDTO"></param>
+        /// <returns></returns>
+        public ActionResults<int> multiUpdate(MultiUpdatePotentialDTO multiUpdatePotentialDTO)
+        {
+            try
+            {
+                var query = new StringBuilder();
+                var param = new DynamicParameters();
+                var listID = multiUpdatePotentialDTO.ListPotentialID;
+                var columnName = multiUpdatePotentialDTO.ColumnName;
+                var columnValueGuid = new Guid();
+                var columnValueString = "";
+                if (multiUpdatePotentialDTO.ColumnValueGuid != Guid.Empty)
+                {
+                    columnValueGuid = (Guid)multiUpdatePotentialDTO.ColumnValueGuid;
+                    param.Add("@" + columnName, columnValueGuid);
+                    query.Append($"update Potentials set {columnName} = @{columnName} ");
+                }
+                else
+                {
+                    columnValueString = multiUpdatePotentialDTO.ColumnValueString;
+                    param.Add("@" + columnName, columnValueString);
+                    query.Append($"update Potentials set {columnName} = @{columnName} ");
+                }
+                query.Append(" where PotentialID = 0 or ");
+
+                var repository = new PotentialRepository();
+                var res = repository.multiUpdate(query.ToString(), param);
+                return res;
+            }
+            catch (Exception)
+            {
+                return new ActionResults<int>()
                 {
                     Status = 0,
                     StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
