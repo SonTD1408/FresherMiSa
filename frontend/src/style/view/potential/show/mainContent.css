@@ -103,6 +103,16 @@
     height: 16px;
     background: url('../../../../assets/img/icon_collection.svg') no-repeat -192px -16px;
 }
+.s-td-update-icon{
+    cursor: pointer;
+    margin-right: 16px;
+    width: 16px;
+    height: 16px;
+    background: url('../../../../assets/img/icon_collection.svg') no-repeat -128px 0px;
+}
+.s-td-update-icon:hover{
+    background: url('../../../../assets/img/icon_collection.svg') no-repeat -256px -128px;
+}
 .cell-phone-icon{
     margin-right: 8px;
     width: 16px;

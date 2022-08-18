@@ -14,12 +14,12 @@
             </div>
             <div class="umc-content">
                 <div class="umcc-selectField">
-                    <SelectInput :data="dbColumns" :col="{0: 'Column', 1: 'ColumnName'}" :variable="'ColumnName'" @emitValue = "getDataFromSelectInput"></SelectInput>
+                    <SelectInput :data="dbColumns" :col="{0: 'Column', 1: 'ColumnName'}" :variable="'ColumnName'" @emitValue = "getDataFromSelectInput" :defaultValue="formData.ColumnName"></SelectInput>
                 </div>
                 <div class="umcc-input-content">
                     <input type="text" class="s-input" style="width: 100%" disabled v-if="typeOfInput==0">
-                    <input type="text" class="s-input" style="width: 100%" v-if="typeOfInput==1" v-model="formData.ColumnValue">
-                    <SelectInput :data="dataOfSelectInput" :col="col" :variable="'ColumnValue'" @emitValue = "getDataFromSelectInput" v-if="typeOfInput==2"></SelectInput>
+                    <input type="text" class="s-input" style="width: 100%" v-if="typeOfInput==1" v-model="formData.ColumnValueString">
+                    <SelectInput :data="dataOfSelectInput" :col="col" :variable="'ColumnValueString'" @emitValue = "getDataFromSelectInput" v-if="typeOfInput==2"></SelectInput>
                 </div>
             </div>
             <div class="umc-footer">
@@ -33,12 +33,16 @@
 <script>
 import axiosConfig from "../../../script/config/axiosConfig.js"
 import SelectInput from "../../../components/common/SelectInput.vue";
+import Resource from "../../../script/resource.js"
 export default {
     components:{
     SelectInput
 },
     props: {
+        // biến ẩn hiện compontent 
         isShow: Boolean,
+        // lưu mảng các id của những bản ghi cần update 
+        idList: Array,
     },
     data() {
         return {
@@ -188,7 +192,7 @@ export default {
             // data để đưa về lưu tại server 
             formData: {
                 ColumnName: "",
-                ColumnValue: "",
+                ColumnValueString: "",
             },
             // check xem ở ô nhập value là loại input nào 
             typeOfInput: 0,
@@ -196,6 +200,8 @@ export default {
             dataOfSelectInput: {},
             // tên các cột trong dataOfSelectInput
             col: {},
+            // kiểu của select input trả về là string hay int
+            typeOfSelectInput: "",
         }
     },
     methods: {
@@ -205,6 +211,9 @@ export default {
          */
         closeOnClick(){
             this.$emit("hideShowStatus",false);
+            this.typeOfInput = 0;
+            this.formData.ColumnName = "";
+            this.formData.ColumnValueString="";
         },
 
         /**
@@ -252,14 +261,13 @@ export default {
                 url = "";
             try{
                 if (me.formData.ColumnName == "VocativeID"){url = axiosConfig.Vocatives; me.col[0]='VocativeID'; me.col[1]='VocativeName'}
-                else if (me.formData.ColumnName == "SourceID"){url = axiosConfig.Sources}
-                else if (me.formData.ColumnName == "DepartmentID"){url = axiosConfig.Departments}
-                else if (me.formData.ColumnName == "PositionID"){url = axiosConfig.Positions}
-                else if (me.formData.ColumnName == "OrganizationTypeID"){url = axiosConfig.OrganizationTypes}
-                else if (me.formData.ColumnName == "TurnoverID"){url = axiosConfig.Turnovers}
+                else if (me.formData.ColumnName == "SourceID"){url = axiosConfig.Sources; me.col[0]='SourceID'; me.col[1]='SourceName'}
+                else if (me.formData.ColumnName == "DepartmentID"){url = axiosConfig.Departments; me.col[0]='DepartmentID'; me.col[1]='DepartmentName'}
+                else if (me.formData.ColumnName == "PositionID"){url = axiosConfig.Positions; me.col[0]='PotitionID'; me.col[1]='PotitionName'}
+                else if (me.formData.ColumnName == "OrganizationTypeID"){url = axiosConfig.OrganizationTypes; me.col[0]='OrganizationTypeID'; me.col[1]='OrganizationTypeName'}
+                else if (me.formData.ColumnName == "TurnoverID"){url = axiosConfig.Turnovers; me.col[0]='TurnoverID'; me.col[1]='TurnoverName'}
     
                 axiosConfig.call("get",url,"",function(response){
-                    console.log(response.data.Status);
                     if (response.data.Status!=0){
                         me.dataOfSelectInput = response.data.DataList;
                     }
@@ -269,13 +277,28 @@ export default {
             }
         },
 
+        /**
+         * hàm sự kiện khi bấm vào nút update
+         * created by SONTD(18.08.2022)
+         */
         update(){
             let me = this;
-            console.log(me.formData);
+            me.formData.ListPotentialID = me.idList;
+            try{
+                axiosConfig.call("put",axiosConfig.Potentials,me.formData,function(response){
+                    if (response.data.Status && response.data.Status == Resource.ResponseStatus.SuccessData){
+                        me.$emit("confirmMultiUpdate",true);
+                    }else{
+                        me.$emit("confirmMultiUpdate",false);
+                    }
+                })
+            }catch(error){
+                me.$emit("confirmMultiUpdate",false);
+                console.log(error);
+            }
         }
     },
-    created(){
-    },
+    
 }
 </script>
 <style scoped>

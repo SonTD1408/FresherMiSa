@@ -26,7 +26,7 @@
               <div class="add-item">
                 <div class="aib-txt">Xưng hô</div>
                 <div class="add-select-feild">
-                  <SelectInput :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput"/>
+                  <SelectInput :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -42,7 +42,7 @@
               <div class="add-item">
                 <div class="aib-txt">Phòng ban</div>
                 <div class="add-select-feild">
-                  <SelectInput :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput"/>
+                  <SelectInput :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -56,7 +56,7 @@
               <div class="add-item">
                 <div class="aib-txt">Nguồn gốc</div>
                 <div class="add-select-feild">
-                  <SelectInput  :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'"/>
+                  <SelectInput  :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -100,7 +100,7 @@
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
                 <div class="add-select-feild">
-                  <SelectInput :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput"/>
+                  <SelectInput :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -168,7 +168,7 @@
               <div class="add-item">
                 <div class="aib-txt">Doanh thu</div>
                 <div class="add-select-feild">
-                  <SelectInput :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}"/>
+                  <SelectInput :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}" :type="'guid'"/>
                 </div>
               </div>
             </div>
@@ -183,7 +183,7 @@
               <div class="add-item">
                 <div class="aib-txt">Loại hình</div>
                 <div class="add-select-feild">
-                  <SelectInput :data="organizationTypes" :variable="'OrganizationTypeID'" @emitValue="getValueSelectInput" :col="{0: 'OrganizationTypeID' , 1:'OrganizationTypeName'}"/>
+                  <SelectInput :data="organizationTypes" :variable="'OrganizationTypeID'" @emitValue="getValueSelectInput" :col="{0: 'OrganizationTypeID' , 1:'OrganizationTypeName'}" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -204,7 +204,7 @@
               <div class="add-item">
                 <div class="aib-txt">Quốc gia</div>
                 <div class="add-select-feild">
-                  <SelectInput :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput"/>
+                  <SelectInput :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -215,7 +215,8 @@
                   :col="{0:'DistrictID', 1:'DistrictName'}" 
                   :variable="'DistrictID'" 
                   @emitValue="getValueSelectInput"
-                  :isActive="checkIsActiveAddress.district"/>
+                  :isActive="checkIsActiveAddress.district"
+                  :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -236,7 +237,8 @@
                   :col="{0:'CityID', 1:'CityName'}" 
                   :variable="'CityID'" 
                   @emitValue="getValueSelectInput"
-                  :isActive="checkIsActiveAddress.city"/>
+                  :isActive="checkIsActiveAddress.city"
+                  :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -247,7 +249,8 @@
                   :col="{0:'WardID', 1:'WardName'}" 
                   :variable="'WardID'" 
                   @emitValue="getValueSelectInput"
-                  :isActive="checkIsActiveAddress.ward"/>
+                  :isActive="checkIsActiveAddress.ward"
+                  :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -294,6 +297,7 @@ export default {
   },
   data() {
     return {
+      // data để lưu về server 
       dataForm: {
         Potential: {
             PotentialID: "00000000-0000-0000-0000-000000000000",
@@ -339,21 +343,36 @@ export default {
             ModifiedBy: "",
         }
       },
+      // biến đánh dấu validate 
+      // 1: đã validate xong,
+      // 0: mới validate blur
+      // -1: chưa validate
       validate:{
         required: {
           FirstName : -1,
         }
       },
+      // biến lưu cách xưng hô lấy từ db
       vocatives: {},
+      // biến lưu phòng ban từ db
       departments: {},
+      // biến lưu chức vụ lây từ db
       positions: {},
+      // biến lưu nguồn gốc
       sources: {},
+      // loại tổ chức 
       organizationTypes: {},
+      // doanh thu 
       turnovers: {},
+      // quốc gia 
       nations: {},
+      // huyện
       districts: {},
+      // thành phố 
       cities: {},
+      // phường xã 
       wards: {},
+      // kiểm tra xem đã được nhập chưa 
       checkIsActiveAddress: {
         city: false,
         district: false,
@@ -373,7 +392,6 @@ export default {
             axiosConfig.call("get", axiosConfig.Vocatives, "", function(response){
               if (response.data){
                 me.vocatives = response.data.DataList;
-                console.log(me.vocatives);
               }
             });
             // lây dữ liệu phòng ban 
@@ -425,7 +443,6 @@ export default {
       let me = this,
           url = `?cityID=${me.dataForm.Potential.CityID}`
       try{
-
         axiosConfig.call("get", axiosConfig.Districts+url , "", function(response){
           if (response.data){
                 me.districts = response.data.DataList;
@@ -479,8 +496,6 @@ export default {
     saveButtonOnClick(){
         let me =this;
         let val = me.checkValidate();
-        // console.log(val);
-        console.log(me.dataForm);
         if (val){
           try{
             me.axios

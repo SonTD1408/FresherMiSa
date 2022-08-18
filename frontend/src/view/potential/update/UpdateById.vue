@@ -26,7 +26,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Xưng hô</div>
                     <div class="update-select-feild">
-                    <SelectInput :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput"/>
+                    <SelectInput :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :defaultValue="Potential.VocativeID" :type="'guid'"/>
                     </div>
                 </div>
                 <div class="update-item">
@@ -42,7 +42,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Phòng ban</div>
                     <div class="update-select-feild">
-                    <SelectInput :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput"/>
+                    <SelectInput :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'" :defaultValue="Potential.DepartmentID"/>
                     </div>
                 </div>
                 <div class="update-item">
@@ -64,7 +64,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Nguồn gốc</div>
                     <div class="update-select-feild">
-                    <SelectInput  :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'"/>
+                    <SelectInput  :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'" :defaultValue="Potential.SourceID"/>
                     </div>
                 </div>
                 <div class="update-item">
@@ -120,7 +120,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Chức danh</div>
                     <div class="update-select-feild">
-                    <SelectInput :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput"/>
+                    <SelectInput :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'" :defaultValue="Potential.PositionID"/>
                     </div>
                 </div>
                 <div class="update-item">
@@ -174,7 +174,7 @@
                     <div class="update-item">
                         <div class="uib-txt">Giới tính</div>
                         <div class="update-select-feild">
-                            <SelectInput :col="{0:'Gender', 1: 'GenderName'}" :data="genders" :variable="'Gender'" @emitValue="getValueSelectInput"/>
+                            <SelectInput :col="{0:'Gender', 1: 'GenderName'}" :data="genders" :variable="'Gender'" @emitValue="getValueSelectInput" :defaultValue="String(Potential.Gender)"/>
                         </div>
                     </div>
                     <div class="update-item">
@@ -216,6 +216,9 @@ export default {
             // biến lưu thông tin về tiềm năng để gửi về server 
             Potential: {},
             // biến lưu thông tin validate 
+            // 1: đã validate xong,
+            // 0: mới validate blur
+            // -1: chưa validate
             validate:{
                 required: {
                     FirstName : -1,
@@ -238,44 +241,63 @@ export default {
          * hàm khởi tạo lấy các giá trị cho ô select input
          * created by SONTD(14.08.2022)
          */
-        init(){
+        async init(){
             let me = this;
                 let getPotentialByIdUrl= "/" + me.idRow;
             try{
                 // lấy tiềm năng bằng id từ server
-                axiosConfig.call("get", axiosConfig.Potentials+getPotentialByIdUrl, "", function(response){
-                    console.log(response);
-                    if (response.data.Status==2){
+                await axiosConfig.call("get", axiosConfig.Potentials+getPotentialByIdUrl, "", function(response){
+                    if (response.data.Status==Resource.ResponseStatus.SuccessData){
                         me.Potential = response.data.Data;
-                        console.log(me.Potential);
+                        // khởi tạo validate sau khi lấy ra dữ liệu 
+                        me.initValidate();
+                        // format lại date lấy dc từ db 
+                        if (me.Potential.DateOfBirth){
+                            me.Potential.DateOfBirth = Resource.formatDateTimeToDate(me.Potential.DateOfBirth);
+                        }
                     }
                 })
                 // lấy dữ liệu vocative
-                axiosConfig.call("get", axiosConfig.Vocatives, "", function(response){
+                await axiosConfig.call("get", axiosConfig.Vocatives, "", function(response){
                     if (response.data){
                         me.vocatives = response.data.DataList;
                     }
                 });
                 // lây dữ liệu phòng ban 
-                axiosConfig.call("get", axiosConfig.Departments, "", function(response){
+                await axiosConfig.call("get", axiosConfig.Departments, "", function(response){
                     if (response.data){
                         me.departments = response.data.DataList;
                     }
                 });
                 // lấy dữ liệu chức vụ
-                axiosConfig.call("get", axiosConfig.Positions, "", function(response){
+                await axiosConfig.call("get", axiosConfig.Positions, "", function(response){
                     if (response.data){
                         me.positions = response.data.DataList;
                     }
                 });
                 // lấy dữ liệu nguồn gốc
-                axiosConfig.call("get", axiosConfig.Sources, "", function(response){
+                await axiosConfig.call("get", axiosConfig.Sources, "", function(response){
                     if (response.data){
                         me.sources = response.data.DataList;
                     }
                 });
             }catch(error){
                 console.log(error);
+            }
+        },
+
+        /**
+         * khởi tạo validate cho form sửa nhiều nhiều trường cần validate đã có giá trị
+         * created by SONTD(16.08.2022)
+         */
+        initValidate(){
+            let me = this;
+            for (let key in me.validate.required){
+                if (!me.validate.required[key] || me.validate.required[key]==0 || me.validate.required[key]==-1){
+                    if (me.Potential[key]!=null && me.Potential[key]!="" && me.Potential[key]!= undefined){
+                        me.validate.required[key] = 1;
+                    }
+                }
             }
         },
 
@@ -324,7 +346,6 @@ export default {
                 try {
                     let url = "/" + me.idRow;
                     axiosConfig.call("put", axiosConfig.Potentials + url, me.Potential, function(response){
-                        console.log(response);
                         if (response.data.Status!=0){
                             me.$router.push({path: "/"});
                             me.$emit("showToastMessage",3);
@@ -347,6 +368,7 @@ export default {
         getValueSelectInput(val, variable){
             let me = this;
             me.Potential[variable] = val;
+            console.log(me.Potential);
         },
     },
     created() {
@@ -355,7 +377,7 @@ export default {
         me.idRow = me.$route.query.PotentialID;
         // khởi tạo page lấy data cần thiết từ server
         me.init();
-        
+        console.log(me.Potential);
     },
 }
 </script>

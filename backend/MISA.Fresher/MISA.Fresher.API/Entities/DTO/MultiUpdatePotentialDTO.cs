@@ -17,9 +17,5 @@
         /// </summary>
         public string? ColumnValueString { get; set; }
 
-        /// <summary>
-        /// lưu giá trị update cho column kiểu guid
-        /// </summary>
-        public Guid? ColumnValueGuid { get; set; }
     }
 }

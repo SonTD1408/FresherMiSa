@@ -135,6 +135,8 @@ namespace MISA.Fresher.API.Services
             try
             {
                 var param = new DynamicParameters();
+                var now = DateTime.Now;
+                potential.ModifiedDate = now;
                 param.Add("@PotentialID", id);
                 string query = "update Potentials " +
                                 "Set ";
@@ -177,37 +179,44 @@ namespace MISA.Fresher.API.Services
             try
             {
                 var query = new StringBuilder();
+                var now = DateTime.Now;
                 var param = new DynamicParameters();
                 var listID = multiUpdatePotentialDTO.ListPotentialID;
                 var columnName = multiUpdatePotentialDTO.ColumnName;
-                var columnValueGuid = new Guid();
-                var columnValueString = "";
-                if (multiUpdatePotentialDTO.ColumnValueGuid != Guid.Empty)
+                var columnValueString = multiUpdatePotentialDTO.ColumnValueString;
+                param.Add("@" + columnName, columnValueString);
+                query.Append($"update Potentials set {columnName} = @{columnName}, ModifiedDate=@ModifiedDate ");
+                param.Add("@ModifiedDate", now);
+                query.Append(" where PotentialID = \'00000000-0000-0000-0000-000000000000\' or ");
+                for (int i = 0; i < listID.Length; i++)
                 {
-                    columnValueGuid = (Guid)multiUpdatePotentialDTO.ColumnValueGuid;
-                    param.Add("@" + columnName, columnValueGuid);
-                    query.Append($"update Potentials set {columnName} = @{columnName} ");
+                    if (listID[i] != Guid.Empty)
+                    {
+                        if(i<listID.Length - 1)
+                        {
+                            query.Append($" PotentialID = @PotentialID{i} or ");
+                        }
+                        else
+                        {
+                            query.Append($" PotentialID = @PotentialID{i} ");
+                        }
+                        param.Add("@PotentialID" + i, listID[i]);
+                    }
                 }
-                else
-                {
-                    columnValueString = multiUpdatePotentialDTO.ColumnValueString;
-                    param.Add("@" + columnName, columnValueString);
-                    query.Append($"update Potentials set {columnName} = @{columnName} ");
-                }
-                query.Append(" where PotentialID = 0 or ");
 
                 var repository = new PotentialRepository();
                 var res = repository.multiUpdate(query.ToString(), param);
                 return res;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new ActionResults<int>()
                 {
                     Status = 0,
-                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                    StatusMsg = ex.ToString(),
                 };
             }
+            //return res;
         }
     }
 }

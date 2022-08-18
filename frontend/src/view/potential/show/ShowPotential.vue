@@ -163,7 +163,7 @@
         <div class="toolbar-right-show-hide-btn" @click="hideShowToolbarRight">
           <div class="toolbar-right-show-hide-btn-icon"></div>
         </div>
-        <div id="potential-table">
+        <div id="potential-table" ref="gridTable">
           <div class="s-thead">
             <div class="s-tr">
                 <div class="s-th align-right">
@@ -190,9 +190,10 @@
             </div>
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
-            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID" @dblclick="rowOnDblClick($event)">
+            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID">
               <div class="s-td align-right">
-                    <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
+                  <div class="s-td-update-icon" @click="updateIconOnClick($event)"></div>
+                  <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
               <div class="s-td" v-for="(i,ind) in gridColumns" :key="ind">
                   <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
@@ -236,16 +237,16 @@
       <div id="toolbar-right" v-if="isShowToolbarRight">
         <div class="tr-header">
           <div class="trh-item">
-            <div class="trh-item-icon trh-item-icon1"></div>
+            <div class="trh-item-icon trh-item-icon-1"></div>
           </div>
           <div class="trh-item">
-            <div class="trh-item-icon trh-item-icon2"></div>
+            <div class="trh-item-icon trh-item-icon-2"></div>
           </div>
           <div class="trh-item">
-            <div class="trh-item-icon trh-item-icon3"></div>
+            <div class="trh-item-icon trh-item-icon-3"></div>
           </div>
           <div class="trh-item">
-            <div class="trh-item-icon trh-item-icon4"></div>
+            <div class="trh-item-icon trh-item-icon-4"></div>
           </div>
         </div>
         <div class="tr-body">
@@ -264,7 +265,7 @@
         </div>
       </div>
     </div>
-    <UpdateMany :isShow="isShowUpdateMany" @hideShowStatus="hideShowUpdateMany"></UpdateMany>
+    <UpdateMany :isShow="isShowUpdateMany" @hideShowStatus="hideShowUpdateMany" :idList="rowIDList" @confirmMultiUpdate="confirmMultiUpdate"></UpdateMany>
     <DialogComponent :isShow="isShowDialogComponent" @confirm="confirmDialog"></DialogComponent>
   </div>
 
@@ -287,6 +288,8 @@ export default {
       isShowDataInTable: 1,
       // biến đếm số dòng được chọn
       numberOfRowSelected: 0,
+      // biến lưu trữ những id đã chọn trc khi update
+      rowIDList: [],
       // biến thay đổi trạng thái của toolbar top
       toolbarTopLeftStatus: "normal",
       // biến chọn page size
@@ -473,7 +476,26 @@ export default {
      * @param {*} param 
      */
     hideShowUpdateMany(param){
-      this.isShowUpdateMany = param;
+      let me  = this;
+      if (me.isShowUpdateMany==false){
+        me.rowIDList = me.getSelectedRow();
+      }
+      me.isShowUpdateMany = param;
+    },
+
+    /**
+     * hàm xử lí khi bấm lưu update nhiều bản ghi
+     * created by SONTD(18.08.2022)
+     */
+    confirmMultiUpdate(isSuccess){
+        let me  =this;
+        me.isShowUpdateMany = !me.isShowUpdateMany;
+        if (isSuccess){
+            me.$emit("showToastMessage",3);
+            me.reloadDataGrid();
+        }else{
+            me.$emit("showToastMessage",4);
+        }
     },
 
     /**
@@ -490,6 +512,18 @@ export default {
     },
 
     /**
+     * hàm lấy id những dòng đã được chọn
+     * created by SONTD(18.08.2022)
+     */
+    getSelectedRow(){
+        let rowIDList= [],
+            me = this;
+        me.$refs.gridTable.querySelectorAll("[isChecked=true]").forEach(function(item){
+            rowIDList.push(item.closest(".s-tr").getAttribute('idOfRow'))
+        });
+        return rowIDList;
+    },
+    /**
      * hàm đóng dialog component
      * created by SONTD (13.08.2022)
      */
@@ -502,7 +536,6 @@ export default {
                 let rowIDList = [];
                 me.isShowDialogComponent =0;
                 document.querySelectorAll("[isChecked=true]").forEach(function(item){
-                    console.log(item.closest("[idOfRow]"));
                     rowIDList.push(item.closest("[idOfRow]").getAttribute("idOfRow"));
                 });
                 // tạo mảng id cần xóa để đẩy vào server
@@ -510,7 +543,6 @@ export default {
                   "ListID" : rowIDList
                 };
                 axiosConfig.call("post",axiosConfig.MultiDelete, idArray, function(response){
-                    console.log(response);
                     if (response.data.StatusMsg == "s"){
                         me.$emit("showToastMessage",3);
                         me.reloadDataGrid();
@@ -561,13 +593,16 @@ export default {
      * hàm xử lí khi nhấn đúp vào 1 dòng db
      * created by SONTD(14.08.2022)
      */
-    rowOnDblClick(event){
+    updateIconOnClick(event){
         let me = this;
         me.$router.push({name: "potential.update", query: {PotentialID : ""+event.target.closest(".s-tr").getAttribute("idOfRow")}})
     }
   },
   created() {
     this.getDataFromServer();
+  },
+  mounted() {
+    this.getSelectedRow();
   },
 };
 </script>

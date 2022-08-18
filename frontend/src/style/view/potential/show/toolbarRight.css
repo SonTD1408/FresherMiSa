@@ -24,16 +24,16 @@
     width: 16px;
     height: 16px;
 }
-.trh-item-icon1{
+.trh-item-icon-1{
     background: url("../../../../assets/img/icon_collection.svg") no-repeat -177px -322px;
 }
-.trh-item-icon2{
+.trh-item-icon-2{
     background: url("../../../../assets/img/icon_collection.svg") no-repeat -192px -322px;
 }
-.trh-item-icon3{
+.trh-item-icon-3{
     background: url("../../../../assets/img/icon_collection.svg") no-repeat -208px -322px;
 }
-.trh-item-icon4{
+.trh-item-icon-4{
     background: url("../../../../assets/img/icon_collection.svg") no-repeat 0px -322px;
 }
 

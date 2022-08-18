@@ -1,9 +1,9 @@
 <template>
     <div class="select-input-feild-box " ref="selectInputField" @click="selectInputOnClick" v-click-outside="onClickOutside">
-        <div class="select-input-defalt">- Không chọn -</div>
+        <div class="select-input-defalt">{{defaultValueTxt}}</div>
         <div class="select-input-icon" ref="selectInputFieldIcon"></div>
         <div class="select-input-item-box" ref="selectBox" v-if="isShowSelectBox">
-            <div class="select-input-item" @click="itemOnClick" value="">- Không chọn -</div>
+            <div class="select-input-item" @click="itemOnClick" :value="type=='guid'?'00000000-0000-0000-0000-000000000000':''">- Không chọn -</div>
             <div class="select-input-item" @click="itemOnClick" v-for="item in data" :key="item[col['0']]" :value="item[col['0']]">{{item[col['1']]}}</div>
         </div>
 
@@ -22,17 +22,30 @@ export default {
       clickOutside: vClickOutside.directive
     },
     props:{
+        // data để bind râ các ô để chọn
         data: {},
+        // tên cột
         col: {},
+        // tên biến khi trả về 
         variable: String,
+        // có disable hay không 
         isActive: {
             type: Boolean,
             default: true
         },
+        // default value
+        defaultValue: String,
+        // loại dữ liệu int hay guid
+        type: {
+            type: String,
+            default: 'int'
+        },
     },
     data() {
         return {
+            // ẩn hiện select box 
             isShowSelectBox: false,
+            defaultValueTxt: "",
         }
     },
     methods: {
@@ -71,6 +84,45 @@ export default {
         }
     },
     mounted(){
+        this.defaultValueTxt = "- Không chọn -"
+    },
+    watch: {
+        // xử lí khi truyền defaultvalue
+        'defaultValue':function(){
+            let me = this;
+            console.log(me.data);
+            if (me.type=='int'){
+                let intTypeValue = parseInt(me.defaultValue);
+                    me.data.forEach(function(item){
+                        console.log(me.col)
+                        if (item[me.col[0]] ==intTypeValue){
+                            me.defaultValueTxt = item[me.col[1]];
+                        }
+                    })
+            }
+        },
+        // xử lí khi truyền data
+        'data':function(){
+            let me = this;
+            // console.log(me.variable,me.data);
+            // console.log(me.defaultValue);
+            if(me.defaultValue){
+                if (me.defaultValue!="00000000-0000-0000-0000-000000000000"){
+                    me.data.forEach(function(item){
+                        if (item[me.col[0]] == me.defaultValue){
+                            me.defaultValueTxt = item[me.col[1]];
+                        }
+                    })
+                }
+                else{
+                    me.defaultValueTxt="- Không chọn -";
+                }
+            }
+            else{
+                me.defaultValueTxt="- Không chọn -";
+            }
+        }
+
     }
 }
 </script>

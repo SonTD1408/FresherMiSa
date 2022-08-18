@@ -294,7 +294,8 @@ namespace MISA.Fresher.API.Repositories
                     var res = new ActionResults<int>();
                     if (result > 0)
                     {
-                        res.Status = 1;
+                        res.Data = result;
+                        res.Status = 2;
                         res.StatusMsg = ResultMessage._SUCCESS_MSG;
                     }
                     else
