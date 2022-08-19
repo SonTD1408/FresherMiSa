@@ -192,7 +192,7 @@
           <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
             <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID">
               <div class="s-td align-right">
-                  <div class="s-td-update-icon" @click="updateIconOnClick($event)"></div>
+                  <div class="s-td-update-icon" @click="updateIconOnClick($event)" v-if="isShowUpdateIcon"></div>
                   <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
               <div class="s-td" v-for="(i,ind) in gridColumns" :key="ind">
@@ -225,11 +225,11 @@
               </div>
             </div>
             <div class="footer-paging">
-                <div class="fp-first"></div>
-                <div class="fp-prev"></div>
+                <div class="fp-first" @click="goToFirstPage"></div>
+                <div class="fp-prev" @click="goToPrePage"></div>
                 <div class="fp-txt"><span class="from">{{(pageNumber-1)*pageSize+1}}</span>đến<span class="to">{{(pageNumber)*pageSize}}</span></div>
-                <div class="fp-next"></div>
-                <div class="fp-last"></div>
+                <div class="fp-next" @click="goToNextPage"></div>
+                <div class="fp-last" @click="goToLastPage"></div>
             </div>
           </div>
         </div>
@@ -294,6 +294,8 @@ export default {
       toolbarTopLeftStatus: "normal",
       // biến chọn page size
       isShowPagesizeCombobox: false,
+      // ẩn hiện update icon
+      isShowUpdateIcon: true,
       // biến ẩn hiện dialog xuất khẩu và xóa
       isShowOptionTtleft: false,
       // biến ẩn hiện thanh bên trái
@@ -307,7 +309,7 @@ export default {
       //số bản ghi trên trang
       pageSize : "50",
       // số trang 
-      pageNumber: 1,
+      pageNumber: 2,
       // các cột trong 1 dòng dữ liệu trên grid
       gridColumns: [
         "PotentialCode",
@@ -596,6 +598,59 @@ export default {
     updateIconOnClick(event){
         let me = this;
         me.$router.push({name: "potential.update", query: {PotentialID : ""+event.target.closest(".s-tr").getAttribute("idOfRow")}})
+    },
+
+    /**
+     * hàm chuyển đến trang đầu tiên
+     * created by SONTD(19.08.2022)
+     */
+    goToFirstPage(){
+        let me = this;
+        if (me.pageNumber!=1){
+            me.pageNumber =1; 
+            me.reloadDataGrid();
+        }
+    },
+
+    /**
+     * hàm chuyển đến trang sau
+     * created by SONTD(19.08.2022)
+     */
+    goToNextPage(){
+        let me = this,
+            numberOfPage = (me.numberOfRecord - ( me.numberOfRecord % me.pageSize )) / me.pageSize;
+        if (me.numberOfRecord % me.pageSize != 0 ) {numberOfPage +=1;}
+        if (me.pageNumber < numberOfPage){
+            me.pageNumber +=1;
+            me.reloadDataGrid();
+        }
+    },
+
+    /**
+     * hàm chuyển đến trang trước đó
+     * created by SONTD(19.08.2022)
+     */
+    goToPrePage(){
+        let me = this;
+        if (me.pageNumber>1){
+            me.pageNumber -=1;
+            me.reloadDataGrid();
+        }
+    },
+
+    /**
+     * hàm chuyển đến trang cuối cùng
+     * created by SONTD(19.08.2022)
+     */
+    goToLastPage(){
+        let me = this,
+            numberOfPage = (me.numberOfRecord - ( me.numberOfRecord % me.pageSize )) / me.pageSize;
+        if (me.numberOfRecord % me.pageSize != 0 ) {numberOfPage +=1;}
+        if (me.pageNumber != numberOfPage){
+            me.pageNumber = numberOfPage;
+            me.reloadDataGrid();
+        }
+
     }
   },
   created() {

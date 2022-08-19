@@ -90,11 +90,9 @@ export default {
         // xử lí khi truyền defaultvalue
         'defaultValue':function(){
             let me = this;
-            console.log(me.data);
             if (me.type=='int'){
                 let intTypeValue = parseInt(me.defaultValue);
                     me.data.forEach(function(item){
-                        console.log(me.col)
                         if (item[me.col[0]] ==intTypeValue){
                             me.defaultValueTxt = item[me.col[1]];
                         }
@@ -104,8 +102,6 @@ export default {
         // xử lí khi truyền data
         'data':function(){
             let me = this;
-            // console.log(me.variable,me.data);
-            // console.log(me.defaultValue);
             if(me.defaultValue){
                 if (me.defaultValue!="00000000-0000-0000-0000-000000000000"){
                     me.data.forEach(function(item){

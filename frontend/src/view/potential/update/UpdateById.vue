@@ -368,7 +368,6 @@ export default {
         getValueSelectInput(val, variable){
             let me = this;
             me.Potential[variable] = val;
-            console.log(me.Potential);
         },
     },
     created() {
@@ -377,7 +376,6 @@ export default {
         me.idRow = me.$route.query.PotentialID;
         // khởi tạo page lấy data cần thiết từ server
         me.init();
-        console.log(me.Potential);
     },
 }
 </script>
