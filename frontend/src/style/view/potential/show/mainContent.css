@@ -12,6 +12,7 @@
     position: absolute;
     top: 40%;
     left: 0;
+    z-index: 11;
     display: flex;
     align-items: center;
     height: 40px;
@@ -36,6 +37,7 @@
     position: absolute;
     top: 40%;
     right: 0;
+    z-index: 11;
     display: flex;
     align-items: center;
     height: 40px;
@@ -64,6 +66,7 @@
     background-color: #F0F2F4;
 }
 .s-tbody{
+    position: relative;
     overflow-y: auto;
     overflow-x: auto;
     height: calc(100vh - 84px - 64px - 48px - 40px);

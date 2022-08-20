@@ -12,7 +12,7 @@
             </div>
       </div>
     </div>
-    <div id="update-main-content">
+    <div id="update-main-content" ref="updateMainContentRef">
         <div class="update-main-content-img-box">
             <div class="update-section-title">Ảnh tiềm năng</div>
             <div class="uimgb-img-box">
@@ -309,12 +309,12 @@ export default {
             let me = this;
             for (let key in me.validate.required){
                 if (me.validate.required[key]==0 || me.validate.required[key]==-1 ||me.validate.required[key]==undefined){
-                    document.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
-                    document.querySelector(`[FieldSet=${key}]`).focus();
+                    me.$refs.updateMainContentRef.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
+                    me.$refs.updateMainContentRef.querySelector(`[FieldSet=${key}]`).focus();
                     me.validate.required[key]=0;
                     return false;
                 }else{
-                    document.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");
+                    me.$refs.updateMainContentRef.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");
                 }
             }
             return true;

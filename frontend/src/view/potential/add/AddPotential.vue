@@ -12,7 +12,7 @@
           <button class="s-button" @click="saveButtonOnClick">Lưu</button>
         </div>
       </div>
-      <div id="add-main-content">
+      <div id="add-main-content" ref="addMainContentRef">
         <div class="add-main-content-img-box">
           <div class="add-section-title">Ảnh tiềm năng</div>
           <div class="aimgb-img-box">
@@ -113,11 +113,9 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Loại tiềm năng</div>
-                <input
-                  v-model = "dataForm.Potential['PotentialType']"
-                  FieldSet="PotentialType"
-                  class="add-input-feild s-input"
-                />
+                <div class="add-select-feild">
+                  <ComboboxComponent :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypes'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Email cá nhân</div>
@@ -160,10 +158,9 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Lĩnh vực</div>
-                <input type="text"
-                FieldSet="Field" 
-                  class="add-input-feild s-input"
-                />
+                <div class="add-select-feild">
+                  <ComboboxComponent :data="fields" :col="{0:'FieldID', 1:'FieldName'}" :variable="'Fields'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Doanh thu</div>
@@ -188,11 +185,9 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Ngành nghề</div>
-                <input
-                  v-model="dataForm.Potential['OrganizationCareer']"
-                  FieldSet="OrganizationCareer"
-                  class="add-input-feild s-input"
-                />
+                <div class="add-select-feild">
+                  <ComboboxComponent :data="careers" :col="{0:'CareerID', 1:'CareerName'}" :variable="'Careers'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                </div>
               </div>
             </div>
           </div>
@@ -291,10 +286,12 @@
 <script>
 import axiosConfig from "../../../script/config/axiosConfig.js";
 import SelectInput from "../../../components/common/SelectInput.vue";
+import ComboboxComponent from "@/components/common/ComboboxComponent.vue";
 export default {
   components: {
     SelectInput,
-  },
+    ComboboxComponent
+},
   data() {
     return {
       // data để lưu về server 
@@ -372,6 +369,12 @@ export default {
       cities: {},
       // phường xã 
       wards: {},
+      // loại tiềm năng 
+      potentialTypes: {},
+      // ngành nghề
+      careers: {},
+      // lĩnh vực
+      fields:{},
       // kiểm tra xem đã được nhập chưa 
       checkIsActiveAddress: {
         city: false,
@@ -428,6 +431,24 @@ export default {
             axiosConfig.call("get", axiosConfig.Nations, "", function(response){
               if (response.data){
                 me.nations = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu tên các quốc gia
+            axiosConfig.call("get", axiosConfig.PotentialTypes, "", function(response){
+              if (response.data){
+                me.potentialTypes = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu lĩnh vực
+            axiosConfig.call("get", axiosConfig.Fields, "", function(response){
+              if (response.data){
+                me.fields = response.data.DataList;
+              }
+            });
+            // lấy dữ liệu ngành nghề
+            axiosConfig.call("get", axiosConfig.Careers, "", function(response){
+              if (response.data){
+                me.careers = response.data.DataList;
               }
             });
         }catch(error){
@@ -527,12 +548,12 @@ export default {
       let me = this;
       for (let key in me.validate.required){
         if (me.validate.required[key]==0 || me.validate.required[key]==-1 ||me.validate.required[key]==undefined){
-          document.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
-          document.querySelector(`[FieldSet=${key}]`).focus();
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).focus();
           me.validate.required[key]=0;
           return false;
         }else{
-          document.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");
         }
       }
       return true;
@@ -560,7 +581,10 @@ export default {
     getValueSelectInput(val, variable){
       this.dataForm.Potential[variable] = val;
     },
-    
+
+    getValueFromCombobox(variable, val){
+      this.dataForm.Potential[variable] =val;
+    }
   },
   created() {
     this.init();

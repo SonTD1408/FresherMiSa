@@ -77,6 +77,9 @@ export default {
             this.$emit("emitValue",event.target.getAttribute("value"), this.variable);
         },
 
+        /**
+         * sự kiện khi click outside
+         */
         onClickOutside(){
             this.isShowSelectBox = false;
             this.$refs.selectInputFieldIcon.classList.remove("fa-arrow-down-open")

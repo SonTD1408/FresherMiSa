@@ -1,5 +1,5 @@
 <template>
-    <div id="content">
+    <div id="content" ref="content">
         <router-view @showToastMessage="showMessage"></router-view>
         <ToastMessage :typeMsg="toastMsgType"></ToastMessage>
     </div>
@@ -22,7 +22,7 @@ export default {
         showMessage(value){
             let me = this;
             me.toastMsgType =value;
-            document.querySelector(".toast-message").animate(
+            me.$refs.content.querySelector(".toast-message").animate(
                 [
                     {transform: 'translateY(0)'},
                     {transform: 'translateY(100px)'},
@@ -36,7 +36,7 @@ export default {
                     {transform: 'translateY(100px)'},
                     {transform: 'translateY(-100px)'},
                 ],
-                {duration: 5000}
+                {duration: 3000}
             )
             
             // console.log(me.toastMsgType);

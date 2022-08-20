@@ -5,11 +5,11 @@
         <!-- tool bar top left  -->
         <div class="tt-left" v-if="toolbarTopLeftStatus=='normal'">
           <div class="ttl-name">
-            <div class="ttl-name-txt">Tất cả tiềm năng</div>
-            <div class="ttl-name-icon"></div>
+            <div class="ttl-name-txt" @click="isDoing">Tất cả tiềm năng</div>
+            <div class="ttl-name-icon" @click="isDoing"></div>
           </div>
-          <div class="ttl-action">Sửa</div>
-          <div class="ttl-refresh"></div>
+          <div class="ttl-action" @click="isDoing">Sửa</div>
+          <div class="ttl-refresh" @click="isDoing"></div>
         </div>
         <div class="tt-left" v-if="toolbarTopLeftStatus=='rowSelected'">
           <div class="ttl-choosed">Đã chọn <span>{{ numberOfRowSelected }}</span></div>
@@ -39,14 +39,14 @@
               </div>
             </router-link>
           </div>
-          <div class="ttr-option">
+          <div class="ttr-option" @click="isDoing">
             <div class="ttr-option-icon"></div>
           </div>
-          <div class="ttr-option-combo">
-            <div class="ttroc-list-icon-box">
+          <div class="ttr-option-combo" >
+            <div class="ttroc-list-icon-box" @click="isDoing">
               <div class="ttroc-list-icon"></div>
             </div>
-            <div class="ttroc-dropdown-icon-box">
+            <div class="ttroc-dropdown-icon-box" @click="isDoing">
               <div class="ttroc-dropdown-icon"></div>
             </div>
           </div>
@@ -156,7 +156,7 @@
           </div>
         </div>
       </div>
-      <div id="main-content">
+      <div id="main-content" ref="showMainContentRef">
         <div class="filterbar-left-show-hide-btn" @click="hideShowFilterbarLeft">
           <div class="filterbar-left-show-hide-btn-icon"></div>
         </div>
@@ -201,6 +201,7 @@
                   <div v-if="ind==2">{{formatNullData(`${item['LastName']} ${item['FirstName']}`)}}</div>
               </div>
             </div>
+            <LoadingComponent :typeOfLoading="isShowLoading"></LoadingComponent>
           </div>
         </div>
         <div class="footer">
@@ -236,16 +237,16 @@
       </div>
       <div id="toolbar-right" v-if="isShowToolbarRight">
         <div class="tr-header">
-          <div class="trh-item">
+          <div class="trh-item" @click="isDoing">
             <div class="trh-item-icon trh-item-icon-1"></div>
           </div>
-          <div class="trh-item">
+          <div class="trh-item" @click="isDoing">
             <div class="trh-item-icon trh-item-icon-2"></div>
           </div>
-          <div class="trh-item">
+          <div class="trh-item" @click="isDoing">
             <div class="trh-item-icon trh-item-icon-3"></div>
           </div>
-          <div class="trh-item">
+          <div class="trh-item" @click="isDoing">
             <div class="trh-item-icon trh-item-icon-4"></div>
           </div>
         </div>
@@ -275,14 +276,16 @@ import vClickOutside from "click-outside-vue3";
 import UpdateMany from "../update/UpdateMany.vue";
 import DialogComponent from "../../../components/dialog/DialogComponent.vue"
 import axiosConfig  from "@/script/config/axiosConfig";
+import LoadingComponent from "@/components/common/LoadingComponent.vue";
 export default {
   directives: {
       clickOutside: vClickOutside.directive
   },
   components:{
     UpdateMany,
-    DialogComponent
-  },
+    DialogComponent,
+    LoadingComponent
+},
   data() {
     return {
       isShowDataInTable: 1,
@@ -306,10 +309,12 @@ export default {
       isShowUpdateMany: false,
       // ẩn hiện dialog component
       isShowDialogComponent: 0,
+      // ẩn hiện loading
+      isShowLoading: 0,
       //số bản ghi trên trang
       pageSize : "50",
       // số trang 
-      pageNumber: 2,
+      pageNumber: 1,
       // các cột trong 1 dòng dữ liệu trên grid
       gridColumns: [
         "PotentialCode",
@@ -346,8 +351,10 @@ export default {
       let me = this,
           url = `?pageSize=${me.pageSize}&pageNumber=${this.pageNumber}`;
       try{
+          me.isShowLoading = 1;
           axiosConfig.call("get", axiosConfig.Potentials+url, "", function(response){
             if (response.data){
+              me.isShowLoading= 0;
               me.data = response.data.Data.PotentialList;
               me.numberOfRecord = response.data.Data.NumberOfRecord;
             }
@@ -361,7 +368,8 @@ export default {
      * created by SONTD (04.08.2022)
      */
     handleScroll(event){
-        const thead = document.querySelector(".s-thead");
+        let me = this;
+        const thead = me.$refs.gridTable.querySelector(".s-thead");
         if (event.target.scrollLeft>0){
             const translateX = -event.target.scrollLeft +"px";
             thead.style.transform = `translateX(${translateX})`;
@@ -402,12 +410,13 @@ export default {
      * Created by SONTD (04.08.2022)
      */
     hideShowFilterbarLeft(){
+      let me = this;
       if(this.isShowFilterbarLeft){
-        document.querySelector(".filterbar-left-show-hide-btn-icon").style.transform="rotate(180deg)"
+        me.$refs.showMainContentRef.querySelector(".filterbar-left-show-hide-btn-icon").style.transform="rotate(180deg)"
       }else{
-        document.querySelector(".filterbar-left-show-hide-btn-icon").style.transform="rotate(0)"
+        me.$refs.showMainContentRef.querySelector(".filterbar-left-show-hide-btn-icon").style.transform="rotate(0)"
       }
-      this.isShowFilterbarLeft = !this.isShowFilterbarLeft
+      me.isShowFilterbarLeft = !me.isShowFilterbarLeft
     },
 
     /**
@@ -415,12 +424,13 @@ export default {
      * Created by SONTD (04.08.2022)
      */
     hideShowToolbarRight(){
+      let me = this;
       if(this.isShowToolbarRight){
-        document.querySelector(".toolbar-right-show-hide-btn-icon").style.transform="rotate(180deg)"
+        me.$refs.showMainContentRef.querySelector(".toolbar-right-show-hide-btn-icon").style.transform="rotate(180deg)"
       }else{
-        document.querySelector(".toolbar-right-show-hide-btn-icon").style.transform="rotate(0)"
+        me.$refs.showMainContentRef.querySelector(".toolbar-right-show-hide-btn-icon").style.transform="rotate(0)"
       }
-      this.isShowToolbarRight = !this.isShowToolbarRight
+      me.isShowToolbarRight = !me.isShowToolbarRight
     },
 
     /**
@@ -462,8 +472,9 @@ export default {
      * Created by SONTD (05.08.2022)
      */
     forgotChoosed(){
+      let me = this;
       this.toolbarTopLeftStatus="normal";
-      document.querySelectorAll(".s-tr").forEach(function(tr){
+      me.$refs.gridTable.querySelectorAll(".s-tr").forEach(function(tr){
         let input = tr.querySelector("input");
         if (input.getAttribute("isChecked")=="true"){
           input.click();
@@ -537,7 +548,7 @@ export default {
             try{
                 let rowIDList = [];
                 me.isShowDialogComponent =0;
-                document.querySelectorAll("[isChecked=true]").forEach(function(item){
+                me.$refs.gridTable.querySelectorAll("[isChecked=true]").forEach(function(item){
                     rowIDList.push(item.closest("[idOfRow]").getAttribute("idOfRow"));
                 });
                 // tạo mảng id cần xóa để đẩy vào server
@@ -650,7 +661,14 @@ export default {
             me.pageNumber = numberOfPage;
             me.reloadDataGrid();
         }
+    },
 
+    /**
+     * chức năng đang thi công
+     * created by SONTD(19.08.2022)
+     */
+    isDoing(){
+        alert("chức năng đang thi công.");
     }
   },
   created() {
