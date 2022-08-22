@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <div class="combobox-component-item-box" v-show="isShowSelectBox" @click.stop>
+        <div class="combobox-component-item-box" v-show="isShowSelectBox" @click.stop ref="comboboxItemBox">
             <div class="combobox-component-item" @click="noSelectedItem">- Không chọn -</div>
             <div class="combobox-component-item" v-for="(item,index) in data" :key="index" :idRow="item[col['0']]" @click="rowOnClick(item, $event)" >
                 <div class="combobox-component-item-content">{{item[col['1']]}}</div>
@@ -33,6 +33,8 @@ export default{
         col: {},
         // biến lưu tên biến khi trả về
         variable: String,
+        // giá trị đầu vào của combobox 
+        defaultValue: String,
     },
     data() {
         return {
@@ -143,10 +145,23 @@ export default{
         'data':function(){
             let me = this;
             me.data.forEach(function(item){
-                me.isRowSelected[item[me.col[0]]] = false;
+                if (!me.isRowSelected[item[me.col[0]]]){
+                    me.isRowSelected[item[me.col[0]]] = false;
+                }
+            }),
+            setTimeout(function(){
+                    me.updateStatusCombobox();
+            }, 100);
+        },
+        'defaultValue':function(){
+            let me = this,
+                defaultObj = JSON.parse(me.defaultValue);
+            defaultObj.forEach(function(item){
+                me.isRowSelected[item[me.col[0]]] = true;
+                me.isResultNull = false;
             })
         }
-    }
+    },
 }
 </script>
 <style scoped>

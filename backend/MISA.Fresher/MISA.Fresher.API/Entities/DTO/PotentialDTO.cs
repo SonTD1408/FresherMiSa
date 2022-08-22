@@ -266,5 +266,20 @@
         /// 53. Lưu mảng các loại lĩnh vực
         /// </summary>
         public string? Fields { get; set; }
+
+        /// <summary>
+        /// 37. lưu mảng các loại tiềm năng
+        /// </summary>
+        public PotentialTypes[]? PotentialTypesObj { get; set; }
+
+        /// <summary>
+        /// 38. Lưu mảng các loại nghề nghiệp
+        /// </summary>
+        public Careers[]? CareersObj { get; set; }
+
+        /// <summary>
+        /// 39. Lưu mảng các loại lĩnh vực
+        /// </summary>
+        public Fields[]? FieldsObj { get; set; }
     }
 }

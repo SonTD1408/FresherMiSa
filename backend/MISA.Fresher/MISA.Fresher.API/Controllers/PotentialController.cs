@@ -29,7 +29,7 @@ namespace MISA.Fresher.API.Controllers
             {
                 var potentialService = new PotentialService();
 
-                return StatusCode(StatusCodes.Status200OK, potentialService.getAll(pageSize, pageNumber, where, sort));
+                return StatusCode(StatusCodes.Status200OK, potentialService.GetAll(pageSize, pageNumber, where, sort));
             }
             catch (Exception e)
             {
@@ -49,13 +49,13 @@ namespace MISA.Fresher.API.Controllers
         /// <param name="addPotentialDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult add([FromBody] AddPotentialDTO addPotentialDTO)
+        public IActionResult Add([FromBody] AddPotentialDTO addPotentialDTO)
         {
             try
             {
                 //lưu vào bảng potential 
                 var potentialService = new PotentialService();
-                var res = potentialService.add(addPotentialDTO.Potential);
+                var res = potentialService.Add(addPotentialDTO.Potential);
 
                 return StatusCode(StatusCodes.Status201Created, res);
             }
@@ -78,12 +78,12 @@ namespace MISA.Fresher.API.Controllers
         /// <param name="potentialID"></param>
         /// <returns></returns>
         [HttpPost("multiDelete")]
-        public IActionResult delete([FromBody] GetListIDDTO potentialIDList)
+        public IActionResult Delete([FromBody] GetListIDDTO potentialIDList)
         {
             try
             {
                 var service = new PotentialService();
-                var result = service.delete(potentialIDList);
+                var result = service.Delete(potentialIDList);
                 return Ok(result);
             }
             catch (Exception)
@@ -104,12 +104,12 @@ namespace MISA.Fresher.API.Controllers
         /// <param name="potentialID"></param>
         /// <returns></returns>
         [HttpGet("{potentialID}")]
-        public IActionResult getById([FromRoute] Guid potentialID)
+        public IActionResult GetById([FromRoute] Guid potentialID)
         {
             try
             {
                 var service = new PotentialService();
-                return Ok(service.getById(potentialID));    
+                return Ok(service.GetById(potentialID));    
             }
             catch (Exception)
             {
@@ -130,12 +130,12 @@ namespace MISA.Fresher.API.Controllers
         /// <param name="potential"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult update([FromRoute] Guid id, [FromBody] UpdatePotentialDTO potential)
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdatePotentialDTO potential)
         {
             try
             {
                 var service = new PotentialService();
-                var res = service.update(id, potential);
+                var res = service.Update(id, potential);
                 return Ok(res);
             }
             catch (Exception)
@@ -156,12 +156,12 @@ namespace MISA.Fresher.API.Controllers
         /// <param name="multiUpdatePotentialDTO"></param>
         /// <returns></returns>
         [HttpPut]
-        public IActionResult multiUpdate([FromBody] MultiUpdatePotentialDTO multiUpdatePotentialDTO)
+        public IActionResult MultiUpdate([FromBody] MultiUpdatePotentialDTO multiUpdatePotentialDTO)
         {
             try
             {
                 var service = new PotentialService();
-                return Ok(service.multiUpdate(multiUpdatePotentialDTO));
+                return Ok(service.MultiUpdate(multiUpdatePotentialDTO));
             }
             catch (Exception)
             {
@@ -173,5 +173,43 @@ namespace MISA.Fresher.API.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
         }
+
+        /// <summary>
+        /// hàm lấy new code = code lớn nhất + 1
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("NewCode")]        
+        public IActionResult NewCode()
+        {
+            try
+            {
+                var service = new PotentialService();
+                var res = service.NewCode();
+                return StatusCode(StatusCodes.Status200OK, res);
+            }
+            catch (Exception e)
+            {
+                var res = new ActionResults<string>()
+                {
+                    Status = 0,
+                    StatusMsg = e.ToString(),
+                };
+                return StatusCode(StatusCodes.Status400BadRequest, res);
+            }
+        }
+
+        //[HttpGet("Duplication")]
+        //public IActionResult Duplicate(string columnName , string columnValue)
+        //{
+        //    try
+        //    {
+        //        var service = new PotentialService();
+        //        return Ok(service.Duplicate(columnName, columnValue));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status400BadRequest, e);
+        //    }
+        //}
     }
 }

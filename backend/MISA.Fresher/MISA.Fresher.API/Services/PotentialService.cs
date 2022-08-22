@@ -4,7 +4,7 @@ using MISA.Fresher.API.ActionResult;
 using MISA.Fresher.API.Entities;
 using MISA.Fresher.API.Config;
 using Dapper;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Text;
 
 namespace MISA.Fresher.API.Services
@@ -19,13 +19,13 @@ namespace MISA.Fresher.API.Services
         /// <param name="where"></param> lọc
         /// <param name="sort"></param> sắp xếp
         /// <returns></returns>
-        public ActionResults<Paging> getAll(int pageSize, int pageNumber, string where, string sort)
+        public ActionResults<Paging> GetAll(int pageSize, int pageNumber, string where, string sort)
         {
             try
             {
                 var potentialRepository = new PotentialRepository();
                 int take = (pageNumber - 1) * pageSize;
-                return potentialRepository.getAll(take, pageSize, where, sort);
+                return potentialRepository.GetAll(take, pageSize, where, sort);
             }
             catch (Exception)
             {
@@ -43,7 +43,7 @@ namespace MISA.Fresher.API.Services
         /// </summary>
         /// <param name="potential"></param>
         /// <returns></returns>
-        public ActionResults<Guid> add(Potentials potential)
+        public ActionResults<Guid> Add(Potentials potential)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace MISA.Fresher.API.Services
                 potential.PotentialID = newID;
                 potential.CreatedDate = now;
                 potential.ModifiedDate = now;
-                return potentialRepository.add(potential);
+                return potentialRepository.Add(potential);
             }
             catch (Exception)
             {
@@ -72,7 +72,7 @@ namespace MISA.Fresher.API.Services
         /// </summary>
         /// <param name="potentialID"></param>
         /// <returns></returns>
-        public ActionResults<Guid> delete(GetListIDDTO potentialIDList)
+        public ActionResults<Guid> Delete(GetListIDDTO potentialIDList)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace MISA.Fresher.API.Services
                     whereClause += $" PotentialID=@id{i} or";
                 }
                 whereClause = whereClause.Remove(whereClause.Length - 2);
-                var res = repository.delete(param, whereClause);
+                var res = repository.Delete(param, whereClause);
                 return res;
             }
             catch (Exception)
@@ -106,12 +106,25 @@ namespace MISA.Fresher.API.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResults<PotentialDTO> getById(Guid id)
+        public ActionResults<PotentialDTO> GetById(Guid id)
         {
             try
             {
                 var repository = new PotentialRepository();
-                return repository.getById(id);
+                var res = repository.GetById(id);
+                if (res.Data.PotentialTypes != null)
+                {
+                    res.Data.PotentialTypesObj = JsonSerializer.Deserialize<PotentialTypes[]>(res.Data.PotentialTypes);
+                }
+                if (res.Data.Fields != null)
+                {
+                    res.Data.FieldsObj = JsonSerializer.Deserialize<Fields[]>(res.Data.Fields);
+                }
+                if (res.Data.Careers != null)
+                {
+                    res.Data.CareersObj = JsonSerializer.Deserialize<Careers[]>(res.Data.Careers);
+                }
+                return res;
             }
             catch (Exception)
             {
@@ -130,7 +143,7 @@ namespace MISA.Fresher.API.Services
         /// <param name="id"></param>
         /// <param name="potential"></param>
         /// <returns></returns>
-        public ActionResults<Guid> update(Guid id, UpdatePotentialDTO potential)
+        public ActionResults<Guid> Update(Guid id, UpdatePotentialDTO potential)
         {
             try
             {
@@ -138,24 +151,24 @@ namespace MISA.Fresher.API.Services
                 var now = DateTime.Now;
                 potential.ModifiedDate = now;
                 param.Add("@PotentialID", id);
+                potential.PotentialTypes = JsonSerializer.Serialize(potential.PotentialTypesObj);
                 string query = "update Potentials " +
                                 "Set ";
                 foreach (var prop in potential.GetType().GetProperties())
                 {
-                    if(prop.Name != "PotentialID")
+                    if(prop.Name != "PotentialID" && prop.Name!="PotentialTypesObj" && prop.Name != "FieldsObj" && prop.Name != "CareersObj")
                     {
                         var value = prop.GetValue(potential, null);
-                        //if (value != null)
-                        //{
-                            param.Add("@" + prop.Name, value);
-                            query += $"{prop.Name} = @{prop.Name}, ";
-                        //} 
+                        param.Add("@" + prop.Name, value);
+
+                        query += $"{prop.Name} = @{prop.Name}, ";
+                        
                     }
                 }
                 string query1 = query.Remove(query.Length-2);
                 string query2 = string.Concat(query1, " where PotentialID = @PotentialID");
                 var repository = new PotentialRepository();
-                var res = repository.update(query2, param);
+                var res = repository.Update(query2, param);
                 return res;
             }
             catch (Exception)
@@ -174,7 +187,7 @@ namespace MISA.Fresher.API.Services
         /// </summary>
         /// <param name="multiUpdatePotentialDTO"></param>
         /// <returns></returns>
-        public ActionResults<int> multiUpdate(MultiUpdatePotentialDTO multiUpdatePotentialDTO)
+        public ActionResults<int> MultiUpdate(MultiUpdatePotentialDTO multiUpdatePotentialDTO)
         {
             try
             {
@@ -205,7 +218,7 @@ namespace MISA.Fresher.API.Services
                 }
 
                 var repository = new PotentialRepository();
-                var res = repository.multiUpdate(query.ToString(), param);
+                var res = repository.MultiUpdate(query.ToString(), param);
                 return res;
             }
             catch (Exception ex)
@@ -218,5 +231,58 @@ namespace MISA.Fresher.API.Services
             }
             //return res;
         }
+
+        /// <summary>
+        /// xử lí logic lấy code mới = code cũ lớn nhất +1
+        /// created by SONTD(15.08.2022)
+        /// </summary>
+        /// <returns></returns>
+        public ActionResults<string> NewCode()
+        {
+            try
+            {
+                string sql = "select p.PotentialCode from Potentials p where length(p.PotentialCode)=(select max(length(p1.PotentialCode)) from Potentials p1) order by p.PotentialCode DESC limit 0,1";
+                var repository = new PotentialRepository();
+                var res = repository.NewCode(sql);
+                if (res.Data != null)
+                {
+                    long numberCode = 0;
+                    long.TryParse(res.Data.Substring(3),out numberCode);
+                    numberCode += 1;
+                    res.Data = "TN-" + numberCode.ToString();
+                }
+                return res;
+            }
+            catch (Exception)
+            {
+                return new ActionResults<string>()
+                {
+                    Status = 0,
+                    StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
+                };
+            }
+        }
+
+        //public ActionResults<int> Duplicate(string columnName, string columnValue)
+        //{
+        //    try
+        //    {
+        //        string query = $"select count(p.PotentialID) from Potentials p where p.@ColumnName = @ColumnValue";
+        //        var param = new DynamicParameters();
+        //        param.Add("@ColumnName", columnName);
+        //        param.Add("@ColumnValue", columnValue);
+        //        var repository = new PotentialRepository();
+        //        var res = repository.Duplicate(query, param);
+        //        return res;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new ActionResults<int>()
+        //        {
+        //            Status = 0,
+        //            StatusMsg = e.ToString(),
+        //        };
+        //    }
+        //}
     }
 }

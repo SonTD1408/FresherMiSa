@@ -54,9 +54,16 @@
 .validate-error{
     color: red;
     transform: translate(8px,-12px);
-    width: 500px;
+    margin-left: 160px;
     display: flex;
-    justify-content: center;
+}
+.validate-error-show{
+    margin-left: 8px;
+    cursor: pointer;
+    color: #4262F0;
+}
+.validate-error-show:hover{
+    text-decoration: underline;
 }
 .aib-txt{
     display: flex;

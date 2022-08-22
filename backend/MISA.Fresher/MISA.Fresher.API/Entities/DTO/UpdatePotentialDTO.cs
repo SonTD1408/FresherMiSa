@@ -87,7 +87,6 @@
         /// </summary>
         public string? Facebook { get; set; }
 
-
         /// <summary>
         /// 31. FK đến bảng xưng hô
         /// </summary>
@@ -117,5 +116,35 @@
         /// 40. người sửa
         /// </summary>
         public string? ModifiedBy { get; set; }
+
+        /// <summary>
+        /// 37. lưu mảng các loại tiềm năng
+        /// </summary>
+        public PotentialTypes[]? PotentialTypesObj { get; set; }
+
+        /// <summary>
+        /// 38. Lưu mảng các loại nghề nghiệp
+        /// </summary>
+        public Careers[]? CareersObj { get; set; }
+
+        /// <summary>
+        /// 39. Lưu mảng các loại lĩnh vực
+        /// </summary>
+        public Fields[]? FieldsObj { get; set; }
+
+        /// <summary>
+        /// 37. lưu mảng các loại tiềm năng
+        /// </summary>
+        public string? PotentialTypes { get; set; }
+
+        /// <summary>
+        /// 38. Lưu mảng các loại nghề nghiệp
+        /// </summary>
+        public string? Careers { get; set; }
+
+        /// <summary>
+        /// 39. Lưu mảng các loại lĩnh vực
+        /// </summary>
+        public string? Fields { get; set; }
     }
 }

@@ -276,6 +276,7 @@
                 FieldSet="PotentialCode"
                 v-model="dataForm.Potential['PotentialCode']"/>
               </div>
+              <div class="validate-error" v-if="validate.duplicate.PotentialCode==0">Giá trị của Mã tiềm năng bị trùng. <div class="validate-error-show" @click="isDoing">Xem ngay</div> </div>
             </div>
           </div>
         </div>
@@ -287,6 +288,7 @@
 import axiosConfig from "../../../script/config/axiosConfig.js";
 import SelectInput from "../../../components/common/SelectInput.vue";
 import ComboboxComponent from "@/components/common/ComboboxComponent.vue";
+import Resource from '@/script/resource.js';
 export default {
   components: {
     SelectInput,
@@ -346,7 +348,10 @@ export default {
       validate:{
         required: {
           FirstName : -1,
-        }
+        },
+        duplicate: {
+          PotentialCode: -1,
+        },
       },
       // biến lưu cách xưng hô lấy từ db
       vocatives: {},
@@ -450,6 +455,12 @@ export default {
                 me.careers = response.data.DataList;
               }
             });
+            // lấy dữ liệu new code
+            axiosConfig.call("get", axiosConfig.Potentials+"/newCode", "", function(response){
+              if (response.data){
+                me.dataForm.Potential.PotentialCode = response.data.Data;
+              }
+            });
         }catch(error){
             console.log(error);
         }
@@ -522,8 +533,12 @@ export default {
               .post("http://localhost:5091/api/Potential", me.dataForm)
               .then((response) => {
                   if (response.status==201){
-                    me.$emit("showToastMessage",3);
-                    me.$router.push("/")
+                    if (response.data && response.data.StatusMsg == Resource.ResponseStatus.SuccessMsg){
+                      me.$emit("showToastMessage",3);
+                      me.$router.push("/")
+                    }else if (response.data && response.data.StatusMsg == Resource.ResponseStatus.PotentialCodeDuplicate){
+                      me.validateDuplicate("PotentialCode");
+                    }
                   }
                   else{
                     me.$emit("showToastMessage",4);
@@ -573,6 +588,17 @@ export default {
     },
 
     /**
+     * hàm thêm class và hiện validate khi bị trũng mã tiền năng
+     * created by SONTD(22.08.2022)
+     */
+    validateDuplicate(field){
+      let me = this;
+      me.validate.duplicate[field] = 0;
+      me.$refs.addMainContentRef.querySelector(`[FieldSet=${field}]`).classList.add("input-validate-error");
+      me.$refs.addMainContentRef.querySelector(`[FieldSet=${field}]`).focus();
+    },
+
+    /**
      * lấy gia trị từ select input component
      * createdby SONTD (08.08.2022)
      * @param {*} vocative 
@@ -602,6 +628,14 @@ export default {
             event.target.setAttribute("isSelectedCheckBox","true");
             me.dataForm.Potential.IsShare = 1;
         }
+    },
+
+    /**
+     * chức năng đang thi công
+     * created by SONTD(19.08.2022)
+     */
+    isDoing(){
+        alert("chức năng đang thi công.");
     }
   },
   created() {

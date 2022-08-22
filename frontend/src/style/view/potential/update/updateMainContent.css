@@ -37,7 +37,7 @@
 }
 .update-item{
     width: 450px;
-    height: 32px;
+    min-height: 32px;
     margin-right: 100px;
     display: flex;
     align-items: center;
@@ -51,7 +51,7 @@
 .update-select-feild{
     width: 280px;
 }
-.validate-error{
+.update-validate-error{
     color: red;
     transform: translate(8px,-12px);
     width: 500px;

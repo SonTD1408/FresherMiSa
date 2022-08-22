@@ -19,7 +19,13 @@ var Resource = {
         // thành công lấy dữ liệu và nằm ở DataList 
         SuccessDataList: 1,
         // thành công lấy dữ liệu và nằm ở Data 
-        SuccessData: 2
+        SuccessData: 2,
+        // bị trùng mã tiềm năng
+        PotentialCodeDuplicate: "PotentialCodeDuplicate",
+        // thành công lấy data msg
+        SuccessMsg: "s",
+        // thành công lấy ra data nhưng bị null
+        SuccessNullMsg: "sn",
     },
 
     formatDateTimeToDate : function(dateSrc){

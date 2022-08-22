@@ -38,7 +38,7 @@
                     @blur="validateRequired($event)"
                     />
                 </div>
-                <div class="validate-error" v-if="validate.required.FirstName==0">Tên không được để trống</div>
+                <div class="update-validate-error" v-if="validate.required.FirstName==0">Tên không được để trống</div>
                 <div class="update-item">
                     <div class="uib-txt">Phòng ban</div>
                     <div class="update-select-feild">
@@ -134,11 +134,9 @@
                 </div>
                 <div class="update-item">
                     <div class="uib-txt">Loại tiềm năng</div>
-                    <input
-                    v-model = "Potential['PotentialType']"
-                    FieldSet="PotentialType"
-                    class="update-input-feild s-input"
-                    />
+                    <div class="update-select-feild">
+                        <ComboboxComponent :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypesObj'" @emitComboboxValue="getValueFromCombobox" :defaultValue="Potential.PotentialTypes"></ComboboxComponent>
+                    </div>
                 </div>
                 <div class="update-item">
                     <div class="uib-txt">Không gọi điện</div>
@@ -203,10 +201,12 @@
 import axiosConfig from '@/script/config/axiosConfig';
 import Resource from "../../../script/resource.js";
 import SelectInput from "../../../components/common/SelectInput.vue";
+import ComboboxComponent from "../../../components/common/ComboboxComponent.vue"
 export default {
     emits: ["showToastMessage"],
     components: {
-        SelectInput
+        SelectInput,
+        ComboboxComponent
     },
     props: {
         PotentialID: String,
@@ -234,6 +234,8 @@ export default {
             departments: {},
             // dữ liệu lấy từ bảng nguồn gốc 
             sources: {},
+            // dữ liệu loại tiềm năng
+            potentialTypes: {},
             // dữ liệu giới tính
             genders: Resource.Gender,
         }
@@ -283,6 +285,12 @@ export default {
                 await axiosConfig.call("get", axiosConfig.Sources, "", function(response){
                     if (response.data){
                         me.sources = response.data.DataList;
+                    }
+                });
+                // lấy dữ liệu loại tiềm năng
+                await axiosConfig.call("get", axiosConfig.PotentialTypes, "", function(response){
+                    if (response.data){
+                        me.potentialTypes = response.data.DataList;
                     }
                 });
             }catch(error){
@@ -355,6 +363,7 @@ export default {
                             me.$emit("showToastMessage",3);
                         }else{
                             me.$emit("showToastMessage",4);
+                            console.log(response.data.StatusMsg);
                         }
                     })
                 } catch (error) {
@@ -395,6 +404,14 @@ export default {
         getValueSelectInput(val, variable){
             let me = this;
             me.Potential[variable] = val;
+        },
+
+        /**
+         * lấy giá trị từ combobox component
+         * created by SONTD(20.08.2022)
+         */
+        getValueFromCombobox(variable, val){
+            this.Potential[variable] =val;
         },
 
         /**

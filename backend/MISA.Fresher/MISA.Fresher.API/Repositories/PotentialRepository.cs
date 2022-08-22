@@ -18,7 +18,7 @@ namespace MISA.Fresher.API.Repositories
         /// <param name="where"></param> lọc
         /// <param name="sort"></param> sắp xếp
         /// <returns></returns>
-        public ActionResults<Paging> getAll(int skip, int take, string where, string sort)
+        public ActionResults<Paging> GetAll(int skip, int take, string where, string sort)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace MISA.Fresher.API.Repositories
         /// </summary>
         /// <param name="potential"></param>
         /// <returns></returns>
-        public ActionResults<Guid> add(Potentials potential)
+        public ActionResults<Guid> Add(Potentials potential)
         {
             try
             {
@@ -153,6 +153,22 @@ namespace MISA.Fresher.API.Repositories
 
                 }
             }
+            catch (MySqlException me)
+            {
+                var ex = new ActionResults<Guid>();
+                if (me.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+                {
+                    ex.Status = 0;
+                    ex.StatusMsg = "PotentialCodeDuplicate";
+
+                }
+                else
+                {
+                    ex.Status = 0;
+                    ex.StatusMsg = me.ToString();
+                }
+                return ex;
+            }
             catch (Exception)
             {
                 return new ActionResults<Guid>()
@@ -169,7 +185,7 @@ namespace MISA.Fresher.API.Repositories
         /// </summary>
         /// <param name="potentialID"></param>
         /// <returns></returns>
-        public ActionResults<Guid> delete(DynamicParameters param, string where)
+        public ActionResults<Guid> Delete(DynamicParameters param, string where)
         {
             try
             {
@@ -214,7 +230,7 @@ namespace MISA.Fresher.API.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResults<PotentialDTO> getById(Guid id)
+        public ActionResults<PotentialDTO> GetById(Guid id)
         {
             try
             {
@@ -250,7 +266,7 @@ namespace MISA.Fresher.API.Repositories
         /// <param name="query"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public ActionResults<Guid> update(string query, DynamicParameters param)
+        public ActionResults<Guid> Update(string query, DynamicParameters param)
         {
             try
             {
@@ -288,7 +304,7 @@ namespace MISA.Fresher.API.Repositories
         /// <param name="query"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public ActionResults<int> multiUpdate(string query, DynamicParameters param)
+        public ActionResults<int> MultiUpdate(string query, DynamicParameters param)
         {
             try
             {
@@ -319,5 +335,79 @@ namespace MISA.Fresher.API.Repositories
                 };
             }
         }
+
+        /// <summary>
+        /// hàm gọi query để láy ra code lớn nhất
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public ActionResults<string> NewCode(string sql)
+        {
+            try
+            {
+                using(var connection = new MySqlConnection(DBConfig._CONNECTION_STRING))
+                {
+                    var res = connection.QueryFirstOrDefault<string>(sql);
+                    var result = new ActionResults<string>();
+                    result.Data = res;
+
+                    if (res != null)
+                    {
+                        result.Status = 2;
+                        result.StatusMsg = ResultMessage._SUCCESS_MSG;
+                    }
+                    else
+                    {
+                        result.Status = 0;
+                        result.StatusMsg = ResultMessage._SUCCESS_NULL_MSG;
+                    }
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                return new ActionResults<string>()
+                {
+                    Status = 0,
+                    StatusMsg = e.ToString(),
+                };
+            }
+        }
+
+        /// <summary>
+        /// hàm check xem value của cột mình nhập có bị duplicate hay không
+        /// </summary>
+        /// <returns></returns>
+        //public ActionResults<int> Duplicate(string query, DynamicParameters param)
+        //{
+        //    try
+        //    {
+        //        using (var connection = new MySqlConnection(DBConfig._CONNECTION_STRING))
+        //        {
+        //            var queryResult = connection.QueryFirstOrDefault<int>(query, param);
+        //            var result = new ActionResults<int>();
+        //            result.Data = queryResult;
+        //            if (queryResult>0)
+        //            {
+        //                result.Status = 2;
+        //                result.StatusMsg = ResultMessage._SUCCESS_MSG;
+        //            }
+        //            else
+        //            {
+        //                result.Status = 0;
+        //                result.StatusMsg = ResultMessage._SUCCESS_NULL_MSG;
+        //            }
+        //            return result;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new ActionResults<int>()
+        //        {
+        //            Status = 0,
+        //            StatusMsg = e.ToString(),
+        //        };
+        //    }
+        //}
     }
 }
