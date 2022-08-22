@@ -3,7 +3,7 @@
         <div class="select-input-defalt">{{defaultValueTxt}}</div>
         <div class="select-input-icon" ref="selectInputFieldIcon"></div>
         <div class="select-input-item-box" ref="selectBox" v-if="isShowSelectBox">
-            <div class="select-input-item" @click="itemOnClick" :value="type=='guid'?'00000000-0000-0000-0000-000000000000':''">- Không chọn -</div>
+            <div class="select-input-item" @click="itemOnClick" :value="type=='guid'?'00000000-0000-0000-0000-000000000000':null">- Không chọn -</div>
             <div class="select-input-item" @click="itemOnClick" v-for="item in data" :key="item[col['0']]" :value="item[col['0']]">{{item[col['1']]}}</div>
         </div>
 
@@ -45,6 +45,7 @@ export default {
         return {
             // ẩn hiện select box 
             isShowSelectBox: false,
+            // default text
             defaultValueTxt: "",
         }
     },

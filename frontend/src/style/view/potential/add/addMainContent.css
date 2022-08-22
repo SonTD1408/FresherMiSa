@@ -79,7 +79,7 @@
 
 /* địa chỉ  */
 .add-item-txtarea{
-    margin-top: 38px;
+    /* margin-top: 38px; */
 }
 .add-item-des{
     margin-top: 38px;
@@ -90,6 +90,8 @@
     width: 832px;
 }
 .add-txtarea{
+    padding: 8px 16px;
+    font-size: 16px;
     height: 76px;
     width: 280px;
 }

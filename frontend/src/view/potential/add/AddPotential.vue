@@ -95,7 +95,7 @@
                 <div class="aib-txt">Họ và tên</div>
                 <input class="add-input-feild s-input" 
                 disabled 
-                v-bind:value="(dataForm.Potential['LastName']!=undefined? dataForm.Potential['LastName']:'')+' '+(dataForm.Potential['FirstName']!=undefined? dataForm.Potential['FirstName']:'')"/>
+                v-bind:value="(dataForm.Potential['LastName']? dataForm.Potential['LastName']:'')+' '+(dataForm.Potential['FirstName']? dataForm.Potential['FirstName']:'')"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
@@ -128,7 +128,7 @@
               <div class="add-item">
                 <div class="aib-txt">Tổ chức</div>
                 <input
-                  v-model="dataForm.Potential['OrganizationName']"
+                  v-model="dataForm.Potential['Organization']"
                   FieldSet="OrganizationName"
                   class="add-input-feild s-input"
                 />
@@ -216,7 +216,7 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Số nhà, Đường phố</div>
-                <input class="add-input-feild s-input" />
+                <input class="add-input-feild s-input" v-model="dataForm.Potential['ApartmentNumber']"/>
               </div>
               <div class="add-item add-item-txtarea">
                 <div class="aib-txt">Địa chỉ</div>
@@ -250,7 +250,7 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Mã vùng</div>
-                <input class="add-input-feild s-input" />
+                <input class="add-input-feild s-input" v-model="dataForm.Potential['RegionCode']"/>
               </div>
             </div>
           </div>
@@ -258,8 +258,8 @@
         <div class="add-main-content-description-box">
            <div class="add-section-title">Thông tin mô tả</div>
             <div class="add-item add-item-des">
-              <div class="aib-txt">Địa chỉ</div>
-                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['DesciptionP']"></textarea>
+              <div class="aib-txt">Mô tả</div>
+                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['PotentialDescription']"></textarea>
             </div>
         </div>
         <div class="add-main-content-system-infor">
@@ -268,7 +268,7 @@
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Dùng chung</div>
-                <input type="checkbox" class="add-input-checkbox" v-model="dataForm.Potential['SharedP']"/>
+                <input type="checkbox" class="add-input-checkbox" FieldSet="IsShare" isSelectedCheckBox="false" @click="isShareCheckboxOnClick"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Mã tiềm năng</div>
@@ -298,7 +298,6 @@ export default {
       dataForm: {
         Potential: {
             PotentialID: "00000000-0000-0000-0000-000000000000",
-            // PotentialID: null,
             PotentialCode: "",
             LastName: "",
             FirstName: "",
@@ -547,7 +546,7 @@ export default {
     checkValidate(){
       let me = this;
       for (let key in me.validate.required){
-        if (me.validate.required[key]==0 || me.validate.required[key]==-1 ||me.validate.required[key]==undefined){
+        if (!me.validate.required[key] || me.validate.required[key]==0 || me.validate.required[key]==-1){
           me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
           me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).focus();
           me.validate.required[key]=0;
@@ -582,8 +581,27 @@ export default {
       this.dataForm.Potential[variable] = val;
     },
 
+    /**
+     * lấy giá trị từ combobox component
+     * created by SONTD(20.08.2022)
+     */
     getValueFromCombobox(variable, val){
       this.dataForm.Potential[variable] =val;
+    },
+
+    /**
+     * xử lí khi ấn vào checkbox của trường dùng chung
+     * created by SONTD(21.08.2022)
+     */
+    isShareCheckboxOnClick(event){
+        let me = this;
+        if (event.target.getAttribute("isSelectedCheckBox")=="true"){
+            event.target.setAttribute("isSelectedCheckBox","false");
+            me.dataForm.Potential.IsShare = 0;
+        }else{
+            event.target.setAttribute("isSelectedCheckBox","true");
+            me.dataForm.Potential.IsShare = 1;
+        }
     }
   },
   created() {

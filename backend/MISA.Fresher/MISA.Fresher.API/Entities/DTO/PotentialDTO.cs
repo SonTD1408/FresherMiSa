@@ -251,5 +251,20 @@
         /// 50. doanh thu
         /// </summary>
         public string TurnoverName { get; set; }
+
+        /// <summary>
+        /// 51. lưu mảng các loại tiềm năng
+        /// </summary>
+        public string? PotentialTypes { get; set; }
+
+        /// <summary>
+        /// 52. Lưu mảng các loại nghề nghiệp
+        /// </summary>
+        public string? Careers { get; set; }
+
+        /// <summary>
+        /// 53. Lưu mảng các loại lĩnh vực
+        /// </summary>
+        public string? Fields { get; set; }
     }
 }

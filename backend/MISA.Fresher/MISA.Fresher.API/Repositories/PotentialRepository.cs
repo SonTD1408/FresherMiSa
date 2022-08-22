@@ -4,7 +4,7 @@ using MISA.Fresher.API.Entities;
 using MISA.Fresher.API.ActionResult;
 using MySqlConnector;
 using Dapper;
-using System.Text;
+using System.Text.Json;
 
 namespace MISA.Fresher.API.Repositories
 {
@@ -80,6 +80,7 @@ namespace MISA.Fresher.API.Repositories
                 using (var mysqlConnection = new MySqlConnection(DBConfig._CONNECTION_STRING))
                 {
                     // chuẩn bị param
+                    var potentialType = JsonSerializer.Serialize(potential.PotentialTypes);
                     var param = new DynamicParameters();
                     param.Add("@PotentialID", potential.PotentialID);
                     param.Add("@PotentialCode", potential.PotentialCode);
@@ -117,13 +118,16 @@ namespace MISA.Fresher.API.Repositories
                     param.Add("@SourceID", potential.SourceID);
                     param.Add("@OrganizationTypeID", potential.OrganizationTypeID);
                     param.Add("@TurnoverID", potential.TurnoverID);
+                    param.Add("@PotentialTypes", JsonSerializer.Serialize(potential.PotentialTypes));
+                    param.Add("@Careers", JsonSerializer.Serialize(potential.Careers));
+                    param.Add("@Fields", JsonSerializer.Serialize(potential.Fields));
                     param.Add("@CreatedDate", potential.CreatedDate);
                     param.Add("@CreatedBy", potential.CreatedBy);
                     param.Add("@ModifiedDate", potential.ModifiedDate);
                     param.Add("@ModifiedBy", potential.ModifiedBy);
 
-                    string sql = "insert into Potentials(PotentialID, PotentialCode, LastName, FirstName, FullName, PhoneNumber, OfficePhoneNumber, OtherPhoneNumber, Email, OfficeEmail, TaxCode, Zalo, Organization, BankAccount, BankName, FoundingDate, Address, NationID, CityID, DistrictID, WardID, ApartmentNumber, RegionCode, PotentialDescription, IsCall, IsSendEmail, Gender, DateOfBirth, Facebook, IsShare, VocativeID, DepartmentID, PositionID, SourceID, OrganizationTypeID, TurnoverID, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy)" +
-                        "values(@PotentialID, @PotentialCode, @LastName, @FirstName, @FullName, @PhoneNumber, @OfficePhoneNumber, @OtherPhoneNumber, @Email, @OfficeEmail, @TaxCode, @Zalo, @Organization, @BankAccount, @BankName, @FoundingDate, @Address, @NationID, @CityID, @DistrictID, @WardID, @ApartmentNumber, @RegionCode, @PotentialDescription, @IsCall, @IsSendEmail, @Gender, @DateOfBirth, @Facebook, @IsShare, @VocativeID, @DepartmentID, @PositionID, @SourceID, @OrganizationTypeID, @TurnoverID, @CreatedDate, @CreatedBy, @ModifiedDate, @ModifiedBy)";
+                    string sql = "insert into Potentials(PotentialID, PotentialCode, LastName, FirstName, FullName, PhoneNumber, OfficePhoneNumber, OtherPhoneNumber, Email, OfficeEmail, TaxCode, Zalo, Organization, BankAccount, BankName, FoundingDate, Address, NationID, CityID, DistrictID, WardID, ApartmentNumber, RegionCode, PotentialDescription, IsCall, IsSendEmail, Gender, DateOfBirth, Facebook, IsShare, VocativeID, DepartmentID, PositionID, SourceID, OrganizationTypeID, TurnoverID, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, PotentialTypes, Careers, Fields)" +
+                        "values(@PotentialID, @PotentialCode, @LastName, @FirstName, @FullName, @PhoneNumber, @OfficePhoneNumber, @OtherPhoneNumber, @Email, @OfficeEmail, @TaxCode, @Zalo, @Organization, @BankAccount, @BankName, @FoundingDate, @Address, @NationID, @CityID, @DistrictID, @WardID, @ApartmentNumber, @RegionCode, @PotentialDescription, @IsCall, @IsSendEmail, @Gender, @DateOfBirth, @Facebook, @IsShare, @VocativeID, @DepartmentID, @PositionID, @SourceID, @OrganizationTypeID, @TurnoverID, @CreatedDate, @CreatedBy, @ModifiedDate, @ModifiedBy, @PotentialTypes, @Careers, @Fields)";
 
                     var res = mysqlConnection.Execute(sql, param);
 
@@ -210,7 +214,7 @@ namespace MISA.Fresher.API.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResults<Potentials> getById(Guid id)
+        public ActionResults<PotentialDTO> getById(Guid id)
         {
             try
             {
@@ -220,8 +224,8 @@ namespace MISA.Fresher.API.Repositories
                     var param = new DynamicParameters();
                     param.Add("@PotentialID",id);
 
-                    var res = mysqlConnection.QueryFirstOrDefault<Potentials>(sql, param);
-                    return new ActionResults<Potentials>()
+                    var res = mysqlConnection.QueryFirstOrDefault<PotentialDTO>(sql, param);
+                    return new ActionResults<PotentialDTO>()
                     {
                         Data = res,
                         Status =2,
@@ -229,9 +233,9 @@ namespace MISA.Fresher.API.Repositories
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return new ActionResults<Potentials>()
+                return new ActionResults<PotentialDTO>()
                 {
                     Status = 0,
                     StatusMsg = ResultMessage._REPOSITORY_EXCEPTION_MSG,

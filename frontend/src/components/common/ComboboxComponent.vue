@@ -1,6 +1,6 @@
 <template>
     <div class="combobox-component-container" @click="hideShowSelectBox" ref="combobox" v-click-outside="onClickOutside">
-        <div class="combobox-component-defalt" v-if="isResultNull">- Không chọn -</div>
+        <div class="combobox-component-defalt" v-if="isResultNull" >- Không chọn -</div>
 
         <div class="combobox-component-box" v-if="!isResultNull">
             <div class="combobox-component-tag" v-for="(item,index) in result" :key="index" :idTag="item[col[0]]">
@@ -11,11 +11,11 @@
             </div>
         </div>
         <div class="combobox-component-item-box" v-show="isShowSelectBox" @click.stop>
-                <div class="combobox-component-item" @click="hideShowSelectBox">- Không chọn -</div>
-                <div class="combobox-component-item" v-for="(item,index) in data" :key="index" :idRow="item[col['0']]" @click="rowOnClick(item, $event)" >
-                    <div class="combobox-component-item-content">{{item[col['1']]}}</div>
-                    <div class="combobox-component-item-icon" style="visibility: hidden"></div>
-                </div>
+            <div class="combobox-component-item" @click="noSelectedItem">- Không chọn -</div>
+            <div class="combobox-component-item" v-for="(item,index) in data" :key="index" :idRow="item[col['0']]" @click="rowOnClick(item, $event)" >
+                <div class="combobox-component-item-content">{{item[col['1']]}}</div>
+                <div class="combobox-component-item-icon" style="visibility: hidden"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -125,6 +125,19 @@ export default{
         onClickOutside(){
             this.isShowSelectBox = false;
         },
+
+        /**
+         * xử lí khi ấn không chọn của combobox 
+         * created by SONTD(21.08.2022)
+         */
+        noSelectedItem(){
+            let me = this;
+            me.data.forEach(function(item){
+                me.isRowSelected[item[me.col[0]]] = false;
+            })
+            me.updateStatusCombobox();
+            me.isShowSelectBox = false;
+        }
     },
     watch: {
         'data':function(){

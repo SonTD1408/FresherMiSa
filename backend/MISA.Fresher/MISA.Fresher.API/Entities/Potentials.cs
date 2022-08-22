@@ -185,6 +185,21 @@ namespace MISA.Fresher.API.Entities
         public Guid? TurnoverID { get; set; }
 
         /// <summary>
+        /// 37. lưu mảng các loại tiềm năng
+        /// </summary>
+        public PotentialTypes[]? PotentialTypes { get; set; }
+
+        /// <summary>
+        /// 38. Lưu mảng các loại nghề nghiệp
+        /// </summary>
+        public Careers[]? Careers { get; set; }
+
+        /// <summary>
+        /// 39. Lưu mảng các loại lĩnh vực
+        /// </summary>
+        public Fields[]? Fields { get; set; }
+
+        /// <summary>
         /// 37. ngày tạo
         /// </summary>
         public DateTime? CreatedDate { get; set; }

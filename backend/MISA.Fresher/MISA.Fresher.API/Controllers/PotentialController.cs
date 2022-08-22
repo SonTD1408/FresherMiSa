@@ -55,45 +55,9 @@ namespace MISA.Fresher.API.Controllers
             {
                 //lưu vào bảng potential 
                 var potentialService = new PotentialService();
-                var res1 = potentialService.add(addPotentialDTO.Potential);
+                var res = potentialService.add(addPotentialDTO.Potential);
 
-                if (res1.Status != 0)
-                {
-                    //lưu ngành nghề vào bảng careerSaves
-                    var careerSaveData = addPotentialDTO.Career; 
-                    if (careerSaveData != null)
-                    {
-                        var careerSaveService = new CareerSaveService();
-                        foreach(var item in careerSaveData)
-                        {
-                            var res2 = careerSaveService.add(item.ID, res1.Data);
-                        }
-                    }
-
-                    //lưu lĩnh vực vào bảng FieldSaves
-                    var fieldSaveData = addPotentialDTO.Field;
-                    if (fieldSaveData != null)
-                    {
-                        var fieldSaveService = new FieldSaveService();
-                        foreach (var item in fieldSaveData)
-                        {
-                            var res3 = fieldSaveService.add(item.ID, res1.Data);
-                        }
-                    }
-
-                    //lưu ngành nghề vào bảng careerSaves
-                    var potentialTypeSaveData = addPotentialDTO.PotentialType;
-                    if(potentialTypeSaveData != null)
-                    {
-                        var potentialTypeSaveService = new PotentialTypeSaveService();
-                        foreach (var item in potentialTypeSaveData)
-                        {
-                            var res2 = potentialTypeSaveService.add(item.ID, res1.Data);
-                        }
-                    }
-                }
-
-                return StatusCode(StatusCodes.Status201Created, res1);
+                return StatusCode(StatusCodes.Status201Created, res);
             }
             catch (Exception e)
             {
@@ -149,7 +113,7 @@ namespace MISA.Fresher.API.Controllers
             }
             catch (Exception)
             {
-                var ex = new ActionResults<Potentials>()
+                var ex = new ActionResults<PotentialDTO>()
                 {
                     Status =0,
                     StatusMsg = ResultMessage._CONTROLLER_EXCEPTION_MSG,

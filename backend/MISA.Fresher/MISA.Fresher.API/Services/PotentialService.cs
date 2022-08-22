@@ -106,7 +106,7 @@ namespace MISA.Fresher.API.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResults<Potentials> getById(Guid id)
+        public ActionResults<PotentialDTO> getById(Guid id)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace MISA.Fresher.API.Services
             }
             catch (Exception)
             {
-                return new ActionResults<Potentials>()
+                return new ActionResults<PotentialDTO>()
                 {
                     Status = 0,
                     StatusMsg = ResultMessage._SERVICE_EXCEPTION_MSG,
@@ -145,11 +145,11 @@ namespace MISA.Fresher.API.Services
                     if(prop.Name != "PotentialID")
                     {
                         var value = prop.GetValue(potential, null);
-                        if (value != null)
-                        {
+                        //if (value != null)
+                        //{
                             param.Add("@" + prop.Name, value);
                             query += $"{prop.Name} = @{prop.Name}, ";
-                        } 
+                        //} 
                     }
                 }
                 string query1 = query.Remove(query.Length-2);

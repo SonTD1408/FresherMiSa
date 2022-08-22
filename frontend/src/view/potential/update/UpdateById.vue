@@ -7,7 +7,7 @@
             </div>
             <div class="update-topbar-right">
                 <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
-                <button class="s-button-gray">Lưu và thêm</button>
+                <button class="s-button-gray" @click="saveAndAddButtonOnClick">Lưu và thêm</button>
                 <button class="s-button" @click="saveButtonOnClick">Lưu</button>
             </div>
       </div>
@@ -71,9 +71,10 @@
                     <div class="uib-txt">Không gửi Email</div>
                     <input
                     type="checkbox"
-                    v-model="Potential['IsSendEmail']"
+                    isSelectedCheckBox="false"
                     FieldSet="IsSendEmail"
                     class="update-input-checkbox"
+                    @click="isSendEmailCheckBoxOnClick"
                     />
                 </div>
                 <div class="update-item">
@@ -114,7 +115,7 @@
                     <input class="update-input-feild s-input" 
                     FieldSet="FullName"
                     disabled 
-                    v-bind:value="(Potential['LastName']!=undefined? Potential['LastName']:'')+' '+(Potential['FirstName']!=undefined? Potential['FirstName']:'')"
+                    v-bind:value="(Potential['LastName']? Potential['LastName']:'')+' '+(Potential['FirstName']? Potential['FirstName']:'')"
                     />
                 </div>
                 <div class="update-item">
@@ -143,9 +144,10 @@
                     <div class="uib-txt">Không gọi điện</div>
                     <input
                     type="checkbox"
-                    v-model = "Potential['IsCall']"
                     FieldSet="IsCall"
+                    isSelectedCheckBox="false"
                     class="update-input-checkbox"
+                    @click="isCallCheckBoxOnClick"
                     />
                 </div>
                 <div class="update-item">
@@ -255,6 +257,8 @@ export default {
                         if (me.Potential.DateOfBirth){
                             me.Potential.DateOfBirth = Resource.formatDateTimeToDate(me.Potential.DateOfBirth);
                         }
+                    }else{
+                        console.log(response.data.StatusMsg);
                     }
                 })
                 // lấy dữ liệu vocative
@@ -360,6 +364,29 @@ export default {
         },
 
         /**
+         * hàm thực hiện khi ân nút lưu và thêm
+         * created by SONTD(22.08.)
+         */
+        saveAndAddButtonOnClick(){
+            let me =this,
+                val = me.checkValidate();
+            if (val){
+                try {
+                    let url = "/" + me.idRow;
+                    axiosConfig.call("put", axiosConfig.Potentials + url, me.Potential, function(response){
+                        if (response.data.Status!=0){
+                            me.$emit("showToastMessage",3);
+                        }else{
+                            me.$emit("showToastMessage",4);
+                        }
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        },
+
+        /**
          * lấy gia trị từ select input component
          * createdby SONTD (14.08.2022)
          * @param {*} val 
@@ -369,6 +396,36 @@ export default {
             let me = this;
             me.Potential[variable] = val;
         },
+
+        /**
+         * xử lí chuyển kiểu về dạng bit 0 1 khi bấm vào checkbox isSendEmail
+         * created by SONTD(21.08.2022)
+         */
+        isSendEmailCheckBoxOnClick(event){
+            let me = this;
+            if (event.target.getAttribute("isSelectCheckBox")=="true"){
+                event.target.setAttribute("isSelectCheckBox","false");
+                me.Potential.IsSendEmail = 0;
+            }else{
+                event.target.setAttribute("isSelectCheckBox","true");
+                me.Potential.IsSendEmail = 1;
+            }
+        },
+
+        /**
+         * xử lí chuyển kiểu về dạng bit 0 1 khi bấm vào checkbox isCall
+         * created by SONTD(21.08.2022)
+         */
+        isCallCheckBoxOnClick(event){
+            let me = this;
+            if (event.target.getAttribute("isSelectCheckBox")=="true"){
+                event.target.setAttribute("isSelectCheckBox","false");
+                me.Potential.IsCall = 0;
+            }else{
+                event.target.setAttribute("isSelectCheckBox","true");
+                me.Potential.IsCall = 1;
+            }
+        }
     },
     created() {
         let me = this;
@@ -377,6 +434,24 @@ export default {
         // khởi tạo page lấy data cần thiết từ server
         me.init();
     },
+    watch: {
+        // set default cho trường không gửi tin nhắn và trường không gọi điện
+        'Potential':function(){
+            let me = this;
+            // set default cho trường không gửi email 
+            if (me.Potential.IsSendEmail && me.Potential.IsSendEmail==1){
+                let checkbox = me.$refs.updateMainContentRef.querySelector("[FieldSet=IsSendEmail]");
+                checkbox.click();
+                checkbox.setAttribute("isSelectedCheckBox", "true");
+            }
+            // set default cho trường không gọi điện 
+            if (me.Potential.IsCall && me.Potential.IsCall==1){
+                let checkbox = me.$refs.updateMainContentRef.querySelector("[FieldSet=IsCall]");
+                checkbox.click();
+                checkbox.setAttribute("isSelectedCheckBox", "true");
+            }
+        }
+    }
 }
 </script>
 <style scoped>
