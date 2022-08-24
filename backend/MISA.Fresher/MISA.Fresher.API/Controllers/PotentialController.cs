@@ -19,9 +19,9 @@ namespace MISA.Fresher.API.Controllers
         /// <param name="where"></param> lọc
         /// <param name="sort"></param> sắp xếp
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost("filter")]
         public IActionResult GetAllPotentials([FromQuery] string? sort,
-                                            [FromQuery] string? where,
+                                            [FromQuery] string? filter,
                                             [FromQuery] int pageSize = 50,
                                             [FromQuery] int pageNumber = 1)
         {
@@ -29,7 +29,7 @@ namespace MISA.Fresher.API.Controllers
             {
                 var potentialService = new PotentialService();
 
-                return StatusCode(StatusCodes.Status200OK, potentialService.GetAll(pageSize, pageNumber, where, sort));
+                return StatusCode(StatusCodes.Status200OK, potentialService.GetAll(pageSize, pageNumber, filter, sort));
             }
             catch (Exception e)
             {
@@ -185,7 +185,7 @@ namespace MISA.Fresher.API.Controllers
             {
                 var service = new PotentialService();
                 var res = service.NewCode();
-                return StatusCode(StatusCodes.Status200OK, res);
+                return Ok(res);
             }
             catch (Exception e)
             {

@@ -1,8 +1,8 @@
 <template>
     <div class="body">
-        <TheHeader></TheHeader>
+        <TheHeader @emitSearchString="getSearchStringFromHeader"></TheHeader>
         <TheNavigation></TheNavigation>
-        <TheContent></TheContent>
+        <TheContent :searchString="searchString"></TheContent>
     </div>
 </template>
 
@@ -16,7 +16,19 @@ export default {
     TheHeader,
     TheNavigation,
     TheContent,
-  }
+  },
+  data() {
+    return {
+        // lưu dữ liệu search
+        searchString: "",  
+    }
+  },
+  methods: {
+      // hàm lấy dl searchString 
+      getSearchStringFromHeader(searchString){
+          this.searchString = searchString;
+      } 
+  },
 }
 </script>
 

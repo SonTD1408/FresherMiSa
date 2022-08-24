@@ -10,7 +10,9 @@
           <input
             type="text"
             class="s-input search-field"
-            placeholder="Tìm kiếm tiềm năng, liên hệ khách hàng"/>
+            v-model="searchString"
+            placeholder="Tìm kiếm tiềm năng, liên hệ khách hàng"
+            v-on:keyup.enter="searchOnEnter"/>
           <div class="hm-input-icon">
           </div>
         </div>
@@ -43,6 +45,21 @@
 <script>
 export default {
     components: {
+    },
+    data() {
+        return {
+            // biến lưu dl trong ô search 
+            searchString: "",
+        }
+    },
+    methods: {
+        /**
+         * hàm chuyền dl để reload bảng khi ấn enter ở ô search
+         * created by SONTD(24.08.2022)
+         */
+        searchOnEnter(){
+            this.$emit("emitSearchString", this.searchString);
+        }
     },
 }
 </script>

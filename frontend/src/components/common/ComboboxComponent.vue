@@ -156,10 +156,13 @@ export default{
         'defaultValue':function(){
             let me = this,
                 defaultObj = JSON.parse(me.defaultValue);
-            defaultObj.forEach(function(item){
-                me.isRowSelected[item[me.col[0]]] = true;
-                me.isResultNull = false;
-            })
+            if (defaultObj){
+
+                defaultObj.forEach(function(item){
+                    me.isRowSelected[item[me.col[0]]] = true;
+                    me.isResultNull = false;
+                })
+            }
         }
     },
 }

@@ -54,108 +54,8 @@
       </div>
     </div>
     <div class="potential-content">
-      <div id="filterbar-left" v-if="isShowFilterbarLeft==1">
-        <div class="filter-saved">
-          <div class="fs-txt">BỘ LỌC ĐÃ LƯU</div>
-          <div class="fs-icon"></div>
-        </div>
-        <div class="filter-search-box">
-          <div class="fsb-container">
-            <div class="fsbc-txt">LỌC TIỀM NĂNG THEO</div>
-            <div class="fsbc-icon"></div>
-          </div>
-          <div class="fsb-item-box">
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon">
-              <div class="fsbi-label">Thẻ</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon">
-              <div class="fsbi-label">Xưng hô</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon">
-              <div class="fsbi-label">Họ và tên</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Chức danh</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">ĐT di động</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">ĐT cơ quan</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Email cơ quan</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Email cá nhân</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Tổ chức</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Địa chỉ</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Tỉnh/Thành phố</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Quận/Huyện</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Phường/Xã</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Nguồn gốc</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Loại hình</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Lĩnh vực</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Mô tả</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Bố cục</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Chủ sở hữu</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Doanh thu</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Dùng chung</div>
-            </div>
-            <div class="fsb-item">
-              <input type="checkbox" class="fsbi-icon"/>
-              <div class="fsbi-label">Facebook</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
+      <FilterBarLeft :isShowFilterbarLeft="isShowFilterbarLeft"></FilterBarLeft>
       <div id="main-content" ref="showMainContentRef">
         <div class="filterbar-left-show-hide-btn" @click="hideShowFilterbarLeft">
           <div class="filterbar-left-show-hide-btn-icon"></div>
@@ -190,9 +90,9 @@
             </div>
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
-            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID">
+            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID" @mouseover="rowOnMouseOver" @mouseleave="rowOnMouseLeave">
               <div class="s-td align-right">
-                  <div class="s-td-update-icon" @click="updateIconOnClick($event)" v-if="isShowUpdateIcon"></div>
+                  <div class="s-td-update-icon" style="visibility: hidden;" @click="updateIconOnClick($event)"></div>
                   <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
               <div class="s-td" v-for="(i,ind) in gridColumns" :key="ind">
@@ -202,6 +102,7 @@
               </div>
             </div>
             <LoadingComponent :typeOfLoading="isShowLoading"></LoadingComponent>
+            <div class="show-potential-no-data" v-if="isDataNull">Không tìm thấy dữ liệu</div>
           </div>
         </div>
         <div class="footer">
@@ -277,17 +178,23 @@ import UpdateMany from "../update/UpdateMany.vue";
 import DialogComponent from "../../../components/dialog/DialogComponent.vue"
 import axiosConfig  from "@/script/config/axiosConfig";
 import LoadingComponent from "@/components/common/LoadingComponent.vue";
+import FilterBarLeft from "./FilterBarLeft.vue";
 export default {
   directives: {
       clickOutside: vClickOutside.directive
   },
+  props:{
+      searchString: String,
+  },
   components:{
     UpdateMany,
     DialogComponent,
-    LoadingComponent
+    LoadingComponent,
+    FilterBarLeft
 },
   data() {
     return {
+      // biến để reset table
       isShowDataInTable: 1,
       // biến đếm số dòng được chọn
       numberOfRowSelected: 0,
@@ -297,8 +204,6 @@ export default {
       toolbarTopLeftStatus: "normal",
       // biến chọn page size
       isShowPagesizeCombobox: false,
-      // ẩn hiện update icon
-      isShowUpdateIcon: true,
       // biến ẩn hiện dialog xuất khẩu và xóa
       isShowOptionTtleft: false,
       // biến ẩn hiện thanh bên trái
@@ -311,6 +216,8 @@ export default {
       isShowDialogComponent: 0,
       // ẩn hiện loading
       isShowLoading: 0,
+      // kiểm tra data lấy về có null không
+      isDataNull: false,
       //số bản ghi trên trang
       pageSize : "50",
       // số trang 
@@ -344,25 +251,64 @@ export default {
 
   methods: {
     /**
+     * di chuột hover vào row thì hiện icon update
+     * created by SONTD(24.08.2022)
+     */
+    rowOnMouseOver(event){
+        if (event.target.closest(".s-tr")){
+            if (event.target.closest(".s-tr").querySelector(".s-td-update-icon")){
+                event.target.closest(".s-tr").querySelector(".s-td-update-icon").style.visibility="visible";
+            }
+        }
+    },
+
+    /**
+     * di chuột ra ngoài row ẩn icon update
+     * created by SONTD(24.08.2022)
+     */
+    rowOnMouseLeave(event){
+        if (event.target.closest(".s-tr")){
+            if (event.target.closest(".s-tr").querySelector(".s-td-update-icon")){
+                event.target.closest(".s-tr").querySelector(".s-td-update-icon").style.visibility="hidden";
+            }
+        }
+    },
+
+    /**
      * hàm lấy tiềm năng từ serve
      * created by SONTD (07.08.2022)
      */
     getDataFromServer(){
       let me = this,
-          url = `?pageSize=${me.pageSize}&pageNumber=${this.pageNumber}`;
+          url = `?pageSize=${me.pageSize}&pageNumber=${me.pageNumber}`;
+      if (me.searchString){
+          url+= `&filter=${me.searchString}`;
+      }
       try{
           me.isShowLoading = 1;
-          axiosConfig.call("get", axiosConfig.Potentials+url, "", function(response){
+          axiosConfig.call("post", axiosConfig.Potentials+"/filter"+url,"", function(response){
             if (response.data){
               me.isShowLoading= 0;
-              me.data = response.data.Data.PotentialList;
-              me.numberOfRecord = response.data.Data.NumberOfRecord;
+              if (response.data.Data){
+                if (response.data.Data.NumberOfRecord==0){
+                  me.isDataNull = true;
+                }else{
+                  me.isDataNull = false;
+                }
+                me.data = response.data.Data.PotentialList;
+                me.numberOfRecord = response.data.Data.NumberOfRecord;
+              }else{
+                me.isDataNull = true;
+              }
+            }else{
+              me.isDataNull=true;
             }
           });
       }catch(error){
           console.log(error);
       }
     },
+
     /**
      * hàm khi scroll thì kéo theo thead của table
      * created by SONTD (04.08.2022)
@@ -677,13 +623,20 @@ export default {
   mounted() {
     this.getSelectedRow();
   },
+  watch: {
+      'searchString':function(){
+        let me  = this;
+          me.pageNumber = 1;
+          me.reloadDataGrid();
+      }
+  }
 };
 </script>
 <style scoped>
 @import url("../../../style/common/button.css");
 @import url("../../../style/view/potential/show/showPotential.css");
 @import url("../../../style/view/potential/show/toolbarTop.css");
-@import url("../../../style/view/potential/show/filterbarLeft.css");
+/* @import url("../../../style/view/potential/show/filterbarLeft.css"); */
 @import url("../../../style/view/potential/show/mainContent.css");
 @import url("../../../style/view/potential/show/toolbarRight.css");
 </style>

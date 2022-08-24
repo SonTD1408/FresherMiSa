@@ -206,10 +206,11 @@ export default {
     emits: ["showToastMessage"],
     components: {
         SelectInput,
-        ComboboxComponent
+        ComboboxComponent,
     },
     props: {
         PotentialID: String,
+        searchString: String
     },
     data() {
         return {

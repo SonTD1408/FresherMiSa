@@ -5,6 +5,7 @@ using MISA.Fresher.API.ActionResult;
 using MySqlConnector;
 using Dapper;
 using System.Text.Json;
+using System.Text;
 
 namespace MISA.Fresher.API.Repositories
 {
@@ -62,7 +63,8 @@ namespace MISA.Fresher.API.Repositories
                 return new ActionResults<Paging>()
                 {
                     Status = 0,
-                    StatusMsg = ResultMessage._REPOSITORY_EXCEPTION_MSG
+                    //StatusMsg = ResultMessage._REPOSITORY_EXCEPTION_MSG,
+                    StatusMsg = e.ToString(),
                 };
             }
         }

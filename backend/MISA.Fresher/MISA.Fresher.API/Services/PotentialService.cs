@@ -19,13 +19,19 @@ namespace MISA.Fresher.API.Services
         /// <param name="where"></param> lọc
         /// <param name="sort"></param> sắp xếp
         /// <returns></returns>
-        public ActionResults<Paging> GetAll(int pageSize, int pageNumber, string where, string sort)
+        public ActionResults<Paging> GetAll(int pageSize, int pageNumber, string filter, string sort)
         {
             try
             {
+                var where = new StringBuilder();
+                if (filter != null)
+                {
+                    where.Append($" where PotentialCode like \'%{filter}%\' or FirstName like \'%{filter}%\' or LastName like \'%{filter}%\' or FullName like \'%{filter}%\' " +
+                        $" or PhoneNumber like \'%{filter}%\' or OfficePhoneNumber like \'%{filter}%\' or Email like \'%{filter}%\' or OfficeEmail like \'%{filter}%\' ");
+                }
                 var potentialRepository = new PotentialRepository();
                 int take = (pageNumber - 1) * pageSize;
-                return potentialRepository.GetAll(take, pageSize, where, sort);
+                return potentialRepository.GetAll(take, pageSize, where.ToString(), sort);
             }
             catch (Exception)
             {

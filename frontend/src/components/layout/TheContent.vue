@@ -1,12 +1,16 @@
 <template>
     <div id="content" ref="content">
-        <router-view @showToastMessage="showMessage"></router-view>
+        <router-view @showToastMessage="showMessage" :searchString="searchString"></router-view>
         <ToastMessage :typeMsg="toastMsgType"></ToastMessage>
     </div>
 </template>
 <script>
 import ToastMessage from "../common/ToastMessage.vue"
 export default {
+    props:{
+        // lấy dữ liệu ô search ở header 
+        searchString: String,
+    },
     components:{
         ToastMessage
     },
