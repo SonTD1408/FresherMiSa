@@ -1,4 +1,5 @@
 #main-content{
+    font-size: 13px;
     position: relative;
     flex: 1;
     height: calc(100vh - 84px - 64px);
@@ -79,6 +80,9 @@
     grid-template-columns: 150px 150px 150px 200px 200px 200px 200px 250px 250px 200px 300px 200px 200px 200px 200px 200px 200px;
     height: 40px;
 }
+.s-th{
+    font-weight: 600;
+}
 .s-td, .s-th{
     white-space: nowrap;
     overflow: hidden;
@@ -86,11 +90,15 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ccc;
-    padding: 0 25px;
+    padding: 0 15px;
 }
 .s-td{
     text-overflow: ellipsis;
     cursor: pointer;
+}
+.s-td-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .s-th-export-icon{
     cursor: pointer;

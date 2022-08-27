@@ -20,7 +20,7 @@
           <div class="s-button-gray ttl-option" @click="hideShowOptionDialogToolbarLeft">
               <div class="ttl-option-icon"></div>
               <div class="ttl-option-item-box" v-if="isShowOptionTtleft" v-click-outside="optionOutSideOnClick">
-                <div class="s-button-gray ttl-option-item"><div class="ttloi-icon-export"></div> <span>Xuất khẩu</span></div>
+                <div class="s-button-gray ttl-option-item" @click="exportSelectedRow"><div class="ttloi-icon-export"></div> <span>Xuất khẩu</span></div>
                 <div class="s-button-gray ttl-option-item" @click="deleteButtonOnClick"><div class="ttloi-icon-delete"></div> <span style="color: red">Xóa</span></div>
               </div>
           </div>
@@ -67,9 +67,9 @@
           <div class="s-thead">
             <div class="s-tr">
                 <div class="s-th align-right">
-                    <div class="s-th-export-icon"></div>
+                    <div class="s-th-export-icon" @click="isDoing"></div>
                     <!-- <div class="s-th-select-icon"></div> -->
-                    <input type="checkbox" class="s-th-select-icon">
+                    <input type="checkbox" class="s-th-select-icon s-th-check-all-row" isChecked="false" @click="checkAllRowOnClick">
                 </div>
               <div class="s-th">Thẻ</div>
               <div class="s-th">Xưng hô</div>
@@ -86,7 +86,7 @@
               <div class="s-th">Phường/Xã</div>
               <div class="s-th">Nguồn gốc</div>
               <div class="s-th">Mô tả</div>
-              <div class="s-th">Dùng chung</div>
+              <div class="s-th">Doanh thu</div>
             </div>
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
@@ -97,8 +97,8 @@
               </div>
               <div class="s-td" v-for="(i,ind) in gridColumns" :key="ind">
                   <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
-                  <div v-if="ind!=2">{{formatNullData(item[i])}}</div>
-                  <div v-if="ind==2">{{formatNullData(`${item['LastName']} ${item['FirstName']}`)}}</div>
+                  <div class="s-td-text" v-if="ind!=2">{{formatNullData(item[i])}}</div>
+                  <div class="s-td-text" v-if="ind==2">{{formatNullData(`${item['LastName']} ${item['FirstName']}`)}}</div>
               </div>
             </div>
             <LoadingComponent :typeOfLoading="isShowLoading"></LoadingComponent>
@@ -239,7 +239,7 @@ export default {
         "WardName",
         "SourceName",
         "PotentialDescription",
-        "IsShare"
+        "TurnoverName"
       ],
       // data của bảng lấy từ server 
       data: {},
@@ -308,6 +308,28 @@ export default {
           console.log(error);
       }
     },
+    
+    // getDataFromServer(){
+    //   let me = this;
+    //       me.axios({
+    //           url: 'http://localhost:5091/api/Potential/Download',
+    //           method: 'post',
+    //           responseType: 'blob', // important
+    //         }).then((response) => {
+    //           const url = window.URL.createObjectURL(new Blob([response.data]));
+    //           const link = document.createElement('a');
+    //           link.href = url;
+    //           link.setAttribute('download', 'Potential.xlsx'); //or any other extension
+    //           document.body.appendChild(link);
+    //           link.click();
+    //           link.remove();
+    //       });
+    //   try{
+    //       me.isShowLoading = 1;
+    //   }catch(error){
+    //       console.log(error);
+    //   }
+    // },
 
     /**
      * hàm khi scroll thì kéo theo thead của table
@@ -339,7 +361,7 @@ export default {
     changePageSizeOnClick(e){
       this.pageSize = e.target.getAttribute("Value");
       this.pageNumber =1;
-      this.getDataFromServer();
+      this.reloadDataGrid();
     },
 
     /**
@@ -522,7 +544,39 @@ export default {
     deleteButtonOnClick(){
         let me = this;
         me.isShowDialogComponent = 1;
-        
+    },
+
+    /**
+     * hàm export ra file excel những dòng đã chọn
+     * created by SONTD(26.08.2022)
+     */
+    exportSelectedRow(){
+        let me = this,
+            row = [];
+        try{
+            if (me.$refs.gridTable.querySelectorAll(".s-td [isChecked=true]")){
+                me.$refs.gridTable.querySelectorAll(".s-td [isChecked=true]").forEach(function(item){
+                    row.push(item.closest(".s-tr").getAttribute("idofrow"));
+                });
+            }
+            me.axios({
+              url: 'http://localhost:5091/api/Potential/ExportToExcel',
+              method: 'post',
+              responseType: 'blob', // important,
+              data: row,
+            }).then((response) => {
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', 'Potential.xlsx'); //or any other extension
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+          });
+
+        }catch(error){
+            console.log(error);
+        }
     },
 
     /**
@@ -606,6 +660,26 @@ export default {
         if (me.pageNumber != numberOfPage){
             me.pageNumber = numberOfPage;
             me.reloadDataGrid();
+        }
+    },
+
+    /**
+     * hàm sự kiện khi ấn vào ô checkbox để check tất cả các hàng
+     * created by SONTD(26.08.2022)
+     */
+    checkAllRowOnClick(event){
+        let me  = this;
+        if (me.$refs.gridTable.querySelectorAll(".s-tbody .s-th-select-icon")){
+            me.$refs.gridTable.querySelectorAll(".s-tbody .s-th-select-icon").forEach(function(item){
+                if (item.getAttribute("isChecked")==event.target.getAttribute("isChecked")){
+                    item.click();
+                }
+            });
+        }
+        if (event.target.getAttribute("isChecked")=="false"){
+            event.target.setAttribute("isChecked", "true");
+        }else{
+            event.target.setAttribute("isChecked", "false");
         }
     },
 

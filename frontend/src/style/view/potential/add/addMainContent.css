@@ -4,6 +4,7 @@
     overflow: auto;
     height: calc(100vh - 84px - 64px);
     box-sizing: border-box;
+    font-size: 13px;
 }
 .add-main-content-img-box{
     margin: 8px 0 32px 0;

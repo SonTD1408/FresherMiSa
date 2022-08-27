@@ -28,3 +28,12 @@ D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\ref\M
 D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\Dapper.dll
 D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\MySqlConnector.dll
 D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\ClosedXML.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\DocumentFormat.OpenXml.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\ExcelNumberFormat.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\System.IO.Packaging.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.0\Microsoft.Win32.SystemEvents.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.0\System.Drawing.Common.dll
+D:\Misa\FresherMiSa\backend\MISA.Fresher\MISA.Fresher.API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.0\System.Drawing.Common.dll

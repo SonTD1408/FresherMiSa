@@ -1,5 +1,6 @@
 /* ảnh tiềm năng  */
 #update-main-content{
+    font-size: 13px;
     padding: 18px 38px;
     overflow: auto;
     height: calc(100vh - 84px - 64px);

@@ -30,8 +30,8 @@ namespace MISA.Fresher.API.Services
                         $" or PhoneNumber like \'%{filter}%\' or OfficePhoneNumber like \'%{filter}%\' or Email like \'%{filter}%\' or OfficeEmail like \'%{filter}%\' ");
                 }
                 var potentialRepository = new PotentialRepository();
-                int take = (pageNumber - 1) * pageSize;
-                return potentialRepository.GetAll(take, pageSize, where.ToString(), sort);
+                int skip = (pageNumber - 1) * pageSize;
+                return potentialRepository.GetAll(skip, pageSize, where.ToString(), sort);
             }
             catch (Exception)
             {
@@ -269,26 +269,61 @@ namespace MISA.Fresher.API.Services
             }
         }
 
-        //public ActionResults<int> Duplicate(string columnName, string columnValue)
-        //{
-        //    try
-        //    {
-        //        string query = $"select count(p.PotentialID) from Potentials p where p.@ColumnName = @ColumnValue";
-        //        var param = new DynamicParameters();
-        //        param.Add("@ColumnName", columnName);
-        //        param.Add("@ColumnValue", columnValue);
-        //        var repository = new PotentialRepository();
-        //        var res = repository.Duplicate(query, param);
-        //        return res;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return new ActionResults<int>()
-        //        {
-        //            Status = 0,
-        //            StatusMsg = e.ToString(),
-        //        };
-        //    }
-        //}
+        /// <summary>
+        /// hàm xử lí logic để lấy dữ liệu cho file excel
+        /// </summary>
+        /// <param name="potentialIDList"></param>
+        /// <param name="filter"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+        public ActionResults<Paging> ExportToExcel(Guid[] potentialIDList,
+                                                   string filter,
+                                                   int pageSize,
+                                                   int pageNumber)
+        {
+            try
+            {
+                //chuẩn bị proc name
+                var procName = "Proc_Filter_Potentials";
+                var param = new DynamicParameters();
+                var where = new StringBuilder();
+                if (potentialIDList.Length > 0)
+                {
+                    where.Append(" where PotentialID in ( ");
+                    for (int i = 0; i < potentialIDList.Length; i++)
+                    {
+                        if (i < potentialIDList.Length - 1)
+                        {
+                            where.Append($" \'{potentialIDList[i]}\', ");
+                        }
+                        else
+                        {
+                            where.Append($" \'{potentialIDList[i]}\' ");
+                        }
+                    }
+                    where.Append(" ) ");
+                }
+
+                int skip = (pageNumber - 1) * pageSize;
+                //chuẩn bị parameter 
+                param.Add("@$Skip", skip);
+                param.Add("@$Take", pageSize);
+                param.Add("@$Where", where.ToString());
+                param.Add("@$Sort", "");
+
+                var repository = new PotentialRepository();
+                var res = repository.ExportToExcel(procName, param);
+                return res;
+            }
+            catch (Exception e)
+            {
+                return new ActionResults<Paging>()
+                {
+                    Status = 0,
+                    StatusMsg = e.ToString(),
+                };
+            }
+        }
     }
 }

@@ -385,6 +385,7 @@ export default {
                     let url = "/" + me.idRow;
                     axiosConfig.call("put", axiosConfig.Potentials + url, me.Potential, function(response){
                         if (response.data.Status!=0){
+                            me.$router.push({path: "/potential/add"});
                             me.$emit("showToastMessage",3);
                         }else{
                             me.$emit("showToastMessage",4);

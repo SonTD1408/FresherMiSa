@@ -8,11 +8,11 @@
         </div>
         <div class="add-topbar-right">
           <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
-          <button class="s-button-gray">Lưu và thêm</button>
+          <button class="s-button-gray" @click="saveAndAddButtonOnClick">Lưu và thêm</button>
           <button class="s-button" @click="saveButtonOnClick">Lưu</button>
         </div>
       </div>
-      <div id="add-main-content" ref="addMainContentRef">
+      <div id="add-main-content" ref="addMainContentRef" v-if="isShowForm">
         <div class="add-main-content-img-box">
           <div class="add-section-title">Ảnh tiềm năng</div>
           <div class="aimgb-img-box">
@@ -384,7 +384,9 @@ export default {
         city: false,
         district: false,
         ward: false,
-      }
+      },
+      // biến cờ để reset form thêm
+      isShowForm: true
     };
   },
   methods: {
@@ -552,6 +554,39 @@ export default {
               console.log(error);
           }
       }
+    },
+
+    /**
+     * sự kiện ấn vào nút lưu và thêm
+     * Created by SONTD (24.08.2022)
+     */
+    saveAndAddButtonOnClick(){
+        let me =this;
+        let val = me.checkValidate();
+        if (val){
+          try{
+            me.axios
+              .post("http://localhost:5091/api/Potential", me.dataForm)
+              .then((response) => {
+                  if (response.status==201){
+                    if (response.data && response.data.StatusMsg == Resource.ResponseStatus.SuccessMsg){
+                      me.$emit("showToastMessage",3);
+                    }else if (response.data && response.data.StatusMsg == Resource.ResponseStatus.PotentialCodeDuplicate){
+                      me.validateDuplicate("PotentialCode");
+                    }
+                  }
+                  else{
+                    me.$emit("showToastMessage",4);
+                  }
+              })
+              .catch(function(error){
+                  me.$emit("showToastMessage",4);
+                  console.log(error);
+              });
+          }catch(error){
+              console.log(error);
+          }
+        }
     },
 
     /**

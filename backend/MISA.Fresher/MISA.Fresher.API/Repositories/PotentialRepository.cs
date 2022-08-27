@@ -377,39 +377,52 @@ namespace MISA.Fresher.API.Repositories
         }
 
         /// <summary>
-        /// hàm check xem value của cột mình nhập có bị duplicate hay không
+        /// hàm gọi query để lấy dữ liệu đổ vào file excel
         /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="where"></param>
+        /// <param name="sort"></param>
         /// <returns></returns>
-        //public ActionResults<int> Duplicate(string query, DynamicParameters param)
-        //{
-        //    try
-        //    {
-        //        using (var connection = new MySqlConnection(DBConfig._CONNECTION_STRING))
-        //        {
-        //            var queryResult = connection.QueryFirstOrDefault<int>(query, param);
-        //            var result = new ActionResults<int>();
-        //            result.Data = queryResult;
-        //            if (queryResult>0)
-        //            {
-        //                result.Status = 2;
-        //                result.StatusMsg = ResultMessage._SUCCESS_MSG;
-        //            }
-        //            else
-        //            {
-        //                result.Status = 0;
-        //                result.StatusMsg = ResultMessage._SUCCESS_NULL_MSG;
-        //            }
-        //            return result;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return new ActionResults<int>()
-        //        {
-        //            Status = 0,
-        //            StatusMsg = e.ToString(),
-        //        };
-        //    }
-        //}
+        public ActionResults<Paging> ExportToExcel(string procName, DynamicParameters param)
+        {
+            try
+            {
+                using (var mysqlConnection = new MySqlConnection(DBConfig._CONNECTION_STRING))
+                {
+                    //truy vấn
+                    using (var res = mysqlConnection.QueryMultiple(procName, param, commandType: System.Data.CommandType.StoredProcedure))
+                    {
+                        var paging = new Paging()
+                        {
+                            PotentialList = res.Read<PotentialDTO>().ToList(),
+                            NumberOfRecord = res.Read<long>().Single(),
+                        };
+                        var result = new ActionResults<Paging>();
+                        if (paging.NumberOfRecord > 0)
+                        {
+                            result.Status = 1;
+                            result.StatusMsg = ResultMessage._SUCCESS_MSG;
+                        }
+                        else
+                        {
+                            result.StatusMsg = ResultMessage._SUCCESS_NULL_MSG;
+                            result.Status = 0;
+                        }
+                        result.Data = paging;
+                        return result;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return new ActionResults<Paging>()
+                {
+                    Status = 0,
+                    //StatusMsg = ResultMessage._REPOSITORY_EXCEPTION_MSG,
+                    StatusMsg = e.ToString(),
+                };
+            }
+        }
     }
 }

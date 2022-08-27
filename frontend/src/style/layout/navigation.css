@@ -1,6 +1,6 @@
 #navigation{
     margin-top: 44px;
-    padding: 0 10px;
+    /* padding: 0 10px; */
     height: 40px;
     display: flex;
     align-items: center;
@@ -13,7 +13,9 @@
     border-bottom: none;
     display: flex;
     align-items: center;
-    margin-right: 32px;
+    padding: 0 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     cursor: pointer;
 }
 .nav-item:hover{
@@ -37,9 +39,6 @@
 .nt-icon-2{
     background: url(../../assets/img/icon_collection.svg) no-repeat 0 -48px;
 }
-.nt-icon-2-selected{
-    background: url(../../assets/img/icon_collection.svg) no-repeat -160px -288px;
-}
 .nt-icon-3{
     background: url(../../assets/img/icon_collection.svg) no-repeat -16px -272px;
 }
@@ -62,8 +61,62 @@
     background: url(../../assets/img/icon_collection.svg) no-repeat -320px -176px;
 }
 .nt-icon-10{
-    background: url(../../assets/img/icon_collection.svg) no-repeat -66px -305px;
+    background: url(../../assets/img/icon_collection.svg) no-repeat -64px -304px;
 }
 .nt-icon-11{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -128px -273px;
+}
+.nt-icon-12{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -80px -273px;
+}
+.nt-icon-13{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -208px -49px;
+}
+.nt-icon-14{
     background: url(../../assets/img/icon_collection.svg) no-repeat -48px -273px;
+}
+
+
+/* icon khi selected  */
+.nav-item-selected .nt-icon-1{
+    background: url(../../assets/img/icon_collection.svg) no-repeat 0 -288px;
+}
+.nav-item-selected .nt-icon-2{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -160px -288px;
+}
+.nav-item-selected .nt-icon-3{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -16px -288px;
+}
+.nav-item-selected .nt-icon-4{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -176px -288px;
+}
+.nav-item-selected .nt-icon-5{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -224px -288px;
+}
+.nav-item-selected .nt-icon-6{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -160px -304px;
+}
+.nav-item-selected .nt-icon-7{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -176px -304px;
+}
+.nav-item-selected .nt-icon-8{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -160px -240px;
+}
+.nav-item-selected .nt-icon-9{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -208px -304px;
+}
+.nav-item-selected .nt-icon-10{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -80px -304px;
+}
+.nav-item-selected .nt-icon-11{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -128px -289px;
+}
+.nav-item-selected .nt-icon-12{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -80px -289px;
+}
+.nav-item-selected .nt-icon-13{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -224px -304px;
+}
+.nav-item-selected .nt-icon-14{
+    background: url(../../assets/img/icon_collection.svg) no-repeat -48px -289px;
 }

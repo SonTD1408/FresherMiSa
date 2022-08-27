@@ -169,6 +169,7 @@ export default{
 </script>
 <style scoped>
     .combobox-component-container{
+        font-size: 13px;
         position: relative;
         width: 100%;
         min-height: 32px;
