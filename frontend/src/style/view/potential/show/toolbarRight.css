@@ -1,6 +1,6 @@
 #toolbar-right{
     height: calc(100vh - 84px - 64px);
-    width: 320px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     border-left: 1px solid #ddd;
@@ -76,4 +76,14 @@
 }
 .trbic-type{
     font-weight: 600;
+}
+.trbic-txt{
+    display: flex;
+    flex-wrap: wrap;
+}
+.trbic-txt-name{
+    margin-right: 4px;
+}
+.trbic-txt-date{
+    margin-left: 4px;
 }

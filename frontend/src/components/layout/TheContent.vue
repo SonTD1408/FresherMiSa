@@ -1,6 +1,6 @@
 <template>
     <div id="content" ref="content">
-        <router-view @showToastMessage="showMessage" :searchString="searchString"></router-view>
+        <router-view v-if="regenderComponent==1" @showToastMessage="showMessage" :searchString="searchString" @resetComponent="resetComponent"></router-view>
         <ToastMessage :typeMsg="toastMsgType"></ToastMessage>
     </div>
 </template>
@@ -16,7 +16,10 @@ export default {
     },
     data() {
         return {
+            // cờ đánh dấu kiểu message
             toastMsgType: 1,
+            // biến đánh dấu reset component
+            regenderComponent: 1,
         }
     },
     methods: {
@@ -44,6 +47,14 @@ export default {
             )
             
             // console.log(me.toastMsgType);
+        },
+        /**
+         * hàm reset component
+         * created by SONTD(27.08.2022)
+         */
+        resetComponent(){
+            this.regenderComponent =0;
+            setTimeout(()=>{this.regenderComponent =1;} , 1);
         },
     },
 }

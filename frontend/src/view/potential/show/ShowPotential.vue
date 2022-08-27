@@ -68,7 +68,6 @@
             <div class="s-tr">
                 <div class="s-th align-right">
                     <div class="s-th-export-icon" @click="isDoing"></div>
-                    <!-- <div class="s-th-select-icon"></div> -->
                     <input type="checkbox" class="s-th-select-icon s-th-check-all-row" isChecked="false" @click="checkAllRowOnClick">
                 </div>
               <div class="s-th">Thẻ</div>
@@ -90,7 +89,7 @@
             </div>
           </div>
           <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
-            <div class="s-tr" v-for="(item, index) in data" :key="index" :idOfRow="item.PotentialID" @mouseover="rowOnMouseOver" @mouseleave="rowOnMouseLeave">
+            <div class="s-tr" v-for="(item, index) in data" :key="index" :indexOfRow="index" :idOfRow="item.PotentialID" @mouseover="rowOnMouseOver" @mouseleave="rowOnMouseLeave" @click="rowOnClick">
               <div class="s-td align-right">
                   <div class="s-td-update-icon" style="visibility: hidden;" @click="updateIconOnClick($event)"></div>
                   <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
@@ -136,7 +135,7 @@
           </div>
         </div>
       </div>
-      <div id="toolbar-right" v-if="isShowToolbarRight">
+      <div id="toolbar-right" v-if="isShowToolbarRight" ref="showPotentialToolbarRight">
         <div class="tr-header">
           <div class="trh-item" @click="isDoing">
             <div class="trh-item-icon trh-item-icon-1"></div>
@@ -153,14 +152,23 @@
         </div>
         <div class="tr-body">
           <div class="tr-body-title">Lịch sử giao dịch</div>
-          <div class="trb-item-box">
-            <div class="trb-item">
+          <div class="trb-item-box" v-if="toolbarRight.indexOfRowSelected!=-1">
+            <div class="trb-item" v-show="toolbarRight.isShowCreatedBy">
               <div class="trb-item-icon-box">
                 <div class="trb-item-icon"></div>
               </div>
               <div class="trb-item-content">
                 <div class="trbic-type">Ghi chú</div>
-                <div class="trbic-txt">Nguyễn Văn Hà (A006) . 12/08/2021</div>
+                <div class="trbic-txt"><div class="trbic-txt-name">Nguyễn Văn Hà</div>.<div class="trbic-txt-date">12/08/2021</div></div>
+              </div>
+            </div>
+            <div class="trb-item" v-show="toolbarRight.isShowModifiedBy">
+              <div class="trb-item-icon-box">
+                <div class="trb-item-icon"></div>
+              </div>
+              <div class="trb-item-content">
+                <div class="trbic-type">Ghi chú</div>
+                <div class="trbic-txt"><div class="trbic-txt-name">Nguyễn Văn Hà</div>.<div class="trbic-txt-date">12/08/2021</div></div>
               </div>
             </div>
           </div>
@@ -245,7 +253,12 @@ export default {
       data: {},
       // số lượng bản ghi lấy từ db 
       numberOfRecord: 0,
-
+      // lưu lại index của dòng mình vừa click
+      toolbarRight: {
+        indexOfRowSelected: 4,
+        isShowCreatedBy: false,
+        isShowModifiedBy: false
+      }
     };
   },
 
@@ -308,28 +321,6 @@ export default {
           console.log(error);
       }
     },
-    
-    // getDataFromServer(){
-    //   let me = this;
-    //       me.axios({
-    //           url: 'http://localhost:5091/api/Potential/Download',
-    //           method: 'post',
-    //           responseType: 'blob', // important
-    //         }).then((response) => {
-    //           const url = window.URL.createObjectURL(new Blob([response.data]));
-    //           const link = document.createElement('a');
-    //           link.href = url;
-    //           link.setAttribute('download', 'Potential.xlsx'); //or any other extension
-    //           document.body.appendChild(link);
-    //           link.click();
-    //           link.remove();
-    //       });
-    //   try{
-    //       me.isShowLoading = 1;
-    //   }catch(error){
-    //       console.log(error);
-    //   }
-    // },
 
     /**
      * hàm khi scroll thì kéo theo thead của table
@@ -504,6 +495,7 @@ export default {
         });
         return rowIDList;
     },
+
     /**
      * hàm đóng dialog component
      * created by SONTD (13.08.2022)
@@ -516,7 +508,7 @@ export default {
             try{
                 let rowIDList = [];
                 me.isShowDialogComponent =0;
-                me.$refs.gridTable.querySelectorAll("[isChecked=true]").forEach(function(item){
+                me.$refs.gridTable.querySelectorAll(".s-tbody [isChecked='true']").forEach(function(item){
                     rowIDList.push(item.closest("[idOfRow]").getAttribute("idOfRow"));
                 });
                 // tạo mảng id cần xóa để đẩy vào server
@@ -680,6 +672,47 @@ export default {
             event.target.setAttribute("isChecked", "true");
         }else{
             event.target.setAttribute("isChecked", "false");
+        }
+    },
+
+    rowOnClick(event){
+        let me = this;
+        me.toolbarRight.indexOfRowSelected = event.target.closest(".s-tr").getAttribute("indexOfRow");
+
+        if (me.data[me.toolbarRight.indexOfRowSelected]){
+            // xử lí ẩn hiện và nội dung của thẻ người tạo
+            if (me.data[me.toolbarRight.indexOfRowSelected].CreatedBy){
+                me.toolbarRight.isShowCreatedBy = true;
+                // biến lưu người thẻ div của người tạo
+                let created = me.$refs.showPotentialToolbarRight.querySelector(".trb-item:nth-child(1)");
+                if (created){
+                    created.querySelector(".trbic-txt-name").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].CreatedBy+" (A001)";
+                    if (me.data[me.toolbarRight.indexOfRowSelected].CreatedDate){
+                      created.querySelector(".trbic-txt-date").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].CreatedDate.substring(0,10);
+                    }else{
+                      created.querySelector(".trbic-txt-date").innerHTML="";
+                    }
+                }
+            }else{
+              me.toolbarRight.isShowCreatedBy = false;
+            }
+
+            // xử lí nội dung và ẩn hiện cho thẻ người thay đổi
+            if (me.data[me.toolbarRight.indexOfRowSelected].ModifiedBy){
+                me.toolbarRight.isShowModifiedBy = true;
+                // biến lưu người thẻ div của người tạo
+                let modified = me.$refs.showPotentialToolbarRight.querySelector(".trb-item:nth-child(2)");
+                if (modified){
+                    modified.querySelector(".trbic-txt-name").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].ModifiedBy+" (A002)";
+                    if (me.data[me.toolbarRight.indexOfRowSelected].ModifiedDate){
+                      modified.querySelector(".trbic-txt-date").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].ModifiedDate.substring(0,10);
+                    }else{
+                      modified.querySelector(".trbic-txt-date").innerHTML=" ";
+                    }
+                }
+            }else{
+              me.toolbarRight.isShowModifiedBy = false;
+            }
         }
     },
 

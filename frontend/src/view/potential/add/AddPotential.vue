@@ -12,7 +12,7 @@
           <button class="s-button" @click="saveButtonOnClick">Lưu</button>
         </div>
       </div>
-      <div id="add-main-content" ref="addMainContentRef" v-if="isShowForm">
+      <div id="add-main-content" ref="addMainContentRef">
         <div class="add-main-content-img-box">
           <div class="add-section-title">Ảnh tiềm năng</div>
           <div class="aimgb-img-box">
@@ -341,6 +341,51 @@ export default {
             ModifiedBy: "",
         }
       },
+      //data form default dùng khi khởi tạo lại giá trị dataform
+      dataFormDefault: {
+        Potential: {
+            PotentialID: "00000000-0000-0000-0000-000000000000",
+            PotentialCode: "",
+            LastName: "",
+            FirstName: "",
+            FullName: "",
+            PhoneNumber: "",
+            OfficePhoneNumber: "",
+            OtherPhoneNumber: "",
+            Email: "",
+            OfficeEmail: "",
+            TaxCode: "",
+            Zalo: "",
+            Organization: "",
+            BankAccount: "",
+            BankName: "",
+            FoundingDate: null,
+            Address: "",
+            NationID: "00000000-0000-0000-0000-000000000000",
+            CityID: "00000000-0000-0000-0000-000000000000",
+            DistrictID: "00000000-0000-0000-0000-000000000000",
+            WardID: "00000000-0000-0000-0000-000000000000",
+            ApartmentNumber: "",
+            RegionCode: "",
+            PotentialDescription: "",
+            IsCall: null,
+            IsSendEmail: null,
+            Gender: null,
+            DateOfBirth: null,
+            Facebook: "",
+            IsShare: null,
+            VocativeID: "00000000-0000-0000-0000-000000000000",
+            DepartmentID: "00000000-0000-0000-0000-000000000000",
+            PositionID: "00000000-0000-0000-0000-000000000000",
+            SourceID: "00000000-0000-0000-0000-000000000000",
+            OrganizationTypeID: "00000000-0000-0000-0000-000000000000",
+            TurnoverID: "00000000-0000-0000-0000-000000000000",
+            CreatedDate: null,
+            CreatedBy: "",
+            ModifiedDate: null,
+            ModifiedBy: "",
+        }
+      },
       // biến đánh dấu validate 
       // 1: đã validate xong,
       // 0: mới validate blur
@@ -385,8 +430,6 @@ export default {
         district: false,
         ward: false,
       },
-      // biến cờ để reset form thêm
-      isShowForm: true
     };
   },
   methods: {
@@ -537,7 +580,7 @@ export default {
                   if (response.status==201){
                     if (response.data && response.data.StatusMsg == Resource.ResponseStatus.SuccessMsg){
                       me.$emit("showToastMessage",3);
-                      me.$router.push("/")
+                      me.$router.push("/");
                     }else if (response.data && response.data.StatusMsg == Resource.ResponseStatus.PotentialCodeDuplicate){
                       me.validateDuplicate("PotentialCode");
                     }
@@ -571,6 +614,7 @@ export default {
                   if (response.status==201){
                     if (response.data && response.data.StatusMsg == Resource.ResponseStatus.SuccessMsg){
                       me.$emit("showToastMessage",3);
+                      me.$emit("resetComponent");
                     }else if (response.data && response.data.StatusMsg == Resource.ResponseStatus.PotentialCodeDuplicate){
                       me.validateDuplicate("PotentialCode");
                     }

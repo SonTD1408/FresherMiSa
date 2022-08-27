@@ -10,9 +10,9 @@
                 <div class="fsbc-icon"></div>
             </div>
             <div class="fsb-item-box">
-                <div class="fsb-item">
+                <div class="fsb-item" v-for="(item,index) in column" :key="index">
                     <input type="checkbox" class="fsbi-icon">
-                    <div class="fsbi-label">Thẻ</div>
+                    <div class="fsbi-label">{{item.VietnameseName}}</div>
                 </div>
                 
             </div>
@@ -28,7 +28,7 @@ export default{
         return {
             column: [
                 {ColumnName: 'Tag', VietnameseName: 'Thẻ'},
-                {ColumnName: 'VocativeName', VietnameseName: 'Thẻ'},
+                {ColumnName: 'VocativeName', VietnameseName: 'Xưng hô'},
                 {ColumnName: 'FullName', VietnameseName: 'Họ và tên'},
                 {ColumnName: 'PositionName', VietnameseName: 'Thẻ'},
                 {ColumnName: 'PhoneNumber', VietnameseName: 'ĐT di động'},
@@ -47,8 +47,8 @@ export default{
                 {ColumnName: 'no1', VietnameseName: 'Bố cục'},
                 {ColumnName: 'no2', VietnameseName: 'Chủ sở hữu'},
                 {ColumnName: 'ComeoverName', VietnameseName: 'Doanh thu'},
-                {ColumnName: 'no2', VietnameseName: 'Chủ sở hữu'},
-                {ColumnName: 'no2', VietnameseName: 'Chủ sở hữu'},
+                {ColumnName: 'IsShare', VietnameseName: 'Dùng chung'},
+                {ColumnName: 'Facebook', VietnameseName: 'Facebook'},
                 
 
                 
