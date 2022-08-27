@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="update-item">
-                    <div class="uib-txt">ĐT di động <div class="update-item-icon"></div></div>
+                    <div class="uib-txt">ĐT di động <div class="update-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                     <input
                     v-model="Potential['PhoneNumber']"
                     FieldSet="PhoneNumber"
@@ -54,7 +54,7 @@
                     />
                 </div>
                 <div class="update-item">
-                    <div class="uib-txt">ĐT khác <div class="update-item-icon"></div></div>
+                    <div class="uib-txt">ĐT khác <div class="update-item-icon" @click="hideShowTooltip('OtherPhoneNumber')"><ToolTip :msg="'Điện thoại khác'" v-if="tooltip.OtherPhoneNumber" @tooltipClickOutside="tooltipClickOutside('OtherPhoneNumber')"></ToolTip></div></div>
                     <input
                     v-model="Potential['OtherPhoneNumber']"
                     FieldSet="OtherPhoneNumber"
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="update-item">
-                    <div class="uib-txt">ĐT cơ quan <div class="update-item-icon"></div></div>
+                    <div class="uib-txt">ĐT cơ quan <div class="update-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"><ToolTip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></ToolTip></div></div>
                     <input
                     v-model="Potential['OfficePhoneNumber']"
                     FieldSet = "OfficePhoneNumber"
@@ -202,11 +202,13 @@ import axiosConfig from '@/script/config/axiosConfig';
 import Resource from "../../../script/resource.js";
 import SelectInput from "../../../components/common/SelectInput.vue";
 import ComboboxComponent from "../../../components/common/ComboboxComponent.vue"
+import ToolTip from "../../../components/common/ToolTip.vue"
 export default {
-    emits: ["showToastMessage"],
+    emits: ["showToastMessage", "resetComponent"],
     components: {
         SelectInput,
         ComboboxComponent,
+        ToolTip
     },
     props: {
         PotentialID: String,
@@ -239,6 +241,12 @@ export default {
             potentialTypes: {},
             // dữ liệu giới tính
             genders: Resource.Gender,
+            // biến ẩn hiện tooltip
+            tooltip: {
+                PhoneNumber: false,
+                OfficePhoneNumber: false,
+                OtherPhoneNumber: false,
+            }
         }
     },
     methods: {
@@ -444,7 +452,25 @@ export default {
                 event.target.setAttribute("isSelectCheckBox","true");
                 me.Potential.IsCall = 1;
             }
-        }
+        },
+
+        /**
+         * hàm ẩn hiện tooltip
+         * created by SONTD(27.08.2022)
+         */
+        hideShowTooltip(tooltipName){
+            let me = this;
+            me.tooltip[tooltipName] = !me.tooltip[tooltipName];
+        },
+
+        /**
+         * hàm thực hiện khi ấn ra ngoài toottip, dùng để ẩn tooltip
+         * @param {*} tooltipName 
+         */
+        tooltipClickOutside(tooltipName){
+            let me = this;
+            me.tooltip[tooltipName] = false;
+        },
     },
     created() {
         let me = this;

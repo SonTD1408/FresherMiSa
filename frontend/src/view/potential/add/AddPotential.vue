@@ -46,7 +46,7 @@
                 </div>
               </div>
               <div class="add-item">
-                <div class="aib-txt">ĐT di động <div class="add-item-icon"></div></div>
+                <div class="aib-txt">ĐT di động <div class="add-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                 <input
                   v-model="dataForm.Potential['PhoneNumber']"
                   FieldSet="PhoneNumber"
@@ -104,7 +104,7 @@
                 </div>
               </div>
               <div class="add-item">
-                <div class="aib-txt">ĐT cơ quan <div class="add-item-icon"></div></div>
+                <div class="aib-txt">ĐT cơ quan <div class="add-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"> <tool-tip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></tool-tip> </div></div>
                 <input
                   v-model="dataForm.Potential['OfficePhoneNumber']"
                   FieldSet = "OfficePhoneNumber"
@@ -289,10 +289,12 @@ import axiosConfig from "../../../script/config/axiosConfig.js";
 import SelectInput from "../../../components/common/SelectInput.vue";
 import ComboboxComponent from "@/components/common/ComboboxComponent.vue";
 import Resource from '@/script/resource.js';
+import ToolTip from '../../../components/common/ToolTip.vue';
 export default {
   components: {
     SelectInput,
-    ComboboxComponent
+    ComboboxComponent,
+    ToolTip
 },
   data() {
     return {
@@ -430,6 +432,11 @@ export default {
         district: false,
         ward: false,
       },
+      // biến ẩn hiện tooltip
+      tooltip: {
+        PhoneNumber: false,
+        OfficePhoneNumber: false,
+      }
     };
   },
   methods: {
@@ -707,6 +714,24 @@ export default {
             event.target.setAttribute("isSelectedCheckBox","true");
             me.dataForm.Potential.IsShare = 1;
         }
+    },
+
+    /**
+     * hàm ẩn hiện tooltip
+     * created by SONTD(27.08.2022)
+     */
+    hideShowTooltip(tooltipName){
+        let me = this;
+        me.tooltip[tooltipName] = !me.tooltip[tooltipName];
+    },
+
+    /**
+     * hàm thực hiện khi ấn ra ngoài toottip, dùng để ẩn tooltip
+     * @param {*} tooltipName 
+     */
+    tooltipClickOutside(tooltipName){
+        let me = this;
+        me.tooltip[tooltipName] = false;
     },
 
     /**
