@@ -55,7 +55,7 @@
     </div>
     <div class="potential-content">
       
-      <FilterBarLeft :isShowFilterbarLeft="isShowFilterbarLeft"></FilterBarLeft>
+      <FilterBarLeft :isShowFilterbarLeft="isShowFilterbarLeft" @emitValue="getValueFilterData" @confirmFilterPotential="confirmFilterPotential"></FilterBarLeft>
       <div id="main-content" ref="showMainContentRef">
         <div class="filterbar-left-show-hide-btn" @click="hideShowFilterbarLeft">
           <div class="filterbar-left-show-hide-btn-icon"></div>
@@ -88,7 +88,7 @@
               <div class="s-th">Doanh thu</div>
             </div>
           </div>
-          <div class="s-tbody" v-on:scroll="handleScroll" v-if="isShowDataInTable">
+          <div class="s-tbody" v-on:scroll="handleScroll" v-show="isShowDataInTable">
             <div class="s-tr" v-for="(item, index) in data" :key="index" :indexOfRow="index" :idOfRow="item.PotentialID" @mouseover="rowOnMouseOver" @mouseleave="rowOnMouseLeave" @click="rowOnClick">
               <div class="s-td align-right">
                   <div class="s-td-update-icon" style="visibility: hidden;" @click="updateIconOnClick($event)"></div>
@@ -96,39 +96,43 @@
               </div>
               <div class="s-td" v-for="(i,ind) in gridColumns" :key="ind">
                   <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
-                  <div class="s-td-text" v-if="ind!=2">{{formatNullData(item[i])}}</div>
-                  <div class="s-td-text" v-if="ind==2">{{formatNullData(`${item['LastName']} ${item['FirstName']}`)}}</div>
+                  <div class="s-td-text" :class="(ind>3 && ind<8)? 'text-color-blue':''" v-if="ind!=2">{{formatNullData(item[i])}}</div>
+                  <div class="s-td-text text-color-blue" v-if="ind==2">{{formatNullData(`${item['FullName']}`)}}</div>
               </div>
             </div>
             <LoadingComponent :typeOfLoading="isShowLoading"></LoadingComponent>
             <div class="show-potential-no-data" v-if="isDataNull">Không tìm thấy dữ liệu</div>
           </div>
         </div>
-        <div class="footer">
+        <div class="footer" ref="showPotentialFooter">
           <div class="footer-left">Total: <span :innerHTML="numberOfRecord"></span></div>
           <div class="footer-right">
-            <div class="footer-page-size" @click="pageSizeOnClick"><span>{{pageSize}}</span> 
+            <div class="footer-page-size" @click="pageSizeOnClick" v-click-outside="selectPageSizeOnClickOutside"><span>{{pageSize}}</span> 
                Bản ghi trên Trang
               <div class="fps-dropdown"></div>
-              <div class="fps-combobox" v-if="isShowPagesizeCombobox">
+              <div class="fps-combobox" v-show="isShowPagesizeCombobox">
                 <div class="fpsc-item" Value="10" @click="changePageSizeOnClick">
-                  10 Bản ghi trên Trang
+                  <div class="fpsc-item-text">10 Bản ghi trên Trang</div>
+                  <div class="fpsc-item-selected-icon"></div>
                 </div>
                 <div class="fpsc-item" Value="20" @click="changePageSizeOnClick">
-                  20 Bản ghi trên Trang
+                  <div class="fpsc-item-text">20 Bản ghi trên Trang</div>
+                  <div class="fpsc-item-selected-icon"></div>
                 </div>
                 <div class="fpsc-item" Value="50" @click="changePageSizeOnClick">
-                  50 Bản ghi trên Trang
+                  <div class="fpsc-item-text">50 Bản ghi trên Trang</div>
+                  <div class="fpsc-item-selected-icon"></div>
                 </div>
                 <div class="fpsc-item" Value="100" @click="changePageSizeOnClick">
-                  100 Bản ghi trên Trang
+                  <div class="fpsc-item-text">100 Bản ghi trên Trang</div>
+                  <div class="fpsc-item-selected-icon"></div>
                 </div>
               </div>
             </div>
             <div class="footer-paging">
                 <div class="fp-first" @click="goToFirstPage"></div>
                 <div class="fp-prev" @click="goToPrePage"></div>
-                <div class="fp-txt"><span class="from">{{(pageNumber-1)*pageSize+1}}</span>đến<span class="to">{{(pageNumber)*pageSize}}</span></div>
+                <div class="fp-txt"><span class="from">{{(pageNumber-1)*pageSize+1}}</span>đến<span class="to">{{(pageNumber*pageSize > numberOfRecord)? numberOfRecord : (pageNumber)*pageSize}}</span></div>
                 <div class="fp-next" @click="goToNextPage"></div>
                 <div class="fp-last" @click="goToLastPage"></div>
             </div>
@@ -258,7 +262,9 @@ export default {
         indexOfRowSelected: 4,
         isShowCreatedBy: false,
         isShowModifiedBy: false
-      }
+      },
+      // lấy từ fileter bar khi ấn áp dụng
+      FilterData: [],
     };
   },
 
@@ -297,9 +303,10 @@ export default {
       if (me.searchString){
           url+= `&filter=${me.searchString}`;
       }
+      me.isDataNull = false;
       try{
           me.isShowLoading = 1;
-          axiosConfig.call("post", axiosConfig.Potentials+"/filter"+url,"", function(response){
+          axiosConfig.call("post", axiosConfig.Potentials+"/Filter"+url,me.FilterData, function(response){
             if (response.data){
               me.isShowLoading= 0;
               if (response.data.Data){
@@ -342,17 +349,43 @@ export default {
      * created by SONTD (04.08.2022)
      */
     pageSizeOnClick(){
-      this.isShowPagesizeCombobox = !this.isShowPagesizeCombobox
+      let me = this;
+      if (!me.isShowPagesizeCombobox){
+        let inputPageSizes = me.$refs.showPotentialFooter.querySelectorAll(".fpsc-item");
+        if (inputPageSizes.length>0){
+          inputPageSizes.forEach(function(inputPageSize){
+            if (inputPageSize.getAttribute("Value") == me.pageSize){
+              inputPageSize.classList.add("fpsc-item-selected");
+              if(inputPageSize.querySelector(".fpsc-item-selected-icon")){
+                inputPageSize.querySelector(".fpsc-item-selected-icon").style.visibility= "visible";
+              }
+            }else{
+              inputPageSize.classList.remove("fpsc-item-selected");
+              if(inputPageSize.querySelector(".fpsc-item-selected-icon")){
+                inputPageSize.querySelector(".fpsc-item-selected-icon").style.visibility= "hidden";
+              }
+            }
+          })
+        }
+      }
+      me.isShowPagesizeCombobox = !me.isShowPagesizeCombobox
     },
 
     /**
      * hàm lấy page size khi người dùng đổi page size
      * Created by SONTD (04.08.2022)
      */
-    changePageSizeOnClick(e){
-      this.pageSize = e.target.getAttribute("Value");
+    changePageSizeOnClick(event){
+      this.pageSize = event.target.closest(".fpsc-item").getAttribute("Value");
       this.pageNumber =1;
       this.reloadDataGrid();
+    },
+
+    /**
+     * hàm dùng để bắt sự kiện click ra ngoài của ô chọn pagesize
+     */
+    selectPageSizeOnClickOutside(){
+        this.isShowPagesizeCombobox = false;
     },
 
     /**
@@ -552,7 +585,7 @@ export default {
                 });
             }
             me.axios({
-              url: 'http://localhost:5091/api/Potential/ExportToExcel',
+              url: axiosConfig.PotentialExport,
               method: 'post',
               responseType: 'blob', // important,
               data: row,
@@ -578,6 +611,7 @@ export default {
     reloadDataGrid(){
         let me = this;
         me.isShowDataInTable =0;
+        me.data={};
         //load lại data
         me.getDataFromServer();
         me.isShowDataInTable =1;
@@ -675,45 +709,71 @@ export default {
         }
     },
 
+    /**
+     * thực hiện sự kiện khi ấn vào dòng dữ liệu ở bảng grid
+     * created by SONTD(28.08.2022)
+     * @param {*} event 
+     */
     rowOnClick(event){
         let me = this;
         me.toolbarRight.indexOfRowSelected = event.target.closest(".s-tr").getAttribute("indexOfRow");
 
-        if (me.data[me.toolbarRight.indexOfRowSelected]){
-            // xử lí ẩn hiện và nội dung của thẻ người tạo
-            if (me.data[me.toolbarRight.indexOfRowSelected].CreatedBy){
-                me.toolbarRight.isShowCreatedBy = true;
-                // biến lưu người thẻ div của người tạo
-                let created = me.$refs.showPotentialToolbarRight.querySelector(".trb-item:nth-child(1)");
-                if (created){
-                    created.querySelector(".trbic-txt-name").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].CreatedBy+" (A001)";
-                    if (me.data[me.toolbarRight.indexOfRowSelected].CreatedDate){
-                      created.querySelector(".trbic-txt-date").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].CreatedDate.substring(0,10);
-                    }else{
-                      created.querySelector(".trbic-txt-date").innerHTML="";
-                    }
-                }
-            }else{
-              me.toolbarRight.isShowCreatedBy = false;
-            }
-
-            // xử lí nội dung và ẩn hiện cho thẻ người thay đổi
-            if (me.data[me.toolbarRight.indexOfRowSelected].ModifiedBy){
-                me.toolbarRight.isShowModifiedBy = true;
-                // biến lưu người thẻ div của người tạo
-                let modified = me.$refs.showPotentialToolbarRight.querySelector(".trb-item:nth-child(2)");
-                if (modified){
-                    modified.querySelector(".trbic-txt-name").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].ModifiedBy+" (A002)";
-                    if (me.data[me.toolbarRight.indexOfRowSelected].ModifiedDate){
-                      modified.querySelector(".trbic-txt-date").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].ModifiedDate.substring(0,10);
-                    }else{
-                      modified.querySelector(".trbic-txt-date").innerHTML=" ";
-                    }
-                }
-            }else{
-              me.toolbarRight.isShowModifiedBy = false;
-            }
+        if(me.$refs.showPotentialToolbarRight){
+          if (me.data[me.toolbarRight.indexOfRowSelected]){
+              // xử lí ẩn hiện và nội dung của thẻ người tạo
+              if (me.data[me.toolbarRight.indexOfRowSelected].CreatedBy){
+                  me.toolbarRight.isShowCreatedBy = true;
+                  // biến lưu người thẻ div của người tạo
+                  let created = me.$refs.showPotentialToolbarRight.querySelector(".trb-item:nth-child(1)");
+                  if (created){
+                      created.querySelector(".trbic-txt-name").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].CreatedBy+" (A001)";
+                      if (me.data[me.toolbarRight.indexOfRowSelected].CreatedDate){
+                        created.querySelector(".trbic-txt-date").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].CreatedDate.substring(0,10);
+                      }else{
+                        created.querySelector(".trbic-txt-date").innerHTML="";
+                      }
+                  }
+              }else{
+                me.toolbarRight.isShowCreatedBy = false;
+              }
+  
+              // xử lí nội dung và ẩn hiện cho thẻ người thay đổi
+              if (me.data[me.toolbarRight.indexOfRowSelected].ModifiedBy){
+                  me.toolbarRight.isShowModifiedBy = true;
+                  // biến lưu người thẻ div của người tạo
+                  let modified = me.$refs.showPotentialToolbarRight.querySelector(".trb-item:nth-child(2)");
+                  if (modified){
+                      modified.querySelector(".trbic-txt-name").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].ModifiedBy+" (A002)";
+                      if (me.data[me.toolbarRight.indexOfRowSelected].ModifiedDate){
+                        modified.querySelector(".trbic-txt-date").innerHTML=me.data[me.toolbarRight.indexOfRowSelected].ModifiedDate.substring(0,10);
+                      }else{
+                        modified.querySelector(".trbic-txt-date").innerHTML=" ";
+                      }
+                  }
+              }else{
+                me.toolbarRight.isShowModifiedBy = false;
+              }
+          }
         }
+    },
+
+    /**
+     * láy dữ liệu từ filter bar để lọc
+     * created by SONTD(29.08.2022)
+     */
+    getValueFilterData(value){
+        let me = this;
+        me.FilterData = value;
+    },
+
+    /**
+     * bắt đầu lọc
+     * created by SONTD(29.08.2022)
+     */
+    confirmFilterPotential(){
+        let me = this;
+        me.pageNumber =1;
+        me.reloadDataGrid();
     },
 
     /**
@@ -731,6 +791,7 @@ export default {
     this.getSelectedRow();
   },
   watch: {
+      // lấy giá trị ô input search
       'searchString':function(){
         let me  = this;
           me.pageNumber = 1;
@@ -746,4 +807,7 @@ export default {
 /* @import url("../../../style/view/potential/show/filterbarLeft.css"); */
 @import url("../../../style/view/potential/show/mainContent.css");
 @import url("../../../style/view/potential/show/toolbarRight.css");
+.text-color-blue{
+  color: #4262F0;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="select-input-feild-box " ref="selectInputField" @click="selectInputOnClick" v-click-outside="onClickOutside">
+    <div class="select-input-feild-box" ref="selectInputField" @click="selectInputOnClick" v-click-outside="onClickOutside">
         <div class="select-input-defalt">{{defaultValueTxt}}</div>
         <div class="select-input-icon" ref="selectInputFieldIcon"></div>
         <div class="select-input-item-box" ref="selectBox" v-if="isShowSelectBox">
@@ -83,8 +83,9 @@ export default {
          */
         onClickOutside(){
             this.isShowSelectBox = false;
-            this.$refs.selectInputFieldIcon.classList.remove("fa-arrow-down-open")
-                this.$refs.selectInputFieldIcon.classList.add("fa-arrow-down-close")
+            this.$refs.selectInputFieldIcon.classList.remove("fa-arrow-down-open");
+            this.$refs.selectInputFieldIcon.classList.add("fa-arrow-down-close");
+            this.$refs.selectInputField.style.border = "1px solid #D3D7DE";
         }
     },
     mounted(){

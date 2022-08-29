@@ -16,8 +16,8 @@
     z-index: 11;
     display: flex;
     align-items: center;
-    height: 40px;
-    width: 16px;
+    height: 36px;
+    width: 12px;
     cursor: pointer;
     background-color: #fff;
     border-top-right-radius: 4px;
@@ -27,7 +27,7 @@
 .filterbar-left-show-hide-btn-icon{
     width: 16px;
     height: 16px;
-    background: url("../../../../assets/img/icon_collection.svg") no-repeat -289px -32px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -290px -32px;
 }
 .filterbar-left-show-hide-btn:hover{
     width: 20px;
@@ -41,8 +41,8 @@
     z-index: 11;
     display: flex;
     align-items: center;
-    height: 40px;
-    width: 16px;
+    height: 36px;
+    width: 12px;
     cursor: pointer;
     background-color: #fff;
     border-top-left-radius: 4px;
@@ -52,7 +52,7 @@
 .toolbar-right-show-hide-btn-icon{
     width: 16px;
     height: 14px;
-    background: url("../../../../assets/img/icon_collection.svg") no-repeat -302px -34px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -304px -34px;
 }
 .toolbar-right-show-hide-btn:hover{
     width: 20px;
@@ -177,18 +177,27 @@
     left: 0;
     background-color: #fff;
     width: 100%;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-radius: 4px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.7);
 }
 .fpsc-item{
     padding: 0 8px;
     height: 32px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 .fpsc-item:hover{
     background-color: #ddd;
+}
+.fpsc-item-selected-icon{
+    visibility: hidden;
+    width: 16px;
+    height: 16px;
+    background: url("../../../../assets/img/icon_collection.svg") no-repeat -208px -257px;
+}
+.fpsc-item-selected{
+    color: #4262F0;
 }
 .footer-page-size span{
     margin-right: 8px;

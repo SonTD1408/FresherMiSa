@@ -20,8 +20,8 @@ namespace MISA.Fresher.API.Controllers
         /// <param name="where"></param> lọc
         /// <param name="sort"></param> sắp xếp
         /// <returns></returns>
-        [HttpPost("filter")]
-        public IActionResult GetAllPotentials([FromQuery] string? sort,
+        [HttpPost("Filter")]
+        public IActionResult GetAllPotentials([FromBody] FilterData[]? filterData,
                                             [FromQuery] string? filter,
                                             [FromQuery] int pageSize = 50,
                                             [FromQuery] int pageNumber = 1)
@@ -30,7 +30,7 @@ namespace MISA.Fresher.API.Controllers
             {
                 var potentialService = new PotentialService();
 
-                return StatusCode(StatusCodes.Status200OK, potentialService.GetAll(pageSize, pageNumber, filter, sort));
+                return StatusCode(StatusCodes.Status200OK, potentialService.GetAll(pageSize, pageNumber, filter, filterData));
             }
             catch (Exception e)
             {
@@ -237,6 +237,17 @@ namespace MISA.Fresher.API.Controllers
                         worksheet.Cell(currentRow, 17).Value = "Mô tả";
                         worksheet.Cell(currentRow, 18).Value = "Doanh thu";
                         worksheet.Cell(currentRow, 19).Value = "Facebook";
+
+                        for (int i=1; i<=19; i++)
+                        {
+                            worksheet.Cell(currentRow, i).Style.Font.Bold = true;
+                            worksheet.Cell(currentRow, i).Style.Fill.BackgroundColor = XLColor.FromArgb(0x70AD47);
+                            worksheet.Column(i).Width = 20;
+                            worksheet.Cell(currentRow, i).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                            worksheet.Cell(currentRow, i).Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                            worksheet.Cell(currentRow, i).Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                            worksheet.Cell(currentRow, i).Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        }
                         #endregion
 
                         #region Body
@@ -260,6 +271,7 @@ namespace MISA.Fresher.API.Controllers
                             worksheet.Cell(currentRow, 15).Value = potential.SourceName;
                             worksheet.Cell(currentRow, 16).Value = potential.OrganizationTypeName;
                             worksheet.Cell(currentRow, 17).Value = potential.PotentialDescription;
+                            worksheet.Cell(currentRow, 17).Style.Alignment.WrapText = false;
                             worksheet.Cell(currentRow, 18).Value = potential.TurnoverName;
                             worksheet.Cell(currentRow, 19).Value = potential.Facebook;
                         }

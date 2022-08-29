@@ -95,7 +95,7 @@
                 <div class="aib-txt">Họ và tên</div>
                 <input class="add-input-feild s-input" 
                 disabled 
-                v-bind:value="(dataForm.Potential['LastName']? dataForm.Potential['LastName']:'')+' '+(dataForm.Potential['FirstName']? dataForm.Potential['FirstName']:'')"/>
+                v-model="dataForm.Potential.FullName"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
@@ -343,51 +343,6 @@ export default {
             ModifiedBy: "",
         }
       },
-      //data form default dùng khi khởi tạo lại giá trị dataform
-      dataFormDefault: {
-        Potential: {
-            PotentialID: "00000000-0000-0000-0000-000000000000",
-            PotentialCode: "",
-            LastName: "",
-            FirstName: "",
-            FullName: "",
-            PhoneNumber: "",
-            OfficePhoneNumber: "",
-            OtherPhoneNumber: "",
-            Email: "",
-            OfficeEmail: "",
-            TaxCode: "",
-            Zalo: "",
-            Organization: "",
-            BankAccount: "",
-            BankName: "",
-            FoundingDate: null,
-            Address: "",
-            NationID: "00000000-0000-0000-0000-000000000000",
-            CityID: "00000000-0000-0000-0000-000000000000",
-            DistrictID: "00000000-0000-0000-0000-000000000000",
-            WardID: "00000000-0000-0000-0000-000000000000",
-            ApartmentNumber: "",
-            RegionCode: "",
-            PotentialDescription: "",
-            IsCall: null,
-            IsSendEmail: null,
-            Gender: null,
-            DateOfBirth: null,
-            Facebook: "",
-            IsShare: null,
-            VocativeID: "00000000-0000-0000-0000-000000000000",
-            DepartmentID: "00000000-0000-0000-0000-000000000000",
-            PositionID: "00000000-0000-0000-0000-000000000000",
-            SourceID: "00000000-0000-0000-0000-000000000000",
-            OrganizationTypeID: "00000000-0000-0000-0000-000000000000",
-            TurnoverID: "00000000-0000-0000-0000-000000000000",
-            CreatedDate: null,
-            CreatedBy: "",
-            ModifiedDate: null,
-            ModifiedBy: "",
-        }
-      },
       // biến đánh dấu validate 
       // 1: đã validate xong,
       // 0: mới validate blur
@@ -428,9 +383,9 @@ export default {
       fields:{},
       // kiểm tra xem đã được nhập chưa 
       checkIsActiveAddress: {
-        city: false,
-        district: false,
-        ward: false,
+        city: true,
+        district: true,
+        ward: true,
       },
       // biến ẩn hiện tooltip
       tooltip: {
@@ -745,7 +700,70 @@ export default {
   created() {
     this.init();
   },
+  computed:{
+    // fullname
+    FullNameComputed: function(){
+        let me = this,
+            fn = (me.dataForm.Potential.FirstName)? me.dataForm.Potential.FirstName:"",
+            ln = (me.dataForm.Potential.LastName)? me.dataForm.Potential.LastName:"";
+        return ln+" "+fn;
+    },
+    AddressComputed: function(){
+        let me = this,
+            nationString = "",
+            cityString = "",
+            districtString = "",
+            wardString = "";
+        //lấy tên quốc gia
+        if(me.nations && me.nations.length>0){
+            me.nations.forEach(function(na){
+                if (na.NationID == me.dataForm.Potential.NationID){
+                    nationString = na.NationName;
+                }
+            })
+        }
+        // lấy tên tỉnh
+        if(me.cities && me.cities.length>0){
+            me.cities.forEach(function(ci){
+                if (ci.CityID == me.dataForm.Potential.CityID){
+                    cityString = ci.CityName;
+                }
+            })
+        }
+        //lấy tên huyện
+        if(me.districts && me.districts.length>0){
+            me.districts.forEach(function(di){
+                if (di.DistrictID == me.dataForm.Potential.DistrictID){
+                    districtString = di.DistrictName;
+                }
+            })
+        }
+        // lấy tên phường
+        if(me.wards && me.wards.length>0){
+            me.wards.forEach(function(ward){
+                if (ward.WardID == me.dataForm.Potential.WardID){
+                    wardString = ward.WardName;
+                }
+            })
+        }
+        let resultString = wardString+ ((wardString)?", ":"") + districtString+((districtString)?", ":"")+cityString+((cityString)?", ":"")+nationString;
+        if (resultString){
+            resultString = me.dataForm.Potential.ApartmentNumber+((me.dataForm.Potential.ApartmentNumber)?", ":"")+resultString;
+        }else{
+            resultString = me.dataForm.Potential.ApartmentNumber;
+        }
+        return resultString;
+    },
+  },
   watch: {
+      //cập nhật address
+      'AddressComputed':function(newValue){
+          this.dataForm.Potential.Address = newValue;
+      },
+      // cập nhật full name 
+      'FullNameComputed':function(newValue){
+          this.dataForm.Potential.FullName = newValue;
+      },
       //check sự thay đổi của quốc gia
       'dataForm.Potential.NationID':function(newValue){
          if (newValue!=null && newValue!="" && newValue!=undefined){

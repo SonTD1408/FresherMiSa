@@ -19,19 +19,54 @@ namespace MISA.Fresher.API.Services
         /// <param name="where"></param> lọc
         /// <param name="sort"></param> sắp xếp
         /// <returns></returns>
-        public ActionResults<Paging> GetAll(int pageSize, int pageNumber, string filter, string sort)
+        public ActionResults<Paging> GetAll(int pageSize, int pageNumber, string filter, FilterData[] filterData)
         {
             try
             {
                 var where = new StringBuilder();
+                where.Append(" where ");
                 if (filter != null)
                 {
-                    where.Append($" where PotentialCode like \'%{filter}%\' or FirstName like \'%{filter}%\' or LastName like \'%{filter}%\' or FullName like \'%{filter}%\' " +
-                        $" or PhoneNumber like \'%{filter}%\' or OfficePhoneNumber like \'%{filter}%\' or Email like \'%{filter}%\' or OfficeEmail like \'%{filter}%\' ");
+                    where.Append($" ( PotentialCode like \'%{filter}%\' or  FullName like \'%{filter}%\' " +
+                        $" or PhoneNumber like \'%{filter}%\' or OfficePhoneNumber like \'%{filter}%\' or Email like \'%{filter}%\' or OfficeEmail like \'%{filter}%\') ");
+                }
+                if (filterData.Length != 0)
+                {
+                    if (filter != null)
+                    {
+                        where.Append(" and ");
+                    }
+                    where.Append(" ( ");
+                    for (int i=0; i<filterData.Length; i++)
+                    {
+                        if (filterData[i].FilterType == 0)
+                        {
+                            where.Append($" (`{filterData[i].ColumnName}` like \'%{filterData[i].ColumnValue}%\') and ");
+                        }else if (filterData[i].FilterType == 1)
+                        {
+                            where.Append($" (`{filterData[i].ColumnName}` not like \'%{filterData[i].ColumnValue}%\') and ");
+                        }else if (filterData[i].FilterType == 2)
+                        {
+                            where.Append($" (`{filterData[i].ColumnName}` = \'{filterData[i].ColumnValue}\') and ");
+                        }
+                        else if (filterData[i].FilterType == 3)
+                        {
+                            where.Append($" (`{filterData[i].ColumnName}` <> \'{filterData[i].ColumnValue}\') and ");
+                        }
+                    }
+                    where.Append(" PotentialID like \'%%\') ");
                 }
                 var potentialRepository = new PotentialRepository();
                 int skip = (pageNumber - 1) * pageSize;
-                return potentialRepository.GetAll(skip, pageSize, where.ToString(), sort);
+
+                if (where.ToString() != " where ")
+                {
+                    return potentialRepository.GetAll(skip, pageSize, where.ToString(), "");
+                }
+                else
+                {
+                    return potentialRepository.GetAll(skip, pageSize, "", "");
+                }
             }
             catch (Exception)
             {

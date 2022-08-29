@@ -16,7 +16,8 @@ var axiosConfig = {
     Departments: "http://localhost:5091/api/Department",
     Positions: "http://localhost:5091/api/Position", 
     Turnovers: "http://localhost:5091/api/Turnover",
-    MultiDelete: "http://localhost:5091/api/Potential/MultiDelete"
+    MultiDelete: "http://localhost:5091/api/Potential/MultiDelete",
+    PotentialExport: "http://localhost:5091/api/Potential/ExportToExcel"
 }
 
 axiosConfig.call = (method, url, data, fnCallBack)=>{

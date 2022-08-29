@@ -24,7 +24,8 @@
             </div>
             <div class="umc-footer">
                 <button class="s-button-gray" @click="closeOnClick">Hủy bỏ</button>
-                <button class="s-button" @click="update">Cập nhật</button>
+                <button class="s-button" @click="update" v-if="isActiveUpdateButton">Cập nhật</button>
+                <button class="s-button" style="background-color: #B7C3F9" v-if="!isActiveUpdateButton">Cập nhật</button>
             </div>
         </div>
     </div>
@@ -194,6 +195,10 @@ export default {
                 ColumnName: "",
                 ColumnValueString: "",
             },
+            formDatadefault: {
+                ColumnName: "",
+                ColumnValueString: "",
+            },
             // check xem ở ô nhập value là loại input nào 
             typeOfInput: 0,
             // data khi chọn update cột có value là loại input chọn
@@ -202,6 +207,8 @@ export default {
             col: {},
             // kiểu của select input trả về là string hay int
             typeOfSelectInput: "",
+            // đánh dâu xem có active button update hay không
+            isActiveUpdateButton: false,
         }
     },
     methods: {
@@ -288,6 +295,8 @@ export default {
                 axiosConfig.call("put",axiosConfig.Potentials,me.formData,function(response){
                     if (response.data.Status && response.data.Status == Resource.ResponseStatus.SuccessData){
                         me.$emit("confirmMultiUpdate",true);
+                        me.formData = me.formDatadefault;
+                        me.typeOfInput=0;
                     }else{
                         me.$emit("confirmMultiUpdate",false);
                     }
@@ -298,7 +307,15 @@ export default {
             }
         }
     },
-    
+    watch:{
+        'formData.ColumnName':function(newValue){
+            if(newValue){
+                this.isActiveUpdateButton = true;
+            }else{
+                this.isActiveUpdateButton = false;
+            }
+        },
+    }
 }
 </script>
 <style scoped>

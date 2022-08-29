@@ -45,8 +45,6 @@ export default {
                 ],
                 {duration: 3000}
             )
-            
-            // console.log(me.toastMsgType);
         },
         /**
          * hàm reset component
