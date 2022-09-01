@@ -203,7 +203,7 @@ export default{
         background-color: #E2E4E9;
         border-radius: 3px;
         padding: 0 8px;
-        height: 24px;
+        height: 22px;
         display: flex;
         align-items: center;
         margin: 2px 4px 2px 0;

@@ -11,7 +11,8 @@
     display: flex;
 }
 .ul-txt1{
-    font-family: Roboto-Bold;
+    font-family: Roboto;
+    font-weight: 600;
     font-size: 20px;
 }
 .ul-change-construct{

@@ -649,11 +649,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Misa\\FresherMiSa\\backend\\MISA.Fresher\\MISA.Fresher.API\\MISA.Fresher.API.csproj",
+      "projectUniqueName": "D:\\Misa\\MISA_Potential\\backend\\MISA.Fresher\\MISA.Fresher.API\\MISA.Fresher.API.csproj",
       "projectName": "MISA.Fresher.API",
-      "projectPath": "D:\\Misa\\FresherMiSa\\backend\\MISA.Fresher\\MISA.Fresher.API\\MISA.Fresher.API.csproj",
+      "projectPath": "D:\\Misa\\MISA_Potential\\backend\\MISA.Fresher\\MISA.Fresher.API\\MISA.Fresher.API.csproj",
       "packagesPath": "C:\\Users\\84357\\.nuget\\packages\\",
-      "outputPath": "D:\\Misa\\FresherMiSa\\backend\\MISA.Fresher\\MISA.Fresher.API\\obj\\",
+      "outputPath": "D:\\Misa\\MISA_Potential\\backend\\MISA.Fresher\\MISA.Fresher.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\84357\\AppData\\Roaming\\NuGet\\NuGet.Config",

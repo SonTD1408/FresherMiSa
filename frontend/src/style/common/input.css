@@ -4,6 +4,7 @@
     border-radius: 4px;
     outline: none;
     padding: 0 16px 0 32px;
+    font-family: Roboto;
 }
 .s-input:hover{
     border: 1px solid #7C869C;

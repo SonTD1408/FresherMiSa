@@ -1,7 +1,7 @@
 body{
     margin: 0;
     box-sizing: border-box;
-    font-family: Roboto-Regular;
+    font-family: Roboto;
 }
 
 body *{
@@ -26,7 +26,10 @@ body *{
     font-family: Roboto-Regular;
     src: url("../assets/fonts/roboto-v20-vietnamese_latin-regular.woff2");
 }
-
+@font-face {
+    font-family: Roboto;
+    src: url("../assets/fonts/Roboto-Regular.ttf");
+}
 .align-left{
     display: flex;
     justify-content: left;

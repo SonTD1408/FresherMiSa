@@ -1,6 +1,6 @@
 #toolbar-right{
     height: calc(100vh - 84px - 64px);
-    width: 300px;
+    width: 320px;
     display: flex;
     flex-direction: column;
     border-left: 1px solid #ddd;

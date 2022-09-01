@@ -1,11 +1,11 @@
 #filterbar-left{
     position: relative;
     height: calc(100vh - 84px - 64px);
-    width: 280px;
+    width: 240px;
     background-color: #fff;
     display: flex;
     flex-direction: column;
-    font-family: Roboto-Regular;
+    font-family: Roboto;
     border-right: 1px solid #ddd;
 }
 .filter-saved{
@@ -29,6 +29,7 @@
     font-weight: 600;
     color: #5E6679;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     cursor: pointer;
     padding: 0 10px 8px 10px;
@@ -48,7 +49,7 @@
     padding: 8px 10px;
     cursor: pointer;
 }
-.fsb-item:first-child{
+.fsb-item-selected{
     background-color: #eee;
 }
 .fsb-item-filter-column{
@@ -67,8 +68,8 @@
     padding: 0 16px;
 }
 .fsbi-icon{
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     margin: 0 8px 0 0;
     cursor: pointer;
 }

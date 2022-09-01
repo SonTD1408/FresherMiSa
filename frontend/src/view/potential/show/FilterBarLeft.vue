@@ -10,9 +10,9 @@
                 <div class="fsbc-icon"></div>
             </div>
             <div class="fsb-item-box">
-                <div class="fsb-item" v-for="(item,index) in column" :key="index" :indexOfItem="index" >
+                <div class="fsb-item" v-for="(item,index) in column" :key="index" :indexOfItem="index" @click="filterItemOnClick">
                     <div class="fsb-item-filter-column">
-                        <input type="checkbox" class="fsbi-icon" :isChecked="false" @click="checkboxOnClick">
+                        <input type="checkbox" class="fsbi-icon" :isChecked="false" @click.stop @click="checkboxOnClick">
                         <div class="fsbi-label">{{item.VietnameseName}}</div>
                     </div>
                     <div class="fsb-item-filter-type" v-if="item.isShowFilterType">
@@ -117,8 +117,13 @@ export default{
                 item = event.target;
             if (item && item.getAttribute("ischecked")=='true'){
                 item.setAttribute("ischecked",false);
+                item.closest(".fsb-item").classList.remove("fsb-item-selected");
             }else{
                 item.setAttribute("ischecked",true);
+                if (me.$refs.potentialFilter.querySelector(".fsb-item-selected")){
+                    me.$refs.potentialFilter.querySelector(".fsb-item-selected").classList.remove("fsb-item-selected");
+                }
+                item.closest(".fsb-item").classList.add("fsb-item-selected");
             }
             me.updateFilterStatus();
         },
@@ -163,6 +168,20 @@ export default{
             let me = this;
             me.$emit("emitValue", me.column);
             me.$emit("confirmFilterPotential", me.column);
+        },
+
+        /**
+         * hàm thực hiện khi ấn vào 1 dòng trong form filter
+         * created by SONTD(30.08.2022)
+         */
+        filterItemOnClick(event){
+            let me  =this;
+            if(me.$refs.potentialFilter.querySelector(".fsb-item-selected")){
+                me.$refs.potentialFilter.querySelector(".fsb-item-selected").classList.remove("fsb-item-selected");
+            }
+            if (event.target.closest(".fsb-item")){
+                event.target.closest(".fsb-item").classList.add("fsb-item-selected");
+            }
         }
     },
 }

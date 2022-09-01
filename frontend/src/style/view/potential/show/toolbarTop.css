@@ -16,8 +16,10 @@
 }
 .ttl-name-txt{
     cursor: pointer;
-    font-family: Roboto-Bold;
+    font-family: Roboto;
     line-height: 24px;
+    font-size: 20px;
+    font-weight: 600;
 }
 .ttl-name-icon{
     background: url("../../../../assets/img/icon_collection.svg") no-repeat -49px -27px;
@@ -39,6 +41,7 @@
     margin-left: 10px;
     transform: translateY(3px);
     cursor: pointer;
+    margin-top: 2px;
 }
 /* toolbar top left v2  */
 .ttl-choosed{

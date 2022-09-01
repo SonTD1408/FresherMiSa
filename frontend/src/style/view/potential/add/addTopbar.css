@@ -11,11 +11,12 @@
     display: flex;
 }
 .al-txt1{
-    font-family: Roboto-Bold;
+    font-family: Roboto;
+    font-weight: 600;
     font-size: 20px;
 }
 .al-txt2{
-    margin: 0 8px 0 4px;
+    margin: 1px 8px 0 4px;
     font-size: 16px;
     transform: translateY(3px);
 }
