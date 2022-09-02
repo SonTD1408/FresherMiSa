@@ -2,9 +2,20 @@
     <div class="select-input-feild-box" ref="selectInputField" @click="selectInputOnClick" v-click-outside="onClickOutside">
         <div class="select-input-defalt">{{defaultValueTxt}}</div>
         <div class="select-input-icon" ref="selectInputFieldIcon"></div>
-        <div class="select-input-item-box" ref="selectBox" v-if="isShowSelectBox">
-            <div class="select-input-item" @click="itemOnClick" :value="type=='guid'?'00000000-0000-0000-0000-000000000000':null">- Không chọn -</div>
-            <div class="select-input-item" @click="itemOnClick" v-for="item in data" :key="item[col['0']]" :value="item[col['0']]">{{item[col['1']]}}</div>
+        <div class="select-input-item-box" ref="selectBox" v-show="isShowSelectBox">
+            <div class="select-input-item-box-input-box">
+                <input type="text" class="s-input select-input-item-box-input" placeholder="Tìm kiếm" @click.stop>
+                <div class="select-input-item-box-input-icon-box">
+                    <div class="select-input-item-box-input-icon"></div>
+                </div>
+            </div>
+            <div class="select-input-item-container">
+                <div class="select-input-item" @click="itemOnClick" :value="type=='guid'?'00000000-0000-0000-0000-000000000000':null"><div class="select-input-item-value">- Không chọn -</div></div>
+                <div class="select-input-item" item="true" @click="itemOnClick" v-for="item in data" :key="item[col['0']]" :value="item[col['0']]">
+                    <div class="select-input-item-value">{{item[col['1']]}}</div>
+                    <div class="select-input-item-icon"></div>
+                </div>
+            </div>
         </div>
 
         <div class="select-input-feild-box-inactive" ref="selectInputField" @click="selectInputOnClick" v-if="!isActive">
@@ -55,15 +66,25 @@ export default {
          * createby SONTD (12.08.2022)
          */
         selectInputOnClick(){
-            if (!this.isShowSelectBox){
-                this.$refs.selectInputField.style.border= "1px solid #4262F0";
-                this.$refs.selectInputFieldIcon.classList.remove("fa-arrow-down-close")
-                this.$refs.selectInputFieldIcon.classList.add("fa-arrow-down-open")
+            let me = this;
+            if (!me.isShowSelectBox){
+                me.$refs.selectInputField.style.border= "1px solid #4262F0";
+                me.$refs.selectInputFieldIcon.classList.remove("fa-arrow-down-close");
+                me.$refs.selectInputFieldIcon.classList.add("fa-arrow-down-open");
+                if(me.$refs.selectBox.querySelectorAll(".select-input-item[item]").length > 0){
+                    me.$refs.selectBox.querySelectorAll(".select-input-item[item]").forEach(function(item){
+                        if(item.getAttribute("Value") && item.getAttribute("Value")==me.defaultValue){
+                            item.classList.add("select-input-item-selected");
+                        }else{
+                            item.classList.remove("select-input-item-selected");
+                        }
+                    })
+                }
             }
             else{
                 this.$refs.selectInputField.style.border = "1px solid #D3D7DE";
-                this.$refs.selectInputFieldIcon.classList.remove("fa-arrow-down-open")
-                this.$refs.selectInputFieldIcon.classList.add("fa-arrow-down-close")
+                this.$refs.selectInputFieldIcon.classList.remove("fa-arrow-down-open");
+                this.$refs.selectInputFieldIcon.classList.add("fa-arrow-down-close");
 
             }
             this.isShowSelectBox = !this.isShowSelectBox;
@@ -73,9 +94,15 @@ export default {
          *  binding dữ liệu lên ô input khi chọn  
          * @param {*} event 
          */
-        itemOnClick(event){
-            this.$refs.selectInputField.querySelector(".select-input-defalt").innerHTML = event.target.innerHTML;
-            this.$emit("emitValue",event.target.getAttribute("value"), this.variable);
+         itemOnClick(event){
+            this.$refs.selectInputField.querySelector(".select-input-defalt").innerHTML = event.target.closest(".select-input-item").querySelector(".select-input-item-value").innerHTML;
+            // if(this.$refs.selectInputField.querySelector(".select-input-item-selected")){
+            //     this.$refs.selectInputField.querySelector(".select-input-item-selected").classList.remove("select-input-item-selected");
+            // }
+            // if(event.target.closest(".select-input-item[item]")){
+            //     event.target.closest(".select-input-item[item]").classList.add("select-input-item-selected");
+            // }
+            this.$emit("emitValue",event.target.closest(".select-input-item").getAttribute("value"), this.variable);
         },
 
         /**
@@ -102,6 +129,17 @@ export default {
                             me.defaultValueTxt = item[me.col[1]];
                         }
                     })
+            }
+            else{
+                if (me.data.length>0){
+                    me.data.forEach(function(item){
+                        if (item[me.col[0]] == me.defaultValue){
+                            me.defaultValueTxt = item[me.col[1]];
+                        }
+                    })
+                }else{
+                    me.defaultValueTxt="- Không chọn -";
+                }
             }
         },
         // xử lí khi truyền data
