@@ -37,6 +37,7 @@
     display: flex;
 }
 .update-item{
+    position: relative;
     width: 450px;
     min-height: 32px;
     margin-right: 100px;
@@ -83,4 +84,27 @@
     height: 15px;
     margin-right: 262px;
     cursor: pointer;
+}
+
+/* nút delete trong ô input  */
+.update-item-delete-all-icon-box{
+    position: absolute;
+    top: calc(50% - 8px); right: 8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    visibility: hidden;
+    background-color: #ddd;
+}
+.update-item-delete-all-icon-box:hover{
+    background-color: #7C869C;
+}
+.update-item-delete-all-icon{
+    width: 10px;
+    height: 10px;
+    background:  url("../../../../assets/img/icon_collection.svg") no-repeat -323px -476px;
 }

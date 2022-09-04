@@ -32,6 +32,7 @@
               <div class="add-item">
                 <div class="aib-txt">Tên <span style="color: red">*</span></div>
                 <input
+                  type="text"
                   FieldSet="FirstName"
                   class="add-input-feild s-input"
                   v-model="dataForm.Potential['FirstName']"
@@ -48,6 +49,7 @@
               <div class="add-item">
                 <div class="aib-txt">ĐT di động <div class="add-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                 <input
+                  type="text"
                   v-model="dataForm.Potential['PhoneNumber']"
                   FieldSet="PhoneNumber"
                   class="add-input-feild s-input"
@@ -62,6 +64,7 @@
               <div class="add-item">
                 <div class="aib-txt">Zalo</div>
                 <input
+                  type="text"
                   v-model="dataForm.Potential['Zalo']"
                   FieldSet="Zalo"
                   class="add-input-feild s-input"
@@ -70,6 +73,7 @@
               <div class="add-item">
                 <div class="aib-txt">Email cơ quan</div>
                 <input
+                  type="text"
                   FieldSet="OfficeEmail"
                   class="add-input-feild s-input"
                   v-model = "dataForm.Potential['OfficeEmail']"
@@ -78,6 +82,7 @@
               <div class="add-item">
                 <div class="aib-txt">Mã số thuế</div>
                 <input
+                  type="text"
                   FieldSet="Taxcode"
                   class="add-input-feild s-input"
                   v-model="dataForm.Potential['Taxcode']"
@@ -88,6 +93,7 @@
               <div class="add-item">
                 <div class="aib-txt">Họ và tên đệm</div>
                 <input class="add-input-feild s-input" 
+                type="text"
                 v-model="dataForm.Potential['LastName']"
                 FieldSet="LastName"/>
               </div>
@@ -106,6 +112,7 @@
               <div class="add-item">
                 <div class="aib-txt">ĐT cơ quan <div class="add-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"> <tool-tip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></tool-tip> </div></div>
                 <input
+                  type="text"
                   v-model="dataForm.Potential['OfficePhoneNumber']"
                   FieldSet = "OfficePhoneNumber"
                   class="add-input-feild s-input"
@@ -120,6 +127,7 @@
               <div class="add-item">
                 <div class="aib-txt">Email cá nhân</div>
                 <input
+                  type="text"
                   v-model="dataForm.Potential['Email']"
                   FieldSet="Email"
                   class="add-input-feild s-input"
@@ -128,8 +136,9 @@
               <div class="add-item">
                 <div class="aib-txt">Tổ chức</div>
                 <input
+                  type="text"
                   v-model="dataForm.Potential['Organization']"
-                  FieldSet="OrganizationName"
+                  FieldSet="Organization"
                   class="add-input-feild s-input"
                 />
               </div>
@@ -143,6 +152,7 @@
               <div class="add-item">
                 <div class="aib-txt">Tài khoản ngân hàng</div>
                 <input
+                  type="text"
                   v-model="dataForm.Potential['BankAccount']"
                   FieldSet="BankAccount"
                   class="add-input-feild s-input"
@@ -173,6 +183,7 @@
               <div class="add-item">
                 <div class="aib-txt">Ngân hàng</div>
                 <input class="add-input-feild s-input" 
+                type="text"
                 FieldSet="BankName"
                 v-model="dataForm.Potential['BankName']"
                 />
@@ -216,7 +227,10 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Số nhà, Đường phố</div>
-                <input class="add-input-feild s-input" v-model="dataForm.Potential['ApartmentNumber']"/>
+                <input class="add-input-feild s-input" 
+                type="text"
+                v-model="dataForm.Potential['ApartmentNumber']"
+                FieldSet="ApartmentNumber"/>
               </div>
               <div class="add-item add-item-txtarea">
                 <div class="aib-txt">Địa chỉ</div>
@@ -250,7 +264,10 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Mã vùng</div>
-                <input class="add-input-feild s-input" v-model="dataForm.Potential['RegionCode']"/>
+                <input class="add-input-feild s-input"
+                type="text"
+                v-model="dataForm.Potential['RegionCode']"
+                FieldSet="RegionCode"/>
               </div>
             </div>
           </div>
@@ -273,6 +290,7 @@
               <div class="add-item">
                 <div class="aib-txt">Mã tiềm năng</div>
                 <input class="add-input-feild s-input" 
+                type="text"
                 FieldSet="PotentialCode"
                 v-model="dataForm.Potential['PotentialCode']"/>
               </div>
@@ -700,6 +718,33 @@ export default {
   created() {
     this.init();
   },
+  mounted() {
+    // thêm icon delete vào ô input
+    let me = this;
+    if (me.$refs.addMainContentRef.querySelectorAll("input[FieldSet][type=text]")){
+        me.$refs.addMainContentRef.querySelectorAll("input[FieldSet][type=text]").forEach(function(item){
+            // tạo DOM cho delete icon
+            let div = document.createElement("div");
+            div.classList.add("add-item-delete-all-icon-box");
+            div.addEventListener("click",function(){
+                div.closest(".add-item")
+                if(div.closest(".add-item") && div.closest(".add-item").querySelector("input[type=text]")){
+                    let field = div.closest(".add-item").querySelector("input[type=text]").getAttribute("FieldSet");
+                    if(field){
+                        me.dataForm.Potential[field] = "";
+                    }
+                }
+            }); 
+            let childDiv = document.createElement("div");
+            childDiv.classList.add("add-item-delete-all-icon");
+            div.appendChild(childDiv);
+            //thêm div vào element cha
+            if(item.closest(".add-item")){
+                item.closest(".add-item").appendChild(div);
+            }
+      })
+    }
+  },
   computed:{
     // fullname
     FullNameComputed: function(){
@@ -810,15 +855,211 @@ export default {
               this.getWardFromServer();
           }
           else{
-              this.dataForm.Potential.CityID="00000000-0000-0000-0000-000000000000"
+              this.dataForm.Potential.CityID="00000000-0000-0000-0000-000000000000";
           }
       },
       // check phường thay đổi 
       'dataForm.Potential.WardID':function(newValue){
           if (newValue==null || newValue== "" || newValue==undefined){
-              this.dataForm.Potential.WardID="00000000-0000-0000-0000-000000000000"
+              this.dataForm.Potential.WardID="00000000-0000-0000-0000-000000000000";
           }
-      }
+      },
+      // kiểm tra thay đổi biến LastName
+      'dataForm.Potential.LastName':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=LastName]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến FirstName
+      'dataForm.Potential.FirstName':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=FirstName]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến PhoneNumber
+      'dataForm.Potential.PhoneNumber':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=PhoneNumber]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến OfficePhoneNumber
+      'dataForm.Potential.OfficePhoneNumber':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=OfficePhoneNumber]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến Zalo
+      'dataForm.Potential.Zalo':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=Zalo]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến Email
+      'dataForm.Potential.Email':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=Email]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến OfficeEmail
+      'dataForm.Potential.OfficeEmail':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=OfficeEmail]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến Organization
+      'dataForm.Potential.Organization':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=Organization]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến Taxcode
+      'dataForm.Potential.Taxcode':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=Taxcode]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến BankAccount
+      'dataForm.Potential.BankAccount':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=BankAccount]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến BankName
+      'dataForm.Potential.BankName':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=BankName]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến ApartmentNumber
+      'dataForm.Potential.ApartmentNumber':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=ApartmentNumber]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến RegionCode
+      'dataForm.Potential.RegionCode':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=RegionCode]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
+      // kiểm tra thay đổi biến PotentialCode
+      'dataForm.Potential.PotentialCode':function(newValue){
+          let me = this,
+              input = me.$refs.addMainContentRef.querySelector("[FieldSet=PotentialCode]");
+          if (newValue){
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
+          }else{
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
+              } 
+          }
+      },
   }
 };
 </script>

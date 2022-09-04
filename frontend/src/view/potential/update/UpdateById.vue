@@ -32,6 +32,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Tên <span style="color: red">*</span></div>
                     <input
+                    type="text"
                     FieldSet="FirstName"
                     class="update-input-feild s-input"
                     v-model="Potential['FirstName']"
@@ -48,6 +49,7 @@
                 <div class="update-item">
                     <div class="uib-txt">ĐT di động <div class="update-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                     <input
+                    type="text"
                     v-model="Potential['PhoneNumber']"
                     FieldSet="PhoneNumber"
                     class="update-input-feild s-input"
@@ -56,6 +58,7 @@
                 <div class="update-item">
                     <div class="uib-txt">ĐT khác <div class="update-item-icon" @click="hideShowTooltip('OtherPhoneNumber')"><ToolTip :msg="'Điện thoại khác'" v-if="tooltip.OtherPhoneNumber" @tooltipClickOutside="tooltipClickOutside('OtherPhoneNumber')"></ToolTip></div></div>
                     <input
+                    type="text"
                     v-model="Potential['OtherPhoneNumber']"
                     FieldSet="OtherPhoneNumber"
                     class="update-input-feild s-input"
@@ -80,6 +83,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Zalo</div>
                     <input
+                    type="text"
                     v-model="Potential['Zalo']"
                     FieldSet="Zalo"
                     class="update-input-feild s-input"
@@ -89,6 +93,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Email cơ quan</div>
                     <input
+                    type="text"
                     FieldSet="OfficeEmail"
                     class="update-input-feild s-input"
                     v-model = "Potential['OfficeEmail']"
@@ -97,9 +102,10 @@
                 <div class="update-item">
                     <div class="uib-txt">Mã số thuế</div>
                     <input
-                    FieldSet="TaxCode"
+                    type="text"
+                    FieldSet="Taxcode"
                     class="update-input-feild s-input"
-                    v-model="Potential['TaxCode']"
+                    v-model="Potential['Taxcode']"
                     />
                 </div>
                 </div>
@@ -107,6 +113,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Họ và tên đệm</div>
                     <input class="update-input-feild s-input" 
+                    type="text"
                     v-model="Potential['LastName']"
                     FieldSet="LastName"/>
                 </div>
@@ -127,6 +134,7 @@
                 <div class="update-item">
                     <div class="uib-txt">ĐT cơ quan <div class="update-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"><ToolTip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></ToolTip></div></div>
                     <input
+                    type="text"
                     v-model="Potential['OfficePhoneNumber']"
                     FieldSet = "OfficePhoneNumber"
                     class="update-input-feild s-input"
@@ -151,6 +159,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Email cá nhân</div>
                     <input
+                    type="text"
                     v-model="Potential['Email']"
                     FieldSet="Email"
                     class="update-input-feild s-input"
@@ -159,6 +168,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Tổ chức</div>
                     <input
+                    type="text"
                     v-model="Potential['Organization']"
                     FieldSet="Organization"
                     class="update-input-feild s-input"
@@ -180,6 +190,7 @@
                     <div class="update-item">
                         <div class="uib-txt">Facebook</div>
                         <input class="update-input-feild s-input" 
+                        type="text"
                         FieldSet="Facebook"
                         v-model="Potential['Facebook']"/>
                     </div>
@@ -471,6 +482,37 @@ export default {
             let me = this;
             me.tooltip[tooltipName] = false;
         },
+
+        /**
+         * thêm nút xóa nội dung trong ô input
+         * created by SONTD(04.09.2022)
+         */
+        addDeleteIconForInputField(){
+            let me = this;
+            if (me.$refs.updateMainContentRef.querySelectorAll("input[FieldSet][type=text]")){
+                me.$refs.updateMainContentRef.querySelectorAll("input[FieldSet][type=text]").forEach(function(item){
+                    // tạo DOM cho delete icon
+                    console.log(item);
+                    let div = document.createElement("div");
+                    div.classList.add("update-item-delete-all-icon-box");
+                    div.addEventListener("click",function(){
+                        if(div.closest(".update-item") && div.closest(".update-item").querySelector("input[type=text]")){
+                            let field = div.closest(".update-item").querySelector("input[type=text]").getAttribute("FieldSet");
+                            if(field){
+                                me.Potential[field] = "";
+                            }
+                        }
+                    }); 
+                    let childDiv = document.createElement("div");
+                    childDiv.classList.add("update-item-delete-all-icon");
+                    div.appendChild(childDiv);
+                    //thêm div vào element cha
+                    if(item.closest(".update-item")){
+                        item.closest(".update-item").appendChild(div);
+                    }
+                })
+            }
+        }
     },
     created() {
         let me = this;
@@ -478,6 +520,9 @@ export default {
         me.idRow = me.$route.query.PotentialID;
         // khởi tạo page lấy data cần thiết từ server
         me.init();
+    },
+    mounted() {
+        this.addDeleteIconForInputField();
     },
     watch: {
         // set default cho trường không gửi tin nhắn và trường không gọi điện
@@ -495,7 +540,161 @@ export default {
                 checkbox.click();
                 checkbox.setAttribute("isSelectedCheckBox", "true");
             }
-        }
+        },
+        // quan sát thay đổi ô input LastName
+        'Potential.LastName':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=LastName]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input FirstName
+        'Potential.FirstName':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=FirstName]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input PhoneNumber
+        'Potential.PhoneNumber':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=PhoneNumber]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input OfficePhoneNumber
+        'Potential.OfficePhoneNumber':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=OfficePhoneNumber]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input OtherPhoneNumber
+        'Potential.OtherPhoneNumber':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=OtherPhoneNumber]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input Email
+        'Potential.Email':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=Email]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input Zalo
+        'Potential.Zalo':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=Zalo]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input Organization
+        'Potential.Organization':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=Organization]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input OfficeEmail
+        'Potential.OfficeEmail':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=OfficeEmail]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input Taxcode
+        'Potential.Taxcode':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=Taxcode]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
+        // quan sát thay đổi ô input Facebook
+        'Potential.Facebook':function(newValue){
+            let me = this,
+                input = me.$refs.updateMainContentRef.querySelector("[FieldSet=Facebook]");
+                if (newValue){
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                    } 
+                }else{
+                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                    } 
+                }
+        },
     }
 }
 </script>
