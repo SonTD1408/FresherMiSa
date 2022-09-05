@@ -56,9 +56,8 @@
 .update-validate-error{
     color: red;
     transform: translate(8px,-12px);
-    width: 500px;
+    margin-left: 160px;
     display: flex;
-    justify-content: center;
 }
 .uib-txt{
     display: flex;

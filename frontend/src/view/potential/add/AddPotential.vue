@@ -30,13 +30,14 @@
                 </div>
               </div>
               <div class="add-item">
-                <div class="aib-txt">Tên <span style="color: red">*</span></div>
+                <div class="aib-txt">Tên <span style="color: red"> *</span></div>
                 <input
                   type="text"
                   FieldSet="FirstName"
                   class="add-input-feild s-input"
                   v-model="dataForm.Potential['FirstName']"
                   @blur="validateRequired($event)"
+                  :maxlength="maxLengthInput.NameHalf"
                 />
               </div>
               <div class="validate-error" v-if="validate.required.FirstName==0">Tên không được để trống</div>
@@ -53,6 +54,7 @@
                   v-model="dataForm.Potential['PhoneNumber']"
                   FieldSet="PhoneNumber"
                   class="add-input-feild s-input"
+                  :maxlength="maxLengthInput.Phone"
                 />
               </div>
               <div class="add-item">
@@ -68,6 +70,7 @@
                   v-model="dataForm.Potential['Zalo']"
                   FieldSet="Zalo"
                   class="add-input-feild s-input"
+                  :maxlength="maxLengthInput.Name"
                 />
               </div>
               <div class="add-item">
@@ -77,6 +80,7 @@
                   FieldSet="OfficeEmail"
                   class="add-input-feild s-input"
                   v-model = "dataForm.Potential['OfficeEmail']"
+                  :maxlength="maxLengthInput.Email"
                 />
               </div>
               <div class="add-item">
@@ -86,6 +90,7 @@
                   FieldSet="Taxcode"
                   class="add-input-feild s-input"
                   v-model="dataForm.Potential['Taxcode']"
+                  :maxlength="maxLengthInput.Code"
                 />
               </div>
             </div>
@@ -95,13 +100,15 @@
                 <input class="add-input-feild s-input" 
                 type="text"
                 v-model="dataForm.Potential['LastName']"
-                FieldSet="LastName"/>
+                FieldSet="LastName"
+                :maxlength="maxLengthInput.NameHalf"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Họ và tên</div>
                 <input class="add-input-feild s-input" 
                 disabled 
-                v-model="dataForm.Potential.FullName"/>
+                v-model="dataForm.Potential.FullName"
+                :maxlength="maxLengthInput.Name"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
@@ -116,6 +123,7 @@
                   v-model="dataForm.Potential['OfficePhoneNumber']"
                   FieldSet = "OfficePhoneNumber"
                   class="add-input-feild s-input"
+                  :maxlength="maxLengthInput.Phone"
                 />
               </div>
               <div class="add-item">
@@ -131,6 +139,7 @@
                   v-model="dataForm.Potential['Email']"
                   FieldSet="Email"
                   class="add-input-feild s-input"
+                  :maxlength="maxLengthInput.Email"
                 />
               </div>
               <div class="add-item">
@@ -140,6 +149,7 @@
                   v-model="dataForm.Potential['Organization']"
                   FieldSet="Organization"
                   class="add-input-feild s-input"
+                  :maxlength="maxLengthInput.Other"
                 />
               </div>
             </div>
@@ -156,6 +166,7 @@
                   v-model="dataForm.Potential['BankAccount']"
                   FieldSet="BankAccount"
                   class="add-input-feild s-input"
+                  :maxlength="maxLengthInput.Other"
                 />
               </div>
               <div class="add-item">
@@ -186,6 +197,7 @@
                 type="text"
                 FieldSet="BankName"
                 v-model="dataForm.Potential['BankName']"
+                :maxlength="maxLengthInput.Other"
                 />
               </div>
               <div class="add-item">
@@ -230,11 +242,12 @@
                 <input class="add-input-feild s-input" 
                 type="text"
                 v-model="dataForm.Potential['ApartmentNumber']"
-                FieldSet="ApartmentNumber"/>
+                FieldSet="ApartmentNumber"
+                :maxlength="maxLengthInput.Name"/>
               </div>
               <div class="add-item add-item-txtarea">
                 <div class="aib-txt">Địa chỉ</div>
-                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['Address']"></textarea>
+                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['Address']" :maxlength="maxLengthInput.Other"></textarea>
               </div>
             </div>
             <div class="add-items-site">
@@ -267,7 +280,8 @@
                 <input class="add-input-feild s-input"
                 type="text"
                 v-model="dataForm.Potential['RegionCode']"
-                FieldSet="RegionCode"/>
+                FieldSet="RegionCode"
+                :maxlength="maxLengthInput.Code"/>
               </div>
             </div>
           </div>
@@ -292,7 +306,8 @@
                 <input class="add-input-feild s-input" 
                 type="text"
                 FieldSet="PotentialCode"
-                v-model="dataForm.Potential['PotentialCode']"/>
+                v-model="dataForm.Potential['PotentialCode']"
+                :maxlength="maxLengthInput.Code"/>
               </div>
               <div class="validate-error" v-if="validate.duplicate.PotentialCode==0">Giá trị của Mã tiềm năng bị trùng. <div class="validate-error-show" @click="isDoing">Xem ngay</div> </div>
             </div>
@@ -308,6 +323,7 @@ import SelectInput from "../../../components/common/SelectInput.vue";
 import ComboboxComponent from "@/components/common/ComboboxComponent.vue";
 import Resource from '@/script/resource.js';
 import ToolTip from '../../../components/common/ToolTip.vue';
+import MaxLengthInput from "../../../script/maxLengthInput.js";
 export default {
   components: {
     SelectInput,
@@ -409,7 +425,9 @@ export default {
       tooltip: {
         PhoneNumber: false,
         OfficePhoneNumber: false,
-      }
+      },
+      // max length các ô input 
+      maxLengthInput: MaxLengthInput,
     };
   },
   methods: {
@@ -563,6 +581,8 @@ export default {
                       me.$router.push("/");
                     }else if (response.data && response.data.StatusMsg == Resource.ResponseStatus.PotentialCodeDuplicate){
                       me.validateDuplicate("PotentialCode");
+                    }else{
+                      console.log(response);
                     }
                   }
                   else{
@@ -576,7 +596,7 @@ export default {
           }catch(error){
               console.log(error);
           }
-      }
+        }
     },
 
     /**
@@ -733,6 +753,7 @@ export default {
                     if(field){
                         me.dataForm.Potential[field] = "";
                     }
+                    div.closest(".add-item").querySelector("input[type=text]").focus();
                 }
             }); 
             let childDiv = document.createElement("div");
@@ -878,15 +899,30 @@ export default {
               } 
           }
       },
+      // kiểm tra validate required cho biến FisrtName
+      'validate.required.FirstName':function(newValue){
+          let me = this;
+          if(newValue == 0 ){
+              me.$refs.addMainContentRef.querySelector("[FieldSet=FirstName]").classList.add("input-validate-error");
+          }else{
+            me.$refs.addMainContentRef.querySelector("[FieldSet=FirstName]").classList.remove("input-validate-error");
+          }
+      },
       // kiểm tra thay đổi biến FirstName
       'dataForm.Potential.FirstName':function(newValue){
           let me = this,
               input = me.$refs.addMainContentRef.querySelector("[FieldSet=FirstName]");
           if (newValue){
-              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
-                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
-              } 
+              if(newValue!=" "){
+                  me.validate.required.FirstName = 1;
+                  if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                      input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+                  } 
+              }else{
+                  me.dataForm.Potential.FirstName = "";
+              }
           }else{
+              me.validate.required.FirstName = 0;
               if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
                   input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
               } 

@@ -523,7 +523,7 @@ export default {
     getSelectedRow(){
         let rowIDList= [],
             me = this;
-        me.$refs.gridTable.querySelectorAll("[isChecked=true]").forEach(function(item){
+        me.$refs.gridTable.querySelectorAll(".s-tbody [isChecked=true]").forEach(function(item){
             rowIDList.push(item.closest(".s-tr").getAttribute('idOfRow'))
         });
         return rowIDList;

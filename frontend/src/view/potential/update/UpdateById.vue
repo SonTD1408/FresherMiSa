@@ -37,6 +37,7 @@
                     class="update-input-feild s-input"
                     v-model="Potential['FirstName']"
                     @blur="validateRequired($event)"
+                    :maxlength="maxLengthInput.NameHalf"
                     />
                 </div>
                 <div class="update-validate-error" v-if="validate.required.FirstName==0">Tên không được để trống</div>
@@ -53,6 +54,7 @@
                     v-model="Potential['PhoneNumber']"
                     FieldSet="PhoneNumber"
                     class="update-input-feild s-input"
+                    :maxlength="maxLengthInput.Phone"
                     />
                 </div>
                 <div class="update-item">
@@ -62,6 +64,7 @@
                     v-model="Potential['OtherPhoneNumber']"
                     FieldSet="OtherPhoneNumber"
                     class="update-input-feild s-input"
+                    :maxlength="maxLengthInput.Phone"
                     />
                 </div>
                 <div class="update-item">
@@ -87,6 +90,7 @@
                     v-model="Potential['Zalo']"
                     FieldSet="Zalo"
                     class="update-input-feild s-input"
+                    :maxlength="maxLengthInput.Name"
                     />
                 </div>
                 
@@ -97,6 +101,7 @@
                     FieldSet="OfficeEmail"
                     class="update-input-feild s-input"
                     v-model = "Potential['OfficeEmail']"
+                    :maxlength="maxLengthInput.Email"
                     />
                 </div>
                 <div class="update-item">
@@ -106,6 +111,7 @@
                     FieldSet="Taxcode"
                     class="update-input-feild s-input"
                     v-model="Potential['Taxcode']"
+                    :maxlength="maxLengthInput.Code"
                     />
                 </div>
                 </div>
@@ -115,14 +121,16 @@
                     <input class="update-input-feild s-input" 
                     type="text"
                     v-model="Potential['LastName']"
-                    FieldSet="LastName"/>
+                    FieldSet="LastName"
+                    :maxlength="maxLengthInput.NameHalf"/>
                 </div>
                 <div class="update-item">
                     <div class="uib-txt">Họ và tên</div>
                     <input class="update-input-feild s-input" 
                     FieldSet="FullName"
                     disabled 
-                    v-bind:value="(Potential['LastName']? Potential['LastName']:'')+' '+(Potential['FirstName']? Potential['FirstName']:'')"
+                    v-model="Potential['FullName']"
+                    :maxlength="maxLengthInput.Name"
                     />
                 </div>
                 <div class="update-item">
@@ -138,6 +146,7 @@
                     v-model="Potential['OfficePhoneNumber']"
                     FieldSet = "OfficePhoneNumber"
                     class="update-input-feild s-input"
+                    :maxlength="maxLengthInput.Phone"
                     />
                 </div>
                 <div class="update-item">
@@ -163,6 +172,7 @@
                     v-model="Potential['Email']"
                     FieldSet="Email"
                     class="update-input-feild s-input"
+                    :maxlength="maxLengthInput.Email"
                     />
                 </div>
                 <div class="update-item">
@@ -172,6 +182,7 @@
                     v-model="Potential['Organization']"
                     FieldSet="Organization"
                     class="update-input-feild s-input"
+                    :maxlength="maxLengthInput.Other"
                     />
                 </div>
                 </div>
@@ -192,7 +203,8 @@
                         <input class="update-input-feild s-input" 
                         type="text"
                         FieldSet="Facebook"
-                        v-model="Potential['Facebook']"/>
+                        v-model="Potential['Facebook']"
+                        :maxlength="maxLengthInput.Name"/>
                     </div>
                 </div>
                 <div class="update-items-site">
@@ -212,8 +224,9 @@
 import axiosConfig from '@/script/config/axiosConfig';
 import Resource from "../../../script/resource.js";
 import SelectInput from "../../../components/common/SelectInput.vue";
-import ComboboxComponent from "../../../components/common/ComboboxComponent.vue"
-import ToolTip from "../../../components/common/ToolTip.vue"
+import ComboboxComponent from "../../../components/common/ComboboxComponent.vue";
+import ToolTip from "../../../components/common/ToolTip.vue";
+import MaxLengthInput from "../../../script/maxLengthInput.js";
 export default {
     emits: ["showToastMessage", "resetComponent"],
     components: {
@@ -257,7 +270,9 @@ export default {
                 PhoneNumber: false,
                 OfficePhoneNumber: false,
                 OtherPhoneNumber: false,
-            }
+            },
+            // max length các ô input
+            maxLengthInput: MaxLengthInput,
         }
     },
     methods: {
@@ -492,7 +507,6 @@ export default {
             if (me.$refs.updateMainContentRef.querySelectorAll("input[FieldSet][type=text]")){
                 me.$refs.updateMainContentRef.querySelectorAll("input[FieldSet][type=text]").forEach(function(item){
                     // tạo DOM cho delete icon
-                    console.log(item);
                     let div = document.createElement("div");
                     div.classList.add("update-item-delete-all-icon-box");
                     div.addEventListener("click",function(){
@@ -501,6 +515,7 @@ export default {
                             if(field){
                                 me.Potential[field] = "";
                             }
+                            div.closest(".update-item").querySelector("input[type=text]").focus();
                         }
                     }); 
                     let childDiv = document.createElement("div");
@@ -541,33 +556,50 @@ export default {
                 checkbox.setAttribute("isSelectedCheckBox", "true");
             }
         },
+        // kiểm tra validate required cho biến FisrtName
+        'validate.required.FirstName':function(newValue){
+            let me = this;
+            if(newValue == 0 ){
+                me.$refs.updateMainContentRef.querySelector("[FieldSet=FirstName]").classList.add("input-validate-error");
+            }else{
+                me.$refs.updateMainContentRef.querySelector("[FieldSet=FirstName]").classList.remove("input-validate-error");
+            }
+        },
         // quan sát thay đổi ô input LastName
         'Potential.LastName':function(newValue){
             let me = this,
                 input = me.$refs.updateMainContentRef.querySelector("[FieldSet=LastName]");
-                if (newValue){
-                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
-                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
-                    } 
-                }else{
-                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
-                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
-                    } 
-                }
+            me.Potential.FullName = (me.Potential['LastName']? me.Potential['LastName']:'')+' '+(me.Potential['FirstName']? me.Potential['FirstName']:'');
+            if (newValue){
+                if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                    input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                } 
+            }else{
+                if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                    input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                } 
+            }
         },
         // quan sát thay đổi ô input FirstName
         'Potential.FirstName':function(newValue){
             let me = this,
                 input = me.$refs.updateMainContentRef.querySelector("[FieldSet=FirstName]");
-                if (newValue){
+            me.Potential.FullName = (me.Potential['LastName']? me.Potential['LastName']:'')+' '+(me.Potential['FirstName']? me.Potential['FirstName']:'');
+            if (newValue){
+                if(newValue != " "){
+                    me.validate.required.FirstName = 1;
                     if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
                         input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
                     } 
                 }else{
-                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
-                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
-                    } 
+                    me.Potential.FirstName = "";
                 }
+            }else{
+                me.validate.required.FirstName = 0;
+                if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                    input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
+                } 
+            }
         },
         // quan sát thay đổi ô input PhoneNumber
         'Potential.PhoneNumber':function(newValue){
