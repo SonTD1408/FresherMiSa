@@ -36,9 +36,6 @@ export default {
             default: ""
         }
     },
-    mounted() {
-        console.log(this.msgString=="");
-    },
 }
 </script>
 <style scoped>

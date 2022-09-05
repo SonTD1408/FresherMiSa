@@ -84,8 +84,11 @@
 .update-input-checkbox{
     width: 15px;
     height: 15px;
-    margin-right: 262px;
+    margin-right: 263px;
     cursor: pointer;
+}
+.update-item-has-update-input-checkbox{
+    align-items: center;
 }
 
 /* nút delete trong ô input  */

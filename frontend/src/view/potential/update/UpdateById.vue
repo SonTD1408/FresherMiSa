@@ -73,7 +73,7 @@
                     <SelectInput  :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'" :defaultValue="Potential.SourceID"/>
                     </div>
                 </div>
-                <div class="update-item">
+                <div class="update-item update-item-has-update-input-checkbox">
                     <div class="uib-txt">Không gửi Email</div>
                     <input
                     type="checkbox"
@@ -155,7 +155,7 @@
                         <ComboboxComponent :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypesObj'" @emitComboboxValue="getValueFromCombobox" :defaultValue="Potential.PotentialTypes"></ComboboxComponent>
                     </div>
                 </div>
-                <div class="update-item">
+                <div class="update-item update-item-has-update-input-checkbox">
                     <div class="uib-txt">Không gọi điện</div>
                     <input
                     type="checkbox"
@@ -210,10 +210,19 @@
                 <div class="update-items-site">
                     <div class="update-item">
                         <div class="uib-txt">Ngày sinh</div>
-                        <input class="update-input-feild s-input" 
+                        <!-- <input class="update-input-feild s-input" 
                         type="date"
                         FieldSet="DateOfBirth"
-                        v-model="Potential['DateOfBirth']"/>
+                        v-model="Potential['DateOfBirth']"/> -->
+                        <el-date-picker
+                        v-model="Potential['DateOfBirth']"
+                        type="date"
+                        format="DD/MM/YYYY"
+                        value-format="YYYY-MM-DD"
+                        placeholder="dd/mm/yyyy"
+                        size="default"
+                        style="width: 280px;"
+                        />
                     </div>
                 </div>
             </div>

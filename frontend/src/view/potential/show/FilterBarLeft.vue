@@ -12,7 +12,7 @@
             <div class="fsb-item-box">
                 <div class="fsb-item" v-for="(item,index) in column" :key="index" :indexOfItem="index" @click="filterItemOnClick">
                     <div class="fsb-item-filter-column">
-                        <input type="checkbox" class="fsbi-icon" :isChecked="false" @click.stop @click="checkboxOnClick">
+                        <input type="checkbox" class="fsbi-icon" :isChecked="false"  @click="checkboxOnClick">
                         <div class="fsbi-label">{{item.VietnameseName}}</div>
                     </div>
                     <div class="fsb-item-filter-type" v-if="item.isShowFilterType">

@@ -62,10 +62,6 @@ export default {
                     ColumnName: "Tên"
                 },
                 {
-                    Column: "FullName",
-                    ColumnName: "Họ và tên"
-                },
-                {
                     Column: "PhoneNumber",
                     ColumnName: "SĐT cá nhân"
                 },
@@ -86,7 +82,7 @@ export default {
                     ColumnName: "Email cơ quan"
                 },
                 {
-                    Column: "TaxCode",
+                    Column: "Taxcode",
                     ColumnName: "Mã số thuế"
                 },
                 {
@@ -101,26 +97,26 @@ export default {
                     Column: "BankName",
                     ColumnName: "Tên ngân hàng"
                 },
-                {
-                    Column: "FoundingDate",
-                    ColumnName: "Ngày thành lập"
-                },
-                {
-                    Column: "NationID",
-                    ColumnName: "Quốc gia"
-                },
-                {
-                    Column: "CityID",
-                    ColumnName: "Thành phố/Tỉnh"
-                },
-                {
-                    Column: "DistrictID",
-                    ColumnName: "Quận/Huyện"
-                },
-                {
-                    Column: "WardID",
-                    ColumnName: "Phường/Xã"
-                },
+                // {
+                //     Column: "FoundingDate",
+                //     ColumnName: "Ngày thành lập"
+                // },
+                // {
+                //     Column: "NationID",
+                //     ColumnName: "Quốc gia"
+                // },
+                // {
+                //     Column: "CityID",
+                //     ColumnName: "Thành phố/Tỉnh"
+                // },
+                // {
+                //     Column: "DistrictID",
+                //     ColumnName: "Quận/Huyện"
+                // },
+                // {
+                //     Column: "WardID",
+                //     ColumnName: "Phường/Xã"
+                // },
                 {
                     Column: "ApartmentNumber",
                     ColumnName: "Số nhà"
@@ -133,18 +129,18 @@ export default {
                     Column: "PotentialDescription",
                     ColumnName: "Mô tả"
                 },
-                {
-                    Column: "IsCall",
-                    ColumnName: "Cho phép gọi"
-                },
-                {
-                    Column: "IsSendEmail",
-                    ColumnName: "Cho phép gửi Email"
-                },
-                {
-                    Column: "Gender",
-                    ColumnName: "Giới tính"
-                },
+                // {
+                //     Column: "IsCall",
+                //     ColumnName: "Cho phép gọi"
+                // },
+                // {
+                //     Column: "IsSendEmail",
+                //     ColumnName: "Cho phép gửi Email"
+                // },
+                // {
+                //     Column: "Gender",
+                //     ColumnName: "Giới tính"
+                // },
                 {
                     Column: "DateOfBirth",
                     ColumnName: "Ngày sinh"
@@ -153,10 +149,10 @@ export default {
                     Column: "Facebook",
                     ColumnName: "Facebook"
                 },
-                {
-                    Column: "IsShare",
-                    ColumnName: "Dùng chung"
-                },
+                // {
+                //     Column: "IsShare",
+                //     ColumnName: "Dùng chung"
+                // },
                 {
                     Column: "VocativeID",
                     ColumnName: "Xưng hô"

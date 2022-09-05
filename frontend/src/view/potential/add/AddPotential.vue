@@ -171,10 +171,19 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Ngày thành lập</div>
-                <input type="date"
+                <!-- <input type="date"
                   v-model="dataForm.Potential['FoundingDate']"
                   FieldSet="FoundingDate"
                   class="add-input-feild s-input"
+                /> -->
+                <el-date-picker
+                v-model="dataForm.Potential['FoundingDate']"
+                type="date"
+                format="DD-MM-YYYY"
+                value-format="YYYY-MM-DD"
+                placeholder="dd/mm/yyyy"
+                size="default"
+                style="width: 280px;"
                 />
               </div>
               <div class="add-item">
@@ -297,7 +306,7 @@
           <div class="add-section-title">Thông tin hệ thống</div>
           <div class="add-items">
             <div class="add-items-site">
-              <div class="add-item">
+              <div class="add-item add-item-has-add-input-checkbox">
                 <div class="aib-txt">Dùng chung</div>
                 <input type="checkbox" class="add-input-checkbox" FieldSet="IsShare" isSelectedCheckBox="false" @click="isShareCheckboxOnClick"/>
               </div>
@@ -324,12 +333,13 @@ import ComboboxComponent from "@/components/common/ComboboxComponent.vue";
 import Resource from '@/script/resource.js';
 import ToolTip from '../../../components/common/ToolTip.vue';
 import MaxLengthInput from "../../../script/maxLengthInput.js";
+
 export default {
   components: {
     SelectInput,
     ComboboxComponent,
     ToolTip
-},
+  },
   data() {
     return {
       // data để lưu về server 

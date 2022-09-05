@@ -88,7 +88,7 @@
               <div class="s-th">Doanh thu</div>
             </div>
           </div>
-          <div class="s-tbody" v-on:scroll="handleScroll" v-show="isShowDataInTable">
+          <div class="s-tbody" v-on:scroll="handleScroll" v-show="isShowDataInTable" v-click-outside="bodyGridOnClickOutside">
             <div class="s-tr" v-for="(item, index) in data" :key="index" :indexOfRow="index" :idOfRow="item.PotentialID" @mouseover="rowOnMouseOver" @mouseleave="rowOnMouseLeave" @click="rowOnClick">
               <div class="s-td align-right">
                   <div class="s-td-update-icon" style="visibility: hidden;" @click="updateIconOnClick($event)"></div>
@@ -717,7 +717,6 @@ export default {
     rowOnClick(event){
         let me = this;
         me.toolbarRight.indexOfRowSelected = event.target.closest(".s-tr").getAttribute("indexOfRow");
-
         if(me.$refs.showPotentialToolbarRight){
           if (me.data[me.toolbarRight.indexOfRowSelected]){
               // xử lí ẩn hiện và nội dung của thẻ người tạo
@@ -755,6 +754,15 @@ export default {
               }
           }
         }
+    },
+
+    /**
+     * xử lí sự kiện bấm ra ngoài row thì không hiện data ở toolbar right
+     * created by SONTD(05.09.2022)
+     */
+     bodyGridOnClickOutside(){
+        let me = this;
+        me.toolbarRight.indexOfRowSelected = -1;
     },
 
     /**
