@@ -577,25 +577,28 @@ export default {
               .then((response) => {
                   if (response.status==201){
                     if (response.data && response.data.StatusMsg == Resource.ResponseStatus.SuccessMsg){
-                      me.$emit("showToastMessage",3);
+                      me.$emit("showToastMessage",3,"Thêm mới thành công");
                       me.$router.push("/");
                     }else if (response.data && response.data.StatusMsg == Resource.ResponseStatus.PotentialCodeDuplicate){
                       me.validateDuplicate("PotentialCode");
+                      me.$emit("showToastMessage",2,"Trùng mã tiềm năng");
                     }else{
                       console.log(response);
                     }
                   }
                   else{
-                    me.$emit("showToastMessage",4);
+                    me.$emit("showToastMessage",4,"");
                   }
               })
               .catch(function(error){
-                  me.$emit("showToastMessage",4);
+                  me.$emit("showToastMessage",4,"");
                   console.log(error);
               });
           }catch(error){
               console.log(error);
           }
+        }else{
+          me.$emit("showToastMessage",2,"Tên không được để trống");
         }
     },
 
@@ -613,23 +616,26 @@ export default {
               .then((response) => {
                   if (response.status==201){
                     if (response.data && response.data.StatusMsg == Resource.ResponseStatus.SuccessMsg){
-                      me.$emit("showToastMessage",3);
+                      me.$emit("showToastMessage",3,"Thêm mới thành công");
                       me.$emit("resetComponent");
                     }else if (response.data && response.data.StatusMsg == Resource.ResponseStatus.PotentialCodeDuplicate){
                       me.validateDuplicate("PotentialCode");
+                      me.$emit("showToastMessage",2,"Trùng mã tiềm năng");
                     }
                   }
                   else{
-                    me.$emit("showToastMessage",4);
+                    me.$emit("showToastMessage",4,"");
                   }
               })
               .catch(function(error){
-                  me.$emit("showToastMessage",4);
+                  me.$emit("showToastMessage",4,"");
                   console.log(error);
               });
           }catch(error){
               console.log(error);
           }
+        }else{
+          me.$emit("showToastMessage",2,"Tên không được để trống");
         }
     },
 

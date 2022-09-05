@@ -1,7 +1,7 @@
 <template>
     <div id="content" ref="content">
         <router-view v-if="regenderComponent==1" @showToastMessage="showMessage" :searchString="searchString" @resetComponent="resetComponent"></router-view>
-        <ToastMessage :typeMsg="toastMsgType"></ToastMessage>
+        <ToastMessage :typeMsg="toastMsgType" :msgString="msgString"></ToastMessage>
     </div>
 </template>
 <script>
@@ -20,15 +20,18 @@ export default {
             toastMsgType: 1,
             // biến đánh dấu reset component
             regenderComponent: 1,
+            // text truyền vào trong toastmessage
+            msgString: "",
         }
     },
     methods: {
         /**
          * hàm show thông báo khi thêm thành công
          */
-        showMessage(value){
+        showMessage(value,msg){
             let me = this;
             me.toastMsgType =value;
+            me.msgString = msg
             me.$refs.content.querySelector(".toast-message").animate(
                 [
                     {transform: 'translateY(0)'},

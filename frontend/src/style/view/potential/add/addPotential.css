@@ -22,3 +22,7 @@
     height: 10px;
     background:  url("../../../../assets/img/icon_collection.svg") no-repeat -323px -476px;
 }
+
+.add-item input[type=text]{
+    padding-right: 32px;
+}

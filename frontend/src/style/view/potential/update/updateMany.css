@@ -78,6 +78,9 @@
 .umcc-input-content{
     flex: 1;
 }
+.umcc-input-content .s-input{
+    padding: 0 16px;
+}
 
 /* footer  */
 .umc-footer{

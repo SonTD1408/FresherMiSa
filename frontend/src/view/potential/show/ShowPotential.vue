@@ -496,10 +496,10 @@ export default {
         let me  =this;
         me.isShowUpdateMany = !me.isShowUpdateMany;
         if (isSuccess){
-            me.$emit("showToastMessage",3);
+            me.$emit("showToastMessage",3,"Sửa thành công");
             me.reloadDataGrid();
         }else{
-            me.$emit("showToastMessage",4);
+            me.$emit("showToastMessage",4,"Sửa thất bại");
         }
     },
 
@@ -550,10 +550,10 @@ export default {
                 };
                 axiosConfig.call("post",axiosConfig.MultiDelete, idArray, function(response){
                     if (response.data.StatusMsg == "s"){
-                        me.$emit("showToastMessage",3);
+                        me.$emit("showToastMessage",3,"Xóa thành công");
                         me.reloadDataGrid();
                     }else{
-                        me.$emit("showToastMessage",4);
+                        me.$emit("showToastMessage",4,"Xóa thất bại");
                     }
                 })
             }catch(error){

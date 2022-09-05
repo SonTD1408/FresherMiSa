@@ -395,15 +395,17 @@ export default {
                     axiosConfig.call("put", axiosConfig.Potentials + url, me.Potential, function(response){
                         if (response.data.Status!=0){
                             me.$router.push({path: "/"});
-                            me.$emit("showToastMessage",3);
+                            me.$emit("showToastMessage",3,"Sửa thành công");
                         }else{
-                            me.$emit("showToastMessage",4);
+                            me.$emit("showToastMessage",4,"");
                             console.log(response.data.StatusMsg);
                         }
                     })
                 } catch (error) {
                     console.log(error);
                 }
+            }else{
+                me.$emit("showToastMessage",2,"Tên không được để trống");
             }
         },
 
@@ -420,14 +422,16 @@ export default {
                     axiosConfig.call("put", axiosConfig.Potentials + url, me.Potential, function(response){
                         if (response.data.Status!=0){
                             me.$router.push({path: "/potential/add"});
-                            me.$emit("showToastMessage",3);
+                            me.$emit("showToastMessage",3,"Sửa thành công");
                         }else{
-                            me.$emit("showToastMessage",4);
+                            me.$emit("showToastMessage",4,"");
                         }
                     })
                 } catch (error) {
                     console.log(error);
                 }
+            }else{
+                me.$emit("showToastMessage",2,"Tên không được để trống");
             }
         },
 
