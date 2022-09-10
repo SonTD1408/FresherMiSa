@@ -144,7 +144,6 @@ export default{
     watch: {
         'data':function(){
             let me = this;
-            console.log(me.data);
             if(me.data && me.data.length>0){
                 me.data.forEach(function(item){
                     if (!me.isRowSelected[item[me.col[0]]]){

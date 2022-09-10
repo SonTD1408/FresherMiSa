@@ -337,7 +337,6 @@ export default {
          */
         update(){
             let me = this;
-            console.log(me.formData);
             me.formData.ListPotentialID = me.idList;
             try{
                 axiosConfig.call("put",axiosConfig.Potentials,me.formData,function(response){
@@ -368,7 +367,6 @@ export default {
                 me.formData.ColumnValueNumber = 1;
                 event.target.setAttribute("isChecked","true");
             }
-            console.log(event.target);
         }
     },
     watch:{
