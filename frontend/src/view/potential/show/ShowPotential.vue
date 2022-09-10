@@ -74,6 +74,7 @@
               <div class="s-th">Xưng hô</div>
               <div class="s-th">Họ và tên</div>
               <div class="s-th">Chức danh</div>
+              <div class="s-th">Phòng ban</div>
               <div class="s-th">ĐT di động</div>
               <div class="s-th">ĐT cơ quan</div>
               <div class="s-th">Email cơ quan</div>
@@ -95,9 +96,9 @@
                   <input type="checkbox" class="s-th-select-icon" isChecked="false" @click="gridCheckboxOnClick">
               </div>
               <div class="s-td" v-for="(i,ind) in gridColumns" :key="ind">
-                  <div class="cell-phone-icon" v-if="ind==5 || ind==4"></div>
-                  <div class="s-td-text" :class="(ind>3 && ind<8)? 'text-color-blue':''" v-if="ind!=2">{{formatNullData(item[i])}}</div>
-                  <div class="s-td-text text-color-blue" v-if="ind==2">{{formatNullData(`${item['FullName']}`)}}</div>
+                  <div class="cell-phone-icon" v-if="ind==6 || ind==5"></div>
+                  <div class="s-td-text" :class="(ind>4 && ind<9)? 'text-color-blue':''" v-if="ind!=2">{{formatNullData(item[i])}}</div>
+                  <div class="s-td-text text-color-blue" v-if="ind==2">{{((item['LastName']!="")? `${item['LastName']} `:"" )+  item['FirstName']}}</div>
               </div>
             </div>
             <LoadingComponent :typeOfLoading="isShowLoading"></LoadingComponent>
@@ -240,6 +241,7 @@ export default {
         "VocativeName",
         "FirstName",
         "PositionName",
+        "DepartmentName",
         "PhoneNumber",
         "OfficePhoneNumber",
         "OfficeEmail",

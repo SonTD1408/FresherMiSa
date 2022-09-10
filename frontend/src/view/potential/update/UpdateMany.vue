@@ -20,6 +20,18 @@
                     <input type="text" class="s-input" style="width: 100%" disabled v-if="typeOfInput==0">
                     <input type="text" class="s-input" style="width: 100%" v-if="typeOfInput==1" v-model="formData.ColumnValueString">
                     <SelectInput :data="dataOfSelectInput" :col="col" :variable="'ColumnValueString'" @emitValue = "getDataFromSelectInput" v-if="typeOfInput==2"></SelectInput>
+                    <el-date-picker
+                        v-if="typeOfInput==3"
+                        v-model="formData.ColumnValueString"
+                        type="date"
+                        format="DD/MM/YYYY"
+                        value-format="YYYY-MM-DD"
+                        placeholder="dd/mm/yyyy"
+                        size="default"
+                        style="width: 100%"
+                    /> 
+                    <ComboboxComponent v-if="typeOfInput==4" :data="dataOfSelectInput" :col="col" :variable="'ColumnValue'+formData.ColumnName" @emitComboboxValue="getValueFromCombobox"/>
+                    <input type="checkbox" style="width: 16px; height: 16px;" v-if="typeOfInput==5" isChecked="false" @click="multiUpdateCheckBoxOnClick"/>
                 </div>
             </div>
             <div class="umc-footer">
@@ -35,10 +47,12 @@
 import axiosConfig from "../../../script/config/axiosConfig.js"
 import SelectInput from "../../../components/common/SelectInput.vue";
 import Resource from "../../../script/resource.js"
+import ComboboxComponent from "../../../components/common/ComboboxComponent.vue"
 export default {
     components:{
-    SelectInput
-},
+        SelectInput,
+        ComboboxComponent
+    },
     props: {
         // biến ẩn hiện compontent 
         isShow: Boolean,
@@ -97,10 +111,10 @@ export default {
                     Column: "BankName",
                     ColumnName: "Tên ngân hàng"
                 },
-                // {
-                //     Column: "FoundingDate",
-                //     ColumnName: "Ngày thành lập"
-                // },
+                {
+                    Column: "FoundingDate",
+                    ColumnName: "Ngày thành lập"
+                },
                 // {
                 //     Column: "NationID",
                 //     ColumnName: "Quốc gia"
@@ -129,18 +143,14 @@ export default {
                     Column: "PotentialDescription",
                     ColumnName: "Mô tả"
                 },
-                // {
-                //     Column: "IsCall",
-                //     ColumnName: "Cho phép gọi"
-                // },
-                // {
-                //     Column: "IsSendEmail",
-                //     ColumnName: "Cho phép gửi Email"
-                // },
-                // {
-                //     Column: "Gender",
-                //     ColumnName: "Giới tính"
-                // },
+                {
+                    Column: "IsCall",
+                    ColumnName: "Cho phép gọi"
+                },
+                {
+                    Column: "IsSendEmail",
+                    ColumnName: "Cho phép gửi Email"
+                },
                 {
                     Column: "DateOfBirth",
                     ColumnName: "Ngày sinh"
@@ -185,6 +195,18 @@ export default {
                     Column: "Address",
                     ColumnName: "Địa chỉ"
                 },
+                {
+                    Column: "Careers",
+                    ColumnName: "Nghề nghiệp"
+                },
+                {
+                    Column: "Fields",
+                    ColumnName: "Lĩnh vực"
+                },
+                {
+                    Column: "PotentialTypes",
+                    ColumnName: "Loại tiềm năng"
+                },
             ],
             // data để đưa về lưu tại server 
             formData: {
@@ -196,6 +218,11 @@ export default {
                 ColumnValueString: "",
             },
             // check xem ở ô nhập value là loại input nào 
+                // 0: disable
+                // 1: input field
+                // 2: dropdown
+                // 3: date
+                // 4: dropdown
             typeOfInput: 0,
             // data khi chọn update cột có value là loại input chọn
             dataOfSelectInput: {},
@@ -230,6 +257,14 @@ export default {
         },
 
         /**
+         * lấy giá trị từ combobox component
+         * created by SONTD(20.08.2022)
+         */
+        getValueFromCombobox(variable, val){
+        this.formData[variable] =val;
+        },
+
+        /**
          * hàm set type cho input :
          * 0 là disabled
          * 1 lầ input text
@@ -250,6 +285,19 @@ export default {
                 me.typeOfInput =2;
                 me.getDataForColumnValue();
             }
+            else if(me.formData.ColumnName == "FoundingDate"
+                    || me.formData.ColumnName == "DateOfBirth"){
+                me.typeOfInput = 3;
+            }
+            else if(me.formData.ColumnName == "Fields" 
+                    || me.formData.ColumnName == "Careers"
+                    || me.formData.ColumnName == "PotentialTypes"){
+                me.typeOfInput = 4;
+                me.getDataForColumnValue();
+            }else if(me.formData.ColumnName == "IsSendEmail"
+                    || me.formData.ColumnName == "IsCall"){
+                me.typeOfInput = 5;
+            }
             else{
                 me.typeOfInput =1;
             }
@@ -266,9 +314,12 @@ export default {
                 if (me.formData.ColumnName == "VocativeID"){url = axiosConfig.Vocatives; me.col[0]='VocativeID'; me.col[1]='VocativeName'}
                 else if (me.formData.ColumnName == "SourceID"){url = axiosConfig.Sources; me.col[0]='SourceID'; me.col[1]='SourceName'}
                 else if (me.formData.ColumnName == "DepartmentID"){url = axiosConfig.Departments; me.col[0]='DepartmentID'; me.col[1]='DepartmentName'}
-                else if (me.formData.ColumnName == "PositionID"){url = axiosConfig.Positions; me.col[0]='PotitionID'; me.col[1]='PotitionName'}
+                else if (me.formData.ColumnName == "PositionID"){url = axiosConfig.Positions; me.col[0]='PositionID'; me.col[1]='PositionName'}
                 else if (me.formData.ColumnName == "OrganizationTypeID"){url = axiosConfig.OrganizationTypes; me.col[0]='OrganizationTypeID'; me.col[1]='OrganizationTypeName'}
                 else if (me.formData.ColumnName == "TurnoverID"){url = axiosConfig.Turnovers; me.col[0]='TurnoverID'; me.col[1]='TurnoverName'}
+                else if (me.formData.ColumnName == "Careers"){url = axiosConfig.Careers; me.col[0]='CareerID'; me.col[1]='CareerName'}
+                else if (me.formData.ColumnName == "Fields"){url = axiosConfig.Fields; me.col[0]='FieldID', me.col[1]='FieldName'}
+                else if (me.formData.ColumnName == "PotentialTypes"){url = axiosConfig.PotentialTypes; me.col[0]='PotentialTypeID', me.col[1]='PotentialTypeName'}
     
                 axiosConfig.call("get",url,"",function(response){
                     if (response.data.Status!=0){
@@ -286,13 +337,12 @@ export default {
          */
         update(){
             let me = this;
+            console.log(me.formData);
             me.formData.ListPotentialID = me.idList;
             try{
                 axiosConfig.call("put",axiosConfig.Potentials,me.formData,function(response){
                     if (response.data.Status && response.data.Status == Resource.ResponseStatus.SuccessData){
                         me.$emit("confirmMultiUpdate",true);
-                        me.formData = me.formDatadefault;
-                        me.typeOfInput=0;
                     }else{
                         me.$emit("confirmMultiUpdate",false);
                     }
@@ -301,6 +351,24 @@ export default {
                 me.$emit("confirmMultiUpdate",false);
                 console.log(error);
             }
+            me.formData = me.formDatadefault;
+            me.typeOfInput=0;
+        },
+
+        /**
+         * cập nhập giá trị của column value khi ấn check box
+         * created by SONTD(10.09.2022)
+         */
+        multiUpdateCheckBoxOnClick(event){
+            let me = this;
+            if(event.target.getAttribute("isChecked") == "true"){
+                me.formData.ColumnValueNumber = 0;
+                event.target.setAttribute("isChecked","false");
+            }else{
+                me.formData.ColumnValueNumber = 1;
+                event.target.setAttribute("isChecked","true");
+            }
+            console.log(event.target);
         }
     },
     watch:{

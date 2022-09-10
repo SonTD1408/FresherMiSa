@@ -144,14 +144,17 @@ export default{
     watch: {
         'data':function(){
             let me = this;
-            me.data.forEach(function(item){
-                if (!me.isRowSelected[item[me.col[0]]]){
-                    me.isRowSelected[item[me.col[0]]] = false;
-                }
-            }),
-            setTimeout(function(){
-                    me.updateStatusCombobox();
-            }, 100);
+            console.log(me.data);
+            if(me.data && me.data.length>0){
+                me.data.forEach(function(item){
+                    if (!me.isRowSelected[item[me.col[0]]]){
+                        me.isRowSelected[item[me.col[0]]] = false;
+                    }
+                }),
+                setTimeout(function(){
+                        me.updateStatusCombobox();
+                }, 100);
+            }
         },
         'defaultValue':function(){
             let me = this,

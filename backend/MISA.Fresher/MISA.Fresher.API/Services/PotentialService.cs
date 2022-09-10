@@ -238,7 +238,27 @@ namespace MISA.Fresher.API.Services
                 var listID = multiUpdatePotentialDTO.ListPotentialID;
                 var columnName = multiUpdatePotentialDTO.ColumnName;
                 var columnValueString = multiUpdatePotentialDTO.ColumnValueString;
-                param.Add("@" + columnName, columnValueString);
+                if (columnName == "Careers")
+                {
+                    columnValueString = JsonSerializer.Serialize(multiUpdatePotentialDTO.ColumnValueCareers);
+                }
+                else if (columnName == "Fields")
+                {
+                    columnValueString = JsonSerializer.Serialize(multiUpdatePotentialDTO.ColumnValueFields);
+                }
+                else if (columnName == "PotentialTypes")
+                {
+                    columnValueString = JsonSerializer.Serialize(multiUpdatePotentialDTO.ColumnValuePotentialTypes);
+                }
+
+                if (columnName == "IsSendEmail" || columnName == "IsCall")
+                {
+                    param.Add("@" + columnName, multiUpdatePotentialDTO.ColumnValueNumber);
+                }
+                else
+                {
+                    param.Add("@" + columnName, columnValueString);
+                }
                 query.Append($"update Potentials set {columnName} = @{columnName}, ModifiedDate=@ModifiedDate ");
                 param.Add("@ModifiedDate", now);
                 query.Append(" where PotentialID = \'00000000-0000-0000-0000-000000000000\' or ");
