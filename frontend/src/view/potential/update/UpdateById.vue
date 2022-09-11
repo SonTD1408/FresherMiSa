@@ -219,7 +219,7 @@
                         type="date"
                         format="DD/MM/YYYY"
                         value-format="YYYY-MM-DD"
-                        placeholder="dd/mm/yyyy"
+                        placeholder="DD/MM/YYYY"
                         size="default"
                         style="width: 280px;"
                         />

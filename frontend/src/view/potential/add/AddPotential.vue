@@ -26,12 +26,13 @@
               <div class="add-item">
                 <div class="aib-txt">Xưng hô</div>
                 <div class="add-select-feild">
-                  <SelectInput :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput FieldSet="VocativeID" @keydown.tab="customTabIndex" tabindex="1" :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Tên <span style="color: red"> *</span></div>
                 <input
+                  tabindex="3"
                   type="text"
                   FieldSet="FirstName"
                   class="add-input-feild s-input"
@@ -44,12 +45,13 @@
               <div class="add-item">
                 <div class="aib-txt">Phòng ban</div>
                 <div class="add-select-feild">
-                  <SelectInput :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput tabindex="4" :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">ĐT di động <div class="add-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                 <input
+                  tabindex="6"
                   type="text"
                   v-model="dataForm.Potential['PhoneNumber']"
                   FieldSet="PhoneNumber"
@@ -60,12 +62,13 @@
               <div class="add-item">
                 <div class="aib-txt">Nguồn gốc</div>
                 <div class="add-select-feild">
-                  <SelectInput  :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'"/>
+                  <SelectInput tabindex="8" :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Zalo</div>
                 <input
+                  tabindex="10"
                   type="text"
                   v-model="dataForm.Potential['Zalo']"
                   FieldSet="Zalo"
@@ -76,6 +79,7 @@
               <div class="add-item">
                 <div class="aib-txt">Email cơ quan</div>
                 <input
+                  tabindex="12"
                   type="text"
                   FieldSet="OfficeEmail"
                   class="add-input-feild s-input"
@@ -86,6 +90,7 @@
               <div class="add-item">
                 <div class="aib-txt">Mã số thuế</div>
                 <input
+                  tabindex="14"
                   type="text"
                   FieldSet="Taxcode"
                   class="add-input-feild s-input"
@@ -97,7 +102,8 @@
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Họ và tên đệm</div>
-                <input class="add-input-feild s-input" 
+                <input class="add-input-feild s-input"
+                tabindex="2" 
                 type="text"
                 v-model="dataForm.Potential['LastName']"
                 FieldSet="LastName"
@@ -113,12 +119,13 @@
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
                 <div class="add-select-feild">
-                  <SelectInput :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput tabindex="5" :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">ĐT cơ quan <div class="add-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"> <tool-tip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></tool-tip> </div></div>
                 <input
+                  tabindex="7"
                   type="text"
                   v-model="dataForm.Potential['OfficePhoneNumber']"
                   FieldSet = "OfficePhoneNumber"
@@ -129,12 +136,13 @@
               <div class="add-item">
                 <div class="aib-txt">Loại tiềm năng</div>
                 <div class="add-select-feild">
-                  <ComboboxComponent :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypes'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                  <ComboboxComponent tabindex="9" :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypes'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Email cá nhân</div>
                 <input
+                  tabindex="11"
                   type="text"
                   v-model="dataForm.Potential['Email']"
                   FieldSet="Email"
@@ -145,6 +153,7 @@
               <div class="add-item">
                 <div class="aib-txt">Tổ chức</div>
                 <input
+                  tabindex="13"
                   type="text"
                   v-model="dataForm.Potential['Organization']"
                   FieldSet="Organization"
@@ -162,6 +171,7 @@
               <div class="add-item">
                 <div class="aib-txt">Tài khoản ngân hàng</div>
                 <input
+                  tabindex="15"
                   type="text"
                   v-model="dataForm.Potential['BankAccount']"
                   FieldSet="BankAccount"
@@ -177,11 +187,12 @@
                   class="add-input-feild s-input"
                 /> -->
                 <el-date-picker
+                tabindex="17"
                 v-model="dataForm.Potential['FoundingDate']"
                 type="date"
                 format="DD-MM-YYYY"
                 value-format="YYYY-MM-DD"
-                placeholder="dd/mm/yyyy"
+                placeholder="DD/MM/YYYY"
                 size="default"
                 style="width: 280px;"
                 />
@@ -189,13 +200,13 @@
               <div class="add-item">
                 <div class="aib-txt">Lĩnh vực</div>
                 <div class="add-select-feild">
-                  <ComboboxComponent :data="fields" :col="{0:'FieldID', 1:'FieldName'}" :variable="'Fields'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                  <ComboboxComponent tabindex="19" :data="fields" :col="{0:'FieldID', 1:'FieldName'}" :variable="'Fields'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Doanh thu</div>
                 <div class="add-select-feild">
-                  <SelectInput :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}" :type="'guid'"/>
+                  <SelectInput tabindex="21" :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}" :type="'guid'"/>
                 </div>
               </div>
             </div>
@@ -203,6 +214,7 @@
               <div class="add-item">
                 <div class="aib-txt">Ngân hàng</div>
                 <input class="add-input-feild s-input" 
+                tabindex="16"
                 type="text"
                 FieldSet="BankName"
                 v-model="dataForm.Potential['BankName']"
@@ -212,13 +224,13 @@
               <div class="add-item">
                 <div class="aib-txt">Loại hình</div>
                 <div class="add-select-feild">
-                  <SelectInput :data="organizationTypes" :variable="'OrganizationTypeID'" @emitValue="getValueSelectInput" :col="{0: 'OrganizationTypeID' , 1:'OrganizationTypeName'}" :type="'guid'"/>
+                  <SelectInput tabindex="18" :data="organizationTypes" :variable="'OrganizationTypeID'" @emitValue="getValueSelectInput" :col="{0: 'OrganizationTypeID' , 1:'OrganizationTypeName'}" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Ngành nghề</div>
                 <div class="add-select-feild">
-                  <ComboboxComponent :data="careers" :col="{0:'CareerID', 1:'CareerName'}" :variable="'Careers'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                  <ComboboxComponent tabindex="20" :data="careers" :col="{0:'CareerID', 1:'CareerName'}" :variable="'Careers'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
             </div>
@@ -231,13 +243,14 @@
               <div class="add-item">
                 <div class="aib-txt">Quốc gia</div>
                 <div class="add-select-feild">
-                  <SelectInput :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput tabindex="22" :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Quận/Huyện</div>
                 <div class="add-select-feild">
                   <SelectInput 
+                  tabindex="24"
                   :data="districts" 
                   :col="{0:'DistrictID', 1:'DistrictName'}" 
                   :variable="'DistrictID'" 
@@ -249,6 +262,7 @@
               <div class="add-item">
                 <div class="aib-txt">Số nhà, Đường phố</div>
                 <input class="add-input-feild s-input" 
+                tabindex="26"
                 type="text"
                 v-model="dataForm.Potential['ApartmentNumber']"
                 FieldSet="ApartmentNumber"
@@ -256,7 +270,7 @@
               </div>
               <div class="add-item add-item-txtarea">
                 <div class="aib-txt">Địa chỉ</div>
-                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['Address']" :maxlength="maxLengthInput.Other"></textarea>
+                <textarea tabindex="28" class="s-input add-txtarea" v-model="dataForm.Potential['Address']" :maxlength="maxLengthInput.Other"></textarea>
               </div>
             </div>
             <div class="add-items-site">
@@ -264,6 +278,7 @@
                 <div class="aib-txt">Tỉnh/Thành phố</div>
                 <div class="add-select-feild">
                   <SelectInput 
+                  tabindex="23"
                   :data="cities" 
                   :col="{0:'CityID', 1:'CityName'}" 
                   :variable="'CityID'" 
@@ -276,6 +291,7 @@
                 <div class="aib-txt">Phường/Xã</div>
                 <div class="add-select-feild">
                   <SelectInput
+                  tabindex="25"
                   :data="wards" 
                   :col="{0:'WardID', 1:'WardName'}" 
                   :variable="'WardID'" 
@@ -287,6 +303,7 @@
               <div class="add-item">
                 <div class="aib-txt">Mã vùng</div>
                 <input class="add-input-feild s-input"
+                tabindex="27"
                 type="text"
                 v-model="dataForm.Potential['RegionCode']"
                 FieldSet="RegionCode"
@@ -299,7 +316,7 @@
            <div class="add-section-title">Thông tin mô tả</div>
             <div class="add-item add-item-des">
               <div class="aib-txt">Mô tả</div>
-                <textarea class="s-input add-txtarea" v-model="dataForm.Potential['PotentialDescription']"></textarea>
+                <textarea tabindex="29" class="s-input add-txtarea" v-model="dataForm.Potential['PotentialDescription']"></textarea>
             </div>
         </div>
         <div class="add-main-content-system-infor">
@@ -308,11 +325,12 @@
             <div class="add-items-site">
               <div class="add-item add-item-has-add-input-checkbox">
                 <div class="aib-txt">Dùng chung</div>
-                <input type="checkbox" class="add-input-checkbox" FieldSet="IsShare" isSelectedCheckBox="false" @click="isShareCheckboxOnClick"/>
+                <input tabindex="30" type="checkbox" class="add-input-checkbox" FieldSet="IsShare" isSelectedCheckBox="false" @click="isShareCheckboxOnClick"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Mã tiềm năng</div>
                 <input class="add-input-feild s-input" 
+                tabindex="31"
                 type="text"
                 FieldSet="PotentialCode"
                 v-model="dataForm.Potential['PotentialCode']"
@@ -744,6 +762,15 @@ export default {
     },
 
     /**
+     * thực hiện khi ấn tab ở các trường input
+     * created by SONTD(11.09.2022)
+     */
+    customTabIndex(event){
+      let me = this;
+      console.log(event, me);
+    },
+
+    /**
      * chức năng đang thi công
      * created by SONTD(19.08.2022)
      */
@@ -781,15 +808,18 @@ export default {
             }
       })
     }
+    document.querySelector("[FieldSet=VocativeID]").focus();
   },
   computed:{
-    // fullname
+    //computed fullname
     FullNameComputed: function(){
         let me = this,
             fn = (me.dataForm.Potential.FirstName)? me.dataForm.Potential.FirstName:"",
             ln = (me.dataForm.Potential.LastName)? me.dataForm.Potential.LastName:"";
         return ln+" "+fn;
     },
+
+    //compute address
     AddressComputed: function(){
         let me = this,
             nationString = "",
@@ -1119,4 +1149,5 @@ export default {
 @import url("../../../style/view/potential/add/addPotential.css");
 @import url("../../../style/view/potential/add/addTopbar.css");
 @import url("../../../style/view/potential/add/addMainContent.css");
+
 </style>

@@ -15,6 +15,12 @@
 .s-input:disabled{
     background-color: #E2E4E9;
 }
+input{
+    outline: none;
+}
+input[type=checkbox]:focus{
+    outline: 1px solid #4262F0;
+}
 
 .input-validate-error{
     border: 1px solid red;

@@ -11,6 +11,10 @@
     border: 1px solid #D3D7DE;
     cursor: pointer;
     background-color: #fff;
+    outline: none;
+}
+.select-input-feild-box:focus{
+    border : 1px solid #4262F0 !important;
 }
 .select-input-icon{
     width: 16px;
