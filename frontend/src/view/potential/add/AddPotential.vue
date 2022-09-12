@@ -26,13 +26,14 @@
               <div class="add-item">
                 <div class="aib-txt">Xưng hô</div>
                 <div class="add-select-feild">
-                  <SelectInput FieldSet="VocativeID" @keydown.tab="customTabIndex" tabindex="1" :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput FieldSet="VocativeID" @keydown="customTabIndex" tabindex="1" :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Tên <span style="color: red"> *</span></div>
                 <input
                   tabindex="3"
+                  @keydown="customTabIndex"
                   type="text"
                   FieldSet="FirstName"
                   class="add-input-feild s-input"
@@ -45,13 +46,14 @@
               <div class="add-item">
                 <div class="aib-txt">Phòng ban</div>
                 <div class="add-select-feild">
-                  <SelectInput tabindex="4" :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput tabindex="4" @keydown="customTabIndex" :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">ĐT di động <div class="add-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                 <input
                   tabindex="6"
+                  @keydown="customTabIndex"
                   type="text"
                   v-model="dataForm.Potential['PhoneNumber']"
                   FieldSet="PhoneNumber"
@@ -62,13 +64,14 @@
               <div class="add-item">
                 <div class="aib-txt">Nguồn gốc</div>
                 <div class="add-select-feild">
-                  <SelectInput tabindex="8" :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'"/>
+                  <SelectInput tabindex="8" @keydown="customTabIndex" :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Zalo</div>
                 <input
                   tabindex="10"
+                  @keydown="customTabIndex"
                   type="text"
                   v-model="dataForm.Potential['Zalo']"
                   FieldSet="Zalo"
@@ -80,6 +83,7 @@
                 <div class="aib-txt">Email cơ quan</div>
                 <input
                   tabindex="12"
+                  @keydown="customTabIndex"
                   type="text"
                   FieldSet="OfficeEmail"
                   class="add-input-feild s-input"
@@ -91,6 +95,7 @@
                 <div class="aib-txt">Mã số thuế</div>
                 <input
                   tabindex="14"
+                  @keydown="customTabIndex"
                   type="text"
                   FieldSet="Taxcode"
                   class="add-input-feild s-input"
@@ -104,6 +109,7 @@
                 <div class="aib-txt">Họ và tên đệm</div>
                 <input class="add-input-feild s-input"
                 tabindex="2" 
+                @keydown="customTabIndex"
                 type="text"
                 v-model="dataForm.Potential['LastName']"
                 FieldSet="LastName"
@@ -119,13 +125,14 @@
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
                 <div class="add-select-feild">
-                  <SelectInput tabindex="5" :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput tabindex="5" @keydown="customTabIndex" :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">ĐT cơ quan <div class="add-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"> <tool-tip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></tool-tip> </div></div>
                 <input
                   tabindex="7"
+                  @keydown="customTabIndex"
                   type="text"
                   v-model="dataForm.Potential['OfficePhoneNumber']"
                   FieldSet = "OfficePhoneNumber"
@@ -136,13 +143,14 @@
               <div class="add-item">
                 <div class="aib-txt">Loại tiềm năng</div>
                 <div class="add-select-feild">
-                  <ComboboxComponent tabindex="9" :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypes'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                  <ComboboxComponent tabindex="9" @keydown="customTabIndex" :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypes'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Email cá nhân</div>
                 <input
                   tabindex="11"
+                  @keydown="customTabIndex"
                   type="text"
                   v-model="dataForm.Potential['Email']"
                   FieldSet="Email"
@@ -154,6 +162,7 @@
                 <div class="aib-txt">Tổ chức</div>
                 <input
                   tabindex="13"
+                  @keydown="customTabIndex"
                   type="text"
                   v-model="dataForm.Potential['Organization']"
                   FieldSet="Organization"
@@ -172,6 +181,7 @@
                 <div class="aib-txt">Tài khoản ngân hàng</div>
                 <input
                   tabindex="15"
+                  @keydown="customTabIndex"
                   type="text"
                   v-model="dataForm.Potential['BankAccount']"
                   FieldSet="BankAccount"
@@ -188,6 +198,7 @@
                 /> -->
                 <el-date-picker
                 tabindex="17"
+                @keydown="customTabIndex"
                 v-model="dataForm.Potential['FoundingDate']"
                 type="date"
                 format="DD-MM-YYYY"
@@ -200,13 +211,13 @@
               <div class="add-item">
                 <div class="aib-txt">Lĩnh vực</div>
                 <div class="add-select-feild">
-                  <ComboboxComponent tabindex="19" :data="fields" :col="{0:'FieldID', 1:'FieldName'}" :variable="'Fields'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                  <ComboboxComponent tabindex="19" @keydown="customTabIndex" :data="fields" :col="{0:'FieldID', 1:'FieldName'}" :variable="'Fields'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Doanh thu</div>
                 <div class="add-select-feild">
-                  <SelectInput tabindex="21" :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}" :type="'guid'"/>
+                  <SelectInput tabindex="21" @keydown="customTabIndex" :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}" :type="'guid'"/>
                 </div>
               </div>
             </div>
@@ -215,6 +226,7 @@
                 <div class="aib-txt">Ngân hàng</div>
                 <input class="add-input-feild s-input" 
                 tabindex="16"
+                @keydown="customTabIndex"
                 type="text"
                 FieldSet="BankName"
                 v-model="dataForm.Potential['BankName']"
@@ -224,13 +236,13 @@
               <div class="add-item">
                 <div class="aib-txt">Loại hình</div>
                 <div class="add-select-feild">
-                  <SelectInput tabindex="18" :data="organizationTypes" :variable="'OrganizationTypeID'" @emitValue="getValueSelectInput" :col="{0: 'OrganizationTypeID' , 1:'OrganizationTypeName'}" :type="'guid'"/>
+                  <SelectInput tabindex="18" @keydown="customTabIndex" :data="organizationTypes" :variable="'OrganizationTypeID'" @emitValue="getValueSelectInput" :col="{0: 'OrganizationTypeID' , 1:'OrganizationTypeName'}" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Ngành nghề</div>
                 <div class="add-select-feild">
-                  <ComboboxComponent tabindex="20" :data="careers" :col="{0:'CareerID', 1:'CareerName'}" :variable="'Careers'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
+                  <ComboboxComponent tabindex="20" @keydown="customTabIndex" :data="careers" :col="{0:'CareerID', 1:'CareerName'}" :variable="'Careers'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
             </div>
@@ -243,7 +255,7 @@
               <div class="add-item">
                 <div class="aib-txt">Quốc gia</div>
                 <div class="add-select-feild">
-                  <SelectInput tabindex="22" :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput" :type="'guid'"/>
+                  <SelectInput tabindex="22" @keydown="customTabIndex" :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
@@ -251,6 +263,7 @@
                 <div class="add-select-feild">
                   <SelectInput 
                   tabindex="24"
+                  @keydown="customTabIndex"
                   :data="districts" 
                   :col="{0:'DistrictID', 1:'DistrictName'}" 
                   :variable="'DistrictID'" 
@@ -263,6 +276,7 @@
                 <div class="aib-txt">Số nhà, Đường phố</div>
                 <input class="add-input-feild s-input" 
                 tabindex="26"
+                @keydown="customTabIndex"
                 type="text"
                 v-model="dataForm.Potential['ApartmentNumber']"
                 FieldSet="ApartmentNumber"
@@ -270,7 +284,7 @@
               </div>
               <div class="add-item add-item-txtarea">
                 <div class="aib-txt">Địa chỉ</div>
-                <textarea tabindex="28" class="s-input add-txtarea" v-model="dataForm.Potential['Address']" :maxlength="maxLengthInput.Other"></textarea>
+                <textarea tabindex="28" @keydown="customTabIndex" class="s-input add-txtarea" v-model="dataForm.Potential['Address']" :maxlength="maxLengthInput.Other"></textarea>
               </div>
             </div>
             <div class="add-items-site">
@@ -279,6 +293,7 @@
                 <div class="add-select-feild">
                   <SelectInput 
                   tabindex="23"
+                  @keydown="customTabIndex"
                   :data="cities" 
                   :col="{0:'CityID', 1:'CityName'}" 
                   :variable="'CityID'" 
@@ -292,6 +307,7 @@
                 <div class="add-select-feild">
                   <SelectInput
                   tabindex="25"
+                  @keydown="customTabIndex"
                   :data="wards" 
                   :col="{0:'WardID', 1:'WardName'}" 
                   :variable="'WardID'" 
@@ -304,6 +320,7 @@
                 <div class="aib-txt">Mã vùng</div>
                 <input class="add-input-feild s-input"
                 tabindex="27"
+                @keydown="customTabIndex"
                 type="text"
                 v-model="dataForm.Potential['RegionCode']"
                 FieldSet="RegionCode"
@@ -316,7 +333,7 @@
            <div class="add-section-title">Thông tin mô tả</div>
             <div class="add-item add-item-des">
               <div class="aib-txt">Mô tả</div>
-                <textarea tabindex="29" class="s-input add-txtarea" v-model="dataForm.Potential['PotentialDescription']"></textarea>
+                <textarea tabindex="29" @keydown="customTabIndex" class="s-input add-txtarea" v-model="dataForm.Potential['PotentialDescription']"></textarea>
             </div>
         </div>
         <div class="add-main-content-system-infor">
@@ -325,12 +342,13 @@
             <div class="add-items-site">
               <div class="add-item add-item-has-add-input-checkbox">
                 <div class="aib-txt">Dùng chung</div>
-                <input tabindex="30" type="checkbox" class="add-input-checkbox" FieldSet="IsShare" isSelectedCheckBox="false" @click="isShareCheckboxOnClick"/>
+                <input tabindex="30" @keydown="customTabIndex" type="checkbox" class="add-input-checkbox" FieldSet="IsShare" isSelectedCheckBox="false" @click="isShareCheckboxOnClick"/>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Mã tiềm năng</div>
                 <input class="add-input-feild s-input" 
                 tabindex="31"
+                @keydown="customTabIndex"
                 type="text"
                 FieldSet="PotentialCode"
                 v-model="dataForm.Potential['PotentialCode']"
@@ -766,8 +784,19 @@ export default {
      * created by SONTD(11.09.2022)
      */
     customTabIndex(event){
-      let me = this;
-      console.log(event, me);
+      let me = this,
+          currentIndex = event.target.getAttribute("tabindex");
+      if(event.keyCode == 9){
+          if(currentIndex){
+              let nextIndex = parseInt(currentIndex)+1,
+                  nextField = me.$refs.addMainContentRef.querySelector(`[tabindex='${nextIndex}']`);
+              if(nextField){
+                  nextField.click();
+              }
+          }
+      }else if(event.keyCode == 13){
+          event.target.click();
+      }
     },
 
     /**
@@ -802,13 +831,13 @@ export default {
             let childDiv = document.createElement("div");
             childDiv.classList.add("add-item-delete-all-icon");
             div.appendChild(childDiv);
-            //thêm div vào element cha
+            // thêm div vào element cha
             if(item.closest(".add-item")){
                 item.closest(".add-item").appendChild(div);
             }
       })
     }
-    document.querySelector("[FieldSet=VocativeID]").focus();
+    me.$refs.addMainContentRef.querySelector("[FieldSet=VocativeID]").focus();
   },
   computed:{
     //computed fullname

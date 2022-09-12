@@ -795,6 +795,7 @@ export default {
     }
   },
   created() {
+    // lấy data từ server
     this.getDataFromServer();
   },
   mounted() {

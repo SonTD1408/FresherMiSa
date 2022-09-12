@@ -142,6 +142,7 @@ export default{
         }
     },
     watch: {
+        // xử lí khi data đầu vào thay đổi
         'data':function(){
             let me = this;
             if(me.data && me.data.length>0){
@@ -155,6 +156,7 @@ export default{
                 }, 100);
             }
         },
+        // xử lí giá trị dầu vào
         'defaultValue':function(){
             let me = this,
                 defaultObj = JSON.parse(me.defaultValue);
@@ -183,6 +185,10 @@ export default{
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
+        outline: none;
+    }
+    .combobox-component-container:focus{
+        border-color: #4262F0;
     }
     .combobox-component-defalt{
         width: 100%;

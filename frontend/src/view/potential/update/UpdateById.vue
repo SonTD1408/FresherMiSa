@@ -26,12 +26,13 @@
                 <div class="update-item">
                     <div class="uib-txt">Xưng hô</div>
                     <div class="update-select-feild">
-                    <SelectInput :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :defaultValue="Potential.VocativeID" :type="'guid'"/>
+                    <SelectInput @keydown="customTabIndex" tabindex="1" :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :defaultValue="Potential.VocativeID" :type="'guid'"/>
                     </div>
                 </div>
                 <div class="update-item">
                     <div class="uib-txt">Tên <span style="color: red">*</span></div>
                     <input
+                    @keydown="customTabIndex" tabindex="3"
                     type="text"
                     FieldSet="FirstName"
                     class="update-input-feild s-input"
@@ -44,12 +45,13 @@
                 <div class="update-item">
                     <div class="uib-txt">Phòng ban</div>
                     <div class="update-select-feild">
-                    <SelectInput :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'" :defaultValue="Potential.DepartmentID"/>
+                    <SelectInput @keydown="customTabIndex" tabindex="4" :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'" :defaultValue="Potential.DepartmentID"/>
                     </div>
                 </div>
                 <div class="update-item">
                     <div class="uib-txt">ĐT di động <div class="update-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                     <input
+                    @keydown="customTabIndex" tabindex="6"
                     type="text"
                     v-model="Potential['PhoneNumber']"
                     FieldSet="PhoneNumber"
@@ -60,6 +62,7 @@
                 <div class="update-item">
                     <div class="uib-txt">ĐT khác <div class="update-item-icon" @click="hideShowTooltip('OtherPhoneNumber')"><ToolTip :msg="'Điện thoại khác'" v-if="tooltip.OtherPhoneNumber" @tooltipClickOutside="tooltipClickOutside('OtherPhoneNumber')"></ToolTip></div></div>
                     <input
+                    @keydown="customTabIndex" tabindex="8"
                     type="text"
                     v-model="Potential['OtherPhoneNumber']"
                     FieldSet="OtherPhoneNumber"
@@ -70,12 +73,13 @@
                 <div class="update-item">
                     <div class="uib-txt">Nguồn gốc</div>
                     <div class="update-select-feild">
-                    <SelectInput  :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'" :defaultValue="Potential.SourceID"/>
+                    <SelectInput @keydown="customTabIndex" tabindex="10" :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'" :defaultValue="Potential.SourceID"/>
                     </div>
                 </div>
                 <div class="update-item update-item-has-update-input-checkbox">
                     <div class="uib-txt">Không gửi Email</div>
                     <input
+                    @keydown="customTabIndex" tabindex="12"
                     type="checkbox"
                     isSelectedCheckBox="false"
                     FieldSet="IsSendEmail"
@@ -86,6 +90,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Zalo</div>
                     <input
+                    @keydown="customTabIndex" tabindex="14"
                     type="text"
                     v-model="Potential['Zalo']"
                     FieldSet="Zalo"
@@ -97,6 +102,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Email cơ quan</div>
                     <input
+                    @keydown="customTabIndex" tabindex="16"
                     type="text"
                     FieldSet="OfficeEmail"
                     class="update-input-feild s-input"
@@ -107,6 +113,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Mã số thuế</div>
                     <input
+                    @keydown="customTabIndex" tabindex="17"
                     type="text"
                     FieldSet="Taxcode"
                     class="update-input-feild s-input"
@@ -119,6 +126,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Họ và tên đệm</div>
                     <input class="update-input-feild s-input" 
+                    @keydown="customTabIndex" tabindex="2"
                     type="text"
                     v-model="Potential['LastName']"
                     FieldSet="LastName"
@@ -127,6 +135,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Họ và tên</div>
                     <input class="update-input-feild s-input" 
+                    @keydown="customTabIndex" tabindex="3"
                     FieldSet="FullName"
                     disabled 
                     v-model="Potential['FullName']"
@@ -136,12 +145,13 @@
                 <div class="update-item">
                     <div class="uib-txt">Chức danh</div>
                     <div class="update-select-feild">
-                    <SelectInput :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'" :defaultValue="Potential.PositionID"/>
+                    <SelectInput @keydown="customTabIndex" tabindex="5" :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'" :defaultValue="Potential.PositionID"/>
                     </div>
                 </div>
                 <div class="update-item">
                     <div class="uib-txt">ĐT cơ quan <div class="update-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"><ToolTip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></ToolTip></div></div>
                     <input
+                    @keydown="customTabIndex" tabindex="7"
                     type="text"
                     v-model="Potential['OfficePhoneNumber']"
                     FieldSet = "OfficePhoneNumber"
@@ -152,12 +162,13 @@
                 <div class="update-item">
                     <div class="uib-txt">Loại tiềm năng</div>
                     <div class="update-select-feild">
-                        <ComboboxComponent :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypesObj'" @emitComboboxValue="getValueFromCombobox" :defaultValue="Potential.PotentialTypes"></ComboboxComponent>
+                        <ComboboxComponent @keydown="customTabIndex" tabindex="9" :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypesObj'" @emitComboboxValue="getValueFromCombobox" :defaultValue="Potential.PotentialTypes"></ComboboxComponent>
                     </div>
                 </div>
                 <div class="update-item update-item-has-update-input-checkbox">
                     <div class="uib-txt">Không gọi điện</div>
                     <input
+                    @keydown="customTabIndex" tabindex="11"
                     type="checkbox"
                     FieldSet="IsCall"
                     isSelectedCheckBox="false"
@@ -168,6 +179,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Email cá nhân</div>
                     <input
+                    @keydown="customTabIndex" tabindex="13"
                     type="text"
                     v-model="Potential['Email']"
                     FieldSet="Email"
@@ -178,6 +190,7 @@
                 <div class="update-item">
                     <div class="uib-txt">Tổ chức</div>
                     <input
+                    @keydown="customTabIndex" tabindex="15"
                     type="text"
                     v-model="Potential['Organization']"
                     FieldSet="Organization"
@@ -195,12 +208,13 @@
                     <div class="update-item">
                         <div class="uib-txt">Giới tính</div>
                         <div class="update-select-feild">
-                            <SelectInput :col="{0:'Gender', 1: 'GenderName'}" :data="genders" :variable="'Gender'" @emitValue="getValueSelectInput" :defaultValue="String(Potential.Gender)"/>
+                            <SelectInput @keydown="customTabIndex" tabindex="18" :col="{0:'Gender', 1: 'GenderName'}" :data="genders" :variable="'Gender'" @emitValue="getValueSelectInput" :defaultValue="String(Potential.Gender)"/>
                         </div>
                     </div>
                     <div class="update-item">
                         <div class="uib-txt">Facebook</div>
                         <input class="update-input-feild s-input" 
+                        @keydown="customTabIndex" tabindex="20"
                         type="text"
                         FieldSet="Facebook"
                         v-model="Potential['Facebook']"
@@ -215,6 +229,7 @@
                         FieldSet="DateOfBirth"
                         v-model="Potential['DateOfBirth']"/> -->
                         <el-date-picker
+                        @keydown="customTabIndex" tabindex="19"
                         v-model="Potential['DateOfBirth']"
                         type="date"
                         format="DD/MM/YYYY"
@@ -244,7 +259,9 @@ export default {
         ToolTip
     },
     props: {
+        // id của tiềm năng đang sửa
         PotentialID: String,
+        // giá trị của trường search
         searchString: String
     },
     data() {
@@ -512,6 +529,26 @@ export default {
         },
 
         /**
+         * thực hiện khi ấn tab ở các trường input
+         * created by SONTD(11.09.2022)
+         */
+        customTabIndex(event){
+            let me = this,
+                currentIndex = event.target.getAttribute("tabindex");
+            if(event.keyCode == 9){
+                if(currentIndex){
+                    let nextIndex = parseInt(currentIndex)+1,
+                        nextField = me.$refs.updateMainContentRef.querySelector(`[tabindex='${nextIndex}']`);
+                    if(nextField){
+                        nextField.click();
+                    }
+                }
+            }else if(event.keyCode == 13){
+                event.target.click();
+            }
+        },  
+
+        /**
          * thêm nút xóa nội dung trong ô input
          * created by SONTD(04.09.2022)
          */
@@ -551,6 +588,7 @@ export default {
     },
     mounted() {
         this.addDeleteIconForInputField();
+        this.$refs.updateMainContentRef.querySelector("[tabindex='1']").focus();
     },
     watch: {
         // set default cho trường không gửi tin nhắn và trường không gọi điện

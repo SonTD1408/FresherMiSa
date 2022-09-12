@@ -108,6 +108,7 @@ export default{
             me.isShowConfirmBox = checkShowConfirmBox;
             me.$emit("emitValue", me.column);
         },
+        
         /**
          * hàm sự kiện click vào 1 dòng filter
          * created by SONTD(28.08.2022)
