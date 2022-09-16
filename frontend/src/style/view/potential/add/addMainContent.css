@@ -58,7 +58,7 @@
 }
 .validate-error{
     color: red;
-    transform: translate(8px,-12px);
+    transform: translate(10px,-12px);
     margin-left: 160px;
     display: flex;
 }

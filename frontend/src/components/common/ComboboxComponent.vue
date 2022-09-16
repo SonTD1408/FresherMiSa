@@ -1,6 +1,6 @@
 <template>
     <div class="combobox-component-container" @click="hideShowSelectBox" ref="combobox" v-click-outside="onClickOutside">
-        <div class="combobox-component-defalt" v-if="isResultNull" >- Không chọn -</div>
+        <div class="combobox-component-defalt" v-if="isResultNull" style="color: #99A1B2">- Không chọn -</div>
 
         <div class="combobox-component-box" v-if="!isResultNull">
             <div class="combobox-component-tag" v-for="(item,index) in result" :key="index" :idTag="item[col[0]]">
@@ -16,17 +16,21 @@
                 <div class="combobox-component-item-content">{{item[col['1']]}}</div>
                 <div class="combobox-component-item-icon" style="visibility: hidden"></div>
             </div>
+            <div class="combobox-component-item-loading">
+                <LoadingComponent :typeOfLoading="loadingType"/>
+            </div>
         </div>
     </div>
 </template>
 <script>
 import vClickOutside from "click-outside-vue3";
+import LoadingComponent from "./LoadingComponent.vue";
 
 export default{
     directives: {
         clickOutside: vClickOutside.directive
     },
-    props:{
+    props: {
         // data của select box
         data: {},
         // tên những column cần lấy trong data 
@@ -46,50 +50,51 @@ export default{
             isShowSelectBox: false,
             // biến check xem trước đó id này đã được check chưa
             isRowSelected: {},
-        }
+            // ẩn hiện loading
+            loadingType: 2,
+        };
     },
     methods: {
         /**
          * hàm ẩn hiện selectbox khi ấn vào combobox
          * created by SONTD(20.08.2022)
          */
-        hideShowSelectBox(){
+        hideShowSelectBox() {
             let me = this;
             me.isShowSelectBox = !me.isShowSelectBox;
         },
-
         /**
          * hàm xử lí khi chọn 1 item trong select box
          * created by SONTD(20.08.2022)
-         * @param {*} item 
-         * @param {*} event 
+         * @param {*} item
+         * @param {*} event
          */
-        rowOnClick(item, event){
+        rowOnClick(item, event) {
             let me = this;
             let rowSelected = event.target.closest(".combobox-component-item");
-            if (!me.isRowSelected[rowSelected.getAttribute("idRow")]){
+            if (!me.isRowSelected[rowSelected.getAttribute("idRow")]) {
                 me.isRowSelected[rowSelected.getAttribute("idRow")] = true;
-            }else{
+            }
+            else {
                 me.isRowSelected[rowSelected.getAttribute("idRow")] = false;
             }
             me.updateStatusCombobox();
         },
-
         /**
          * cập nhật trạng thái của combobox
          * created by SONTD(20.08.2022)
          */
-        updateStatusCombobox(){
+        updateStatusCombobox() {
             let me = this;
             // khởi tạo lại result 
-            me.result =[];
+            me.result = [];
             me.isResultNull = true;
-            me.$refs.combobox.querySelectorAll(".combobox-component-item[idRow]").forEach(function(item){
-                if (me.isRowSelected[item.getAttribute("idRow")]){
+            me.$refs.combobox.querySelectorAll(".combobox-component-item[idRow]").forEach(function (item) {
+                if (me.isRowSelected[item.getAttribute("idRow")]) {
                     // cập nhật lại màu cho những dòng đã được chọn
                     item.querySelector(".combobox-component-item-content").classList.add("combobox-component-item-content-selected");
                     // hiện icon đã chọn
-                    item.querySelector(".combobox-component-item-icon").style.visibility="visible";
+                    item.querySelector(".combobox-component-item-icon").style.visibility = "visible";
                     // cập nhật lại biến check xem result có null hay không
                     me.isResultNull = false;
                     // thêm id và name vào biến kết quả result
@@ -97,78 +102,78 @@ export default{
                     res[me.col[0]] = item.getAttribute("idRow");
                     res[me.col[1]] = item.querySelector(".combobox-component-item-content").textContent;
                     me.result.push(res);
-                }else{
-                    item.querySelector(".combobox-component-item-content").classList.remove("combobox-component-item-content-selected");
-                    item.querySelector(".combobox-component-item-icon").style.visibility="hidden";
                 }
-            })
-            this.$emit("emitComboboxValue",me.variable, me.result);
+                else {
+                    item.querySelector(".combobox-component-item-content").classList.remove("combobox-component-item-content-selected");
+                    item.querySelector(".combobox-component-item-icon").style.visibility = "hidden";
+                }
+            });
+            this.$emit("emitComboboxValue", me.variable, me.result);
         },
-
         /**
          * hàm xứ lí sự kiện bấm xóa 1 tag khỏi combobox
          * created by SONTD(20.08.2022)
          */
-        deleteBtnOnClick(event){
-            let me = this,
-                // biến chứa id của hàng mình đang muốn xóa
-                idTag = event.target.closest(".combobox-component-tag").getAttribute("idTag");
+        deleteBtnOnClick(event) {
+            let me = this, 
+            // biến chứa id của hàng mình đang muốn xóa
+            idTag = event.target.closest(".combobox-component-tag").getAttribute("idTag");
             // sử lại attribute isSelected để chuẩn bị update
             // me.$refs.combobox.querySelector(`[idRow='${idTag}']`).setAttribute("isSelected","false");
             me.isRowSelected[idTag] = false;
             // update lại combobox
             me.updateStatusCombobox();
         },
-
         /**
          * hàm xử lí sự kiện khi click ra ngoài combobox
          * created by SONTD(20.08.2022)
          */
-        onClickOutside(){
+        onClickOutside() {
             this.isShowSelectBox = false;
         },
-
         /**
-         * xử lí khi ấn không chọn của combobox 
+         * xử lí khi ấn không chọn của combobox
          * created by SONTD(21.08.2022)
          */
-        noSelectedItem(){
+        noSelectedItem() {
             let me = this;
-            me.data.forEach(function(item){
+            me.data.forEach(function (item) {
                 me.isRowSelected[item[me.col[0]]] = false;
-            })
+            });
             me.updateStatusCombobox();
             me.isShowSelectBox = false;
         }
     },
     watch: {
         // xử lí khi data đầu vào thay đổi
-        'data':function(){
+        "data": function () {
             let me = this;
-            if(me.data && me.data.length>0){
-                me.data.forEach(function(item){
-                    if (!me.isRowSelected[item[me.col[0]]]){
+            if(me.data && me.data.length > 0){
+                me.loadingType = 0; 
+            }
+            if (me.data && me.data.length > 0) {
+                me.data.forEach(function (item) {
+                    if (!me.isRowSelected[item[me.col[0]]]) {
                         me.isRowSelected[item[me.col[0]]] = false;
                     }
                 }),
-                setTimeout(function(){
+                    setTimeout(function () {
                         me.updateStatusCombobox();
-                }, 100);
+                    }, 100);
             }
         },
         // xử lí giá trị dầu vào
-        'defaultValue':function(){
-            let me = this,
-                defaultObj = JSON.parse(me.defaultValue);
-            if (defaultObj){
-
-                defaultObj.forEach(function(item){
+        "defaultValue": function () {
+            let me = this, defaultObj = JSON.parse(me.defaultValue);
+            if (defaultObj) {
+                defaultObj.forEach(function (item) {
                     me.isRowSelected[item[me.col[0]]] = true;
                     me.isResultNull = false;
-                })
+                });
             }
         }
     },
+    components: { LoadingComponent }
 }
 </script>
 <style scoped>

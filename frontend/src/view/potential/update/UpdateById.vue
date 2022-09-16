@@ -6,9 +6,9 @@
                 <div class="ul-change-construct">Sửa bố cục</div>
             </div>
             <div class="update-topbar-right">
-                <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
-                <button class="s-button-gray" @click="saveAndAddButtonOnClick">Lưu và thêm</button>
-                <button class="s-button" @click="saveButtonOnClick">Lưu</button>
+                <router-link to="/"><button class="s-button-gray" tabindex="21" @keydown="customTabIndex">Hủy bỏ</button></router-link>
+                <button class="s-button-gray" @click="saveAndAddButtonOnClick" tabindex="22" @keydown="customTabIndex">Lưu và thêm</button>
+                <button class="s-button" @click="saveButtonOnClick" tabindex="23" @keydown="customTabIndex">Lưu</button>
             </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="update-item">
-                    <div class="uib-txt">ĐT di động <div class="update-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
+                    <div class="uib-txt">ĐT di động <div class="update-item-icon" @mouseover="tooltip.PhoneNumber = true" @mouseleave="tooltip.PhoneNumber = false"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                     <input
                     @keydown="customTabIndex" tabindex="6"
                     type="text"
@@ -60,7 +60,7 @@
                     />
                 </div>
                 <div class="update-item">
-                    <div class="uib-txt">ĐT khác <div class="update-item-icon" @click="hideShowTooltip('OtherPhoneNumber')"><ToolTip :msg="'Điện thoại khác'" v-if="tooltip.OtherPhoneNumber" @tooltipClickOutside="tooltipClickOutside('OtherPhoneNumber')"></ToolTip></div></div>
+                    <div class="uib-txt">ĐT khác <div class="update-item-icon" @mouseover="tooltip.OtherPhoneNumber = true" @mouseleave="tooltip.OtherPhoneNumber = false"><ToolTip :msg="'Điện thoại khác'" v-if="tooltip.OtherPhoneNumber" @tooltipClickOutside="tooltipClickOutside('OtherPhoneNumber')"></ToolTip></div></div>
                     <input
                     @keydown="customTabIndex" tabindex="8"
                     type="text"
@@ -110,6 +110,7 @@
                     :maxlength="maxLengthInput.Email"
                     />
                 </div>
+                <div class="update-validate-error" v-if="validate.emailVal.OfficeEmail==1">Email không hợp lệ</div>
                 <div class="update-item">
                     <div class="uib-txt">Mã số thuế</div>
                     <input
@@ -149,7 +150,7 @@
                     </div>
                 </div>
                 <div class="update-item">
-                    <div class="uib-txt">ĐT cơ quan <div class="update-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"><ToolTip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></ToolTip></div></div>
+                    <div class="uib-txt">ĐT cơ quan <div class="update-item-icon" @mouseover="tooltip.OfficePhoneNumber = true" @mouseleave="tooltip.OfficePhoneNumber = false"><ToolTip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></ToolTip></div></div>
                     <input
                     @keydown="customTabIndex" tabindex="7"
                     type="text"
@@ -187,6 +188,7 @@
                     :maxlength="maxLengthInput.Email"
                     />
                 </div>
+                <div class="update-validate-error" v-if="validate.emailVal.Email==1">Email không hợp lệ</div>
                 <div class="update-item">
                     <div class="uib-txt">Tổ chức</div>
                     <input
@@ -229,6 +231,7 @@
                         FieldSet="DateOfBirth"
                         v-model="Potential['DateOfBirth']"/> -->
                         <el-date-picker
+                        :locale="lang.vi"
                         @keydown="customTabIndex" tabindex="19"
                         v-model="Potential['DateOfBirth']"
                         type="date"
@@ -251,6 +254,9 @@ import SelectInput from "../../../components/common/SelectInput.vue";
 import ComboboxComponent from "../../../components/common/ComboboxComponent.vue";
 import ToolTip from "../../../components/common/ToolTip.vue";
 import MaxLengthInput from "../../../script/maxLengthInput.js";
+import vi from "../../../../node_modules/element-plus/es/locale/lang/vi"
+import val from "../../../script/validate.js";
+
 export default {
     emits: ["showToastMessage", "resetComponent"],
     components: {
@@ -266,6 +272,10 @@ export default {
     },
     data() {
         return {
+            // ngôn ngữ element plus
+            lang: {
+                vi: vi
+            },
             // biến lưu thông tin id của dòng đã chọn để sửa 
             idRow: "",
             // biến lưu thông tin về tiềm năng để gửi về server 
@@ -277,6 +287,10 @@ export default {
             validate:{
                 required: {
                     FirstName : -1,
+                },
+                emailVal: {
+                    Email: 0,
+                    OfficeEmail: 0,
                 }
             },
             // dữ liệu xưng hô 
@@ -379,18 +393,47 @@ export default {
          * created by SONTD (12.08.2022)
          */
         checkValidate(){
-            let me = this;
-            for (let key in me.validate.required){
-                if (me.validate.required[key]==0 || me.validate.required[key]==-1 ||me.validate.required[key]==undefined){
-                    me.$refs.updateMainContentRef.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
-                    me.$refs.updateMainContentRef.querySelector(`[FieldSet=${key}]`).focus();
-                    me.validate.required[key]=0;
-                    return false;
-                }else{
-                    me.$refs.updateMainContentRef.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");
-                }
+            let me = this,
+                checkVal = true;
+            // validate tên
+            me.Potential.FirstName = me.Potential.FirstName.trim();
+            if(!me.Potential.FirstName){
+                me.$refs.updateMainContentRef.querySelector(`[FieldSet=FirstName]`).classList.add("input-validate-error");
+                me.$refs.updateMainContentRef.querySelector(`[FieldSet=FirstName]`).focus();
+                me.$emit("showToastMessage",2,"Tên không được để trống");
+                checkVal = false;
+                me.validate.required.FirstName=0;
+            }else{
+                me.$refs.updateMainContentRef.querySelector(`[FieldSet=FirstName]`).classList.remove("input-validate-error");
+                me.validate.required.FirstName=1;
             }
-            return true;
+            // validate email
+            if(me.Potential.Email && !val.Email(me.Potential.Email)){
+                me.$refs.updateMainContentRef.querySelector("[FieldSet=Email]").classList.add("input-validate-error");
+                if(checkVal){
+                    me.$refs.updateMainContentRef.querySelector("[FieldSet=Email]").focus();
+                    me.$emit("showToastMessage",2,"Email không hợp lệ");
+                }
+                me.validate.emailVal.Email=1;
+                checkVal = false;
+            }else{
+                me.$refs.updateMainContentRef.querySelector(`[FieldSet=Email]`).classList.remove("input-validate-error");
+                me.validate.emailVal.Email=0;
+            }
+            // validate email cơ quan
+            if(me.Potential.OfficeEmail && !val.Email(me.Potential.OfficeEmail)){
+                me.$refs.updateMainContentRef.querySelector("[FieldSet=OfficeEmail]").classList.add("input-validate-error");
+                if(checkVal){
+                    me.$refs.updateMainContentRef.querySelector("[FieldSet=OfficeEmail]").focus();
+                    me.$emit("showToastMessage",2,"Email không hợp lệ");
+                }
+                me.validate.emailVal.OfficeEmail=1;
+                checkVal = false;
+            }else{
+                me.$refs.updateMainContentRef.querySelector(`[FieldSet=OfficeEmail]`).classList.remove("input-validate-error");
+                me.validate.emailVal.OfficeEmail=0;
+            }
+            return checkVal;
         },
 
         /**
@@ -430,8 +473,6 @@ export default {
                 } catch (error) {
                     console.log(error);
                 }
-            }else{
-                me.$emit("showToastMessage",2,"Tên không được để trống");
             }
         },
 
@@ -456,8 +497,6 @@ export default {
                 } catch (error) {
                     console.log(error);
                 }
-            }else{
-                me.$emit("showToastMessage",2,"Tên không được để trống");
             }
         },
 
@@ -511,15 +550,6 @@ export default {
         },
 
         /**
-         * hàm ẩn hiện tooltip
-         * created by SONTD(27.08.2022)
-         */
-        hideShowTooltip(tooltipName){
-            let me = this;
-            me.tooltip[tooltipName] = !me.tooltip[tooltipName];
-        },
-
-        /**
          * hàm thực hiện khi ấn ra ngoài toottip, dùng để ẩn tooltip
          * @param {*} tooltipName 
          */
@@ -535,16 +565,29 @@ export default {
         customTabIndex(event){
             let me = this,
                 currentIndex = event.target.getAttribute("tabindex");
-            if(event.keyCode == 9){
-                if(currentIndex){
-                    let nextIndex = parseInt(currentIndex)+1,
-                        nextField = me.$refs.updateMainContentRef.querySelector(`[tabindex='${nextIndex}']`);
+            if(currentIndex=="23"){
+                if(event.keyCode==9){
+                    let nextField = me.$refs.updateMainContentRef.querySelector("[tabindex='1']");
                     if(nextField){
-                        nextField.click();
+                        nextField.focus();
                     }
                 }
-            }else if(event.keyCode == 13){
-                event.target.click();
+            }
+            else{
+                if(event.keyCode == 9){
+                    if(currentIndex){
+                        let nextIndex = parseInt(currentIndex)+1,
+                            nextField = me.$refs.updateMainContentRef.querySelector(`[tabindex='${nextIndex}']`);
+                        if(nextField){
+                            nextField.click();
+                            if(nextField.getAttribute("type") == "checkbox"){
+                                nextField.click();
+                            }
+                        }
+                    }
+                }else if(event.keyCode == 13){
+                    event.target.click();
+                }
             }
         },  
 
@@ -635,16 +678,12 @@ export default {
         'Potential.FirstName':function(newValue){
             let me = this,
                 input = me.$refs.updateMainContentRef.querySelector("[FieldSet=FirstName]");
-            me.Potential.FullName = (me.Potential['LastName']? me.Potential['LastName']:'')+' '+(me.Potential['FirstName']? me.Potential['FirstName']:'');
+                me.Potential.FullName = (me.Potential['LastName']? me.Potential['LastName']:'')+' '+(me.Potential['FirstName']? me.Potential['FirstName']:'');
             if (newValue){
-                if(newValue != " "){
-                    me.validate.required.FirstName = 1;
-                    if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
-                        input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
-                    } 
-                }else{
-                    me.Potential.FirstName = "";
-                }
+                me.validate.required.FirstName = 1;
+                if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
+                    input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="visible";
+                } 
             }else{
                 me.validate.required.FirstName = 0;
                 if(input && input.closest(".update-item") && input.closest(".update-item").querySelector(".update-item-delete-all-icon-box")){
@@ -707,6 +746,11 @@ export default {
                         input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
                     } 
                 }
+            //validate 
+            if((newValue && val.Email(newValue)) || !newValue){
+                input.classList.remove("input-validate-error");
+                me.validate.emailVal.Email=0;
+            }
         },
         // quan sát thay đổi ô input Zalo
         'Potential.Zalo':function(newValue){
@@ -749,6 +793,11 @@ export default {
                         input.closest(".update-item").querySelector(".update-item-delete-all-icon-box").style.visibility="hidden";
                     } 
                 }
+            //validate 
+            if((newValue && val.Email(newValue)) || !newValue){
+                input.classList.remove("input-validate-error");
+                me.validate.emailVal.OfficeEmail=0;
+            }
         },
         // quan sát thay đổi ô input Taxcode
         'Potential.Taxcode':function(newValue){

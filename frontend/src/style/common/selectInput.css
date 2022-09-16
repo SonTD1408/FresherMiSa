@@ -13,6 +13,9 @@
     background-color: #fff;
     outline: none;
 }
+.select-input-defalt{
+    color: #99A1B2;
+}
 .select-input-feild-box:focus{
     border : 1px solid #4262F0 !important;
 }
@@ -32,13 +35,11 @@
 }
 .select-input-item-box{
     width: 100%;
-    /* padding: 8px 0; */
     position: absolute;
     z-index: 11;
     top: 110%;
     left: 0;
     background-color: #fff;
-    /* max-height: 144px; */
     border-radius: 4px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
     overflow: auto;

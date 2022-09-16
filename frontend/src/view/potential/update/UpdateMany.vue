@@ -21,6 +21,7 @@
                     <input type="text" class="s-input" style="width: 100%" v-if="typeOfInput==1" v-model="formData.ColumnValueString">
                     <SelectInput :data="dataOfSelectInput" :col="col" :variable="'ColumnValueString'" @emitValue = "getDataFromSelectInput" v-if="typeOfInput==2"></SelectInput>
                     <el-date-picker
+                        :locale="lang.vi"
                         v-if="typeOfInput==3"
                         v-model="formData.ColumnValueString"
                         type="date"
@@ -48,6 +49,8 @@ import axiosConfig from "../../../script/config/axiosConfig.js"
 import SelectInput from "../../../components/common/SelectInput.vue";
 import Resource from "../../../script/resource.js"
 import ComboboxComponent from "../../../components/common/ComboboxComponent.vue"
+import vi from "../../../../node_modules/element-plus/es/locale/lang/vi"
+
 export default {
     components:{
         SelectInput,
@@ -232,6 +235,10 @@ export default {
             typeOfSelectInput: "",
             // đánh dâu xem có active button update hay không
             isActiveUpdateButton: false,
+            // ngôn ngữ element plus
+            lang: {
+                vi: vi,
+            }
         }
     },
     methods: {

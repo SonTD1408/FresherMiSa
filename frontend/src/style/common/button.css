@@ -11,8 +11,12 @@
     border-radius: 4px;
     cursor: pointer;
     font-family: Roboto;
+    outline: none;
 }
 .s-button:hover{
+    background-color: #2B4EEE;
+}
+.s-button:focus{
     background-color: #2B4EEE;
 }
 .s-button:active{
@@ -31,8 +35,12 @@
     border: 1px solid #D3D7DE;
     border-radius: 4px;
     cursor: pointer;
+    outline: none;
 }
 .s-button-gray:hover{
+    background-color: #E2E4E9;
+}
+.s-button-gray:focus{
     background-color: #E2E4E9;
 }
 .s-button-gray:active{
@@ -52,6 +60,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-family: Roboto;
+    outline: none;
 }
 .s-button-red:hover{
     background-color: #EA2E2E;

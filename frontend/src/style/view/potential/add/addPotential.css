@@ -12,17 +12,24 @@
     align-items: center;
     cursor: pointer;
     visibility: hidden;
-    background-color: #ddd;
-}
-.add-item-delete-all-icon-box:hover{
-    background-color: #7C869C;
 }
 .add-item-delete-all-icon{
-    width: 10px;
-    height: 10px;
-    background:  url("../../../../assets/img/icon_collection.svg") no-repeat -323px -476px;
+    width: 8px;
+    height: 8px;
+    background:  url("../../../../assets/img/icon_collection.svg") no-repeat -84px -20px;
 }
+
+.add-item-delete-all-icon-box:hover .add-item-delete-all-icon{
+    width: 16px;
+    height: 16px;
+    background:  url("../../../../assets/img/icon_collection.svg") no-repeat -320px -240px;
+}
+
 
 .add-item input[type=text]{
     padding-right: 32px;
+}
+
+#content-add input[type=checkbox]:focus{
+    outline: 1px solid #4262F0;
 }

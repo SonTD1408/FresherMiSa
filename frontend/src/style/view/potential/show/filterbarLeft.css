@@ -7,6 +7,7 @@
     flex-direction: column;
     font-family: Roboto;
     border-right: 1px solid #ddd;
+    font-weight: 100;
 }
 .filter-saved{
     font-weight: 600;
@@ -16,6 +17,9 @@
     cursor: pointer;
     padding: 16px 10px;
 
+}
+.fs-txt{
+    font-weight: 100;
 }
 .fs-icon{
     width: 16px;
@@ -33,6 +37,9 @@
     justify-content: space-between;
     cursor: pointer;
     padding: 0 10px 8px 10px;
+}
+.fsbc-txt{
+    font-weight: 100;
 }
 .fsbc-icon{
     width: 16px;

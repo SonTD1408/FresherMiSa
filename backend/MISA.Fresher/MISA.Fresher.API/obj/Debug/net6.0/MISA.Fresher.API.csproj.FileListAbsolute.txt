@@ -76,3 +76,5 @@ D:\Misa\MISA_Potential\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\re
 D:\Misa\MISA_Potential\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\MISA.Fresher.API.pdb
 D:\Misa\MISA_Potential\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\MISA.Fresher.API.genruntimeconfig.cache
 D:\Misa\MISA_Potential\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\ref\MISA.Fresher.API.dll
+D:\Misa\MISA_Potential\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\MISA.Fresher.API.Config.ResultMessage.resources
+D:\Misa\MISA_Potential\backend\MISA.Fresher\MISA.Fresher.API\obj\Debug\net6.0\MISA.Fresher.API.csproj.GenerateResource.cache

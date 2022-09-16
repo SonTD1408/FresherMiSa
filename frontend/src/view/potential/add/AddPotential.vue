@@ -7,9 +7,9 @@
           <div class="al-change-construct">Sửa bố cục</div>
         </div>
         <div class="add-topbar-right">
-          <router-link to="/"><button class="s-button-gray">Hủy bỏ</button></router-link>
-          <button class="s-button-gray" @click="saveAndAddButtonOnClick">Lưu và thêm</button>
-          <button class="s-button" @click="saveButtonOnClick">Lưu</button>
+          <router-link to="/"><button class="s-button-gray" tabindex="32" @keydown="customTabIndex">Hủy bỏ</button></router-link>
+          <button class="s-button-gray" @click="saveAndAddButtonOnClick" tabindex="33" @keydown="customTabIndex">Lưu và thêm</button>
+          <button class="s-button" @click="saveButtonOnClick" tabindex="34" @keydown="customTabIndex">Lưu</button>
         </div>
       </div>
       <div id="add-main-content" ref="addMainContentRef">
@@ -25,7 +25,7 @@
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Xưng hô</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Vocatives, 'vocatives')">
                   <SelectInput FieldSet="VocativeID" @keydown="customTabIndex" tabindex="1" :col="{0:'VocativeID', 1: 'VocativeName'}" :data="vocatives" :variable="'VocativeID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
@@ -38,19 +38,18 @@
                   FieldSet="FirstName"
                   class="add-input-feild s-input"
                   v-model="dataForm.Potential['FirstName']"
-                  @blur="validateRequired($event)"
                   :maxlength="maxLengthInput.NameHalf"
                 />
               </div>
               <div class="validate-error" v-if="validate.required.FirstName==0">Tên không được để trống</div>
               <div class="add-item">
                 <div class="aib-txt">Phòng ban</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Departments, 'departments')">
                   <SelectInput tabindex="4" @keydown="customTabIndex" :col="{0:'DepartmentID',1:'DepartmentName'}" :data="departments"  :variable="'DepartmentID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
-                <div class="aib-txt">ĐT di động <div class="add-item-icon" @click="hideShowTooltip('PhoneNumber')"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
+                <div class="aib-txt">ĐT di động <div class="add-item-icon" @mouseover="tooltip.PhoneNumber = true" @mouseleave="tooltip.PhoneNumber = false"><ToolTip :msg="'Điện thoại di động'" v-if="tooltip.PhoneNumber" @tooltipClickOutside="tooltipClickOutside('PhoneNumber')"></ToolTip></div></div>
                 <input
                   tabindex="6"
                   @keydown="customTabIndex"
@@ -63,7 +62,7 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Nguồn gốc</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Sources, 'sources')">
                   <SelectInput tabindex="8" @keydown="customTabIndex" :data="sources" @emitValue="getValueSelectInput" :col="{0:'SourceID', 1: 'SourceName'}" :variable="'SourceID'" :type="'guid'"/>
                 </div>
               </div>
@@ -91,6 +90,7 @@
                   :maxlength="maxLengthInput.Email"
                 />
               </div>
+              <div class="validate-error" v-if="validate.emailVal.OfficeEmail==1" >Email không hợp lệ</div>
               <div class="add-item">
                 <div class="aib-txt">Mã số thuế</div>
                 <input
@@ -124,12 +124,12 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Chức danh</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Positions, 'positions')">
                   <SelectInput tabindex="5" @keydown="customTabIndex" :col="{0:'PositionID', 1: 'PositionName'}" :data="positions" :variable="'PositionID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
-                <div class="aib-txt">ĐT cơ quan <div class="add-item-icon" @click="hideShowTooltip('OfficePhoneNumber')"> <tool-tip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></tool-tip> </div></div>
+                <div class="aib-txt">ĐT cơ quan <div class="add-item-icon" @mouseover="tooltip.OfficePhoneNumber = true" @mouseleave="tooltip.OfficePhoneNumber = false"> <tool-tip :msg="'Điện thoại cơ quan'" v-if="tooltip.OfficePhoneNumber" @tooltipClickOutside="tooltipClickOutside('OfficePhoneNumber')"></tool-tip> </div></div>
                 <input
                   tabindex="7"
                   @keydown="customTabIndex"
@@ -142,7 +142,7 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Loại tiềm năng</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.PotentialTypes, 'potentialTypes')">
                   <ComboboxComponent tabindex="9" @keydown="customTabIndex" :data="potentialTypes" :col="{0:'PotentialTypeID', 1:'PotentialTypeName'}" :variable="'PotentialTypes'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
@@ -158,6 +158,7 @@
                   :maxlength="maxLengthInput.Email"
                 />
               </div>
+              <div class="validate-error" v-if="validate.emailVal.Email==1" >Email không hợp lệ</div>
               <div class="add-item">
                 <div class="aib-txt">Tổ chức</div>
                 <input
@@ -196,27 +197,29 @@
                   FieldSet="FoundingDate"
                   class="add-input-feild s-input"
                 /> -->
-                <el-date-picker
-                tabindex="17"
-                @keydown="customTabIndex"
-                v-model="dataForm.Potential['FoundingDate']"
-                type="date"
-                format="DD-MM-YYYY"
-                value-format="YYYY-MM-DD"
-                placeholder="DD/MM/YYYY"
-                size="default"
-                style="width: 280px;"
-                />
+                <el-config-provider :locale="lang.vi">
+                  <el-date-picker
+                  tabindex="17"
+                  @keydown="customTabIndex"
+                  v-model="dataForm.Potential['FoundingDate']"
+                  type="date"
+                  format="DD-MM-YYYY"
+                  value-format="YYYY-MM-DD"
+                  placeholder="DD/MM/YYYY"
+                  size="default"
+                  style="width: 280px;"
+                  />
+                </el-config-provider>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Lĩnh vực</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Fields, 'fields')">
                   <ComboboxComponent tabindex="19" @keydown="customTabIndex" :data="fields" :col="{0:'FieldID', 1:'FieldName'}" :variable="'Fields'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Doanh thu</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Turnovers, 'turnovers')">
                   <SelectInput tabindex="21" @keydown="customTabIndex" :data="turnovers" :variable="'TurnoverID'" @emitValue="getValueSelectInput" :col="{0: 'TurnoverID' , 1:'TurnoverName'}" :type="'guid'"/>
                 </div>
               </div>
@@ -235,13 +238,13 @@
               </div>
               <div class="add-item">
                 <div class="aib-txt">Loại hình</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.OrganizationTypes, 'organizationTypes')">
                   <SelectInput tabindex="18" @keydown="customTabIndex" :data="organizationTypes" :variable="'OrganizationTypeID'" @emitValue="getValueSelectInput" :col="{0: 'OrganizationTypeID' , 1:'OrganizationTypeName'}" :type="'guid'"/>
                 </div>
               </div>
               <div class="add-item">
                 <div class="aib-txt">Ngành nghề</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Careers, 'careers')">
                   <ComboboxComponent tabindex="20" @keydown="customTabIndex" :data="careers" :col="{0:'CareerID', 1:'CareerName'}" :variable="'Careers'" @emitComboboxValue="getValueFromCombobox"></ComboboxComponent>
                 </div>
               </div>
@@ -254,7 +257,7 @@
             <div class="add-items-site">
               <div class="add-item">
                 <div class="aib-txt">Quốc gia</div>
-                <div class="add-select-feild">
+                <div class="add-select-feild" @click="getFieldData('get', axiosConf.Nations, 'nations')">
                   <SelectInput tabindex="22" @keydown="customTabIndex" :data="nations" :col="{0:'NationID', 1:'NationName'}" :variable="'NationID'" @emitValue="getValueSelectInput" :type="'guid'"/>
                 </div>
               </div>
@@ -269,7 +272,8 @@
                   :variable="'DistrictID'" 
                   @emitValue="getValueSelectInput"
                   :isActive="checkIsActiveAddress.district"
-                  :type="'guid'"/>
+                  :type="'guid'"
+                  :loading="false"/>
                 </div>
               </div>
               <div class="add-item">
@@ -299,7 +303,9 @@
                   :variable="'CityID'" 
                   @emitValue="getValueSelectInput"
                   :isActive="checkIsActiveAddress.city"
-                  :type="'guid'"/>
+                  :type="'guid'"
+                  :loading="false"
+                  />
                 </div>
               </div>
               <div class="add-item">
@@ -313,7 +319,8 @@
                   :variable="'WardID'" 
                   @emitValue="getValueSelectInput"
                   :isActive="checkIsActiveAddress.ward"
-                  :type="'guid'"/>
+                  :type="'guid'"
+                  :loading="false"/>
                 </div>
               </div>
               <div class="add-item">
@@ -369,6 +376,8 @@ import ComboboxComponent from "@/components/common/ComboboxComponent.vue";
 import Resource from '@/script/resource.js';
 import ToolTip from '../../../components/common/ToolTip.vue';
 import MaxLengthInput from "../../../script/maxLengthInput.js";
+import vi from "../../../../node_modules/element-plus/es/locale/lang/vi";
+import val from "../../../script/validate.js";
 
 export default {
   components: {
@@ -434,6 +443,10 @@ export default {
         duplicate: {
           PotentialCode: -1,
         },
+        emailVal:{
+          Email: 0,
+          OfficeEmail: 0,
+        }
       },
       // biến lưu cách xưng hô lấy từ db
       vocatives: {},
@@ -474,82 +487,46 @@ export default {
       },
       // max length các ô input 
       maxLengthInput: MaxLengthInput,
+      // language của element plus
+      lang: {
+        vi: vi,
+      },
+      // axiosConfig
+      axiosConf: axiosConfig,
     };
   },
   methods: {
     /**
-     * hàm khởi tạo lấy dữ liệu cho các ô select input
-     * created by SONTD(14.08.2022)
+     * hàm lấy dữ liệu newCode
+     * created by SONTD(16.09.2022)
      */
     init(){
         let me = this;
         try{
-            // lấy dữ liệu vocative
-            axiosConfig.call("get", axiosConfig.Vocatives, "", function(response){
-              if (response.data){
-                me.vocatives = response.data.DataList;
-              }
-            });
-            // lây dữ liệu phòng ban 
-            axiosConfig.call("get", axiosConfig.Departments, "", function(response){
-              if (response.data){
-                me.departments = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu chức vụ
-            axiosConfig.call("get", axiosConfig.Positions, "", function(response){
-              if (response.data){
-                me.positions = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu nguồn gốc
-            axiosConfig.call("get", axiosConfig.Sources, "", function(response){
-              if (response.data){
-                me.sources = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu doanh thu
-            axiosConfig.call("get", axiosConfig.Turnovers, "", function(response){
-              if (response.data){
-                me.turnovers = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu loại tổ chức 
-            axiosConfig.call("get", axiosConfig.OrganizationTypes, "", function(response){
-              if (response.data){
-                me.organizationTypes = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu tên các quốc gia
-            axiosConfig.call("get", axiosConfig.Nations, "", function(response){
-              if (response.data){
-                me.nations = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu tên các quốc gia
-            axiosConfig.call("get", axiosConfig.PotentialTypes, "", function(response){
-              if (response.data){
-                me.potentialTypes = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu lĩnh vực
-            axiosConfig.call("get", axiosConfig.Fields, "", function(response){
-              if (response.data){
-                me.fields = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu ngành nghề
-            axiosConfig.call("get", axiosConfig.Careers, "", function(response){
-              if (response.data){
-                me.careers = response.data.DataList;
-              }
-            });
-            // lấy dữ liệu new code
-            axiosConfig.call("get", axiosConfig.Potentials+"/newCode", "", function(response){
+          axiosConfig.call("get", axiosConfig.Potentials+"/newCode", "", function(response){
               if (response.data){
                 me.dataForm.Potential.PotentialCode = response.data.Data;
               }
-            });
+          });
+        }catch(error){
+            console.log(error);
+        }
+    },
+
+    /**
+     * hàm lấy dữ liệu xưng hô từ server
+     * created by SONTD(15.09.2022)
+     */
+     getFieldData(method, url, variable){
+        try{
+            let me = this;
+            if(!me[variable].length){
+                axiosConfig.call(method, url, "", function(response){
+                    if (response.data){
+                        me[variable] = response.data.DataList;
+                    }
+                });
+            }
         }catch(error){
             console.log(error);
         }
@@ -643,8 +620,6 @@ export default {
           }catch(error){
               console.log(error);
           }
-        }else{
-          me.$emit("showToastMessage",2,"Tên không được để trống");
         }
     },
 
@@ -690,31 +665,50 @@ export default {
      * created by SONTD (12.08.2022)
      */
     checkValidate(){
-      let me = this;
-      for (let key in me.validate.required){
-        if (!me.validate.required[key] || me.validate.required[key]==0 || me.validate.required[key]==-1){
-          me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).classList.add("input-validate-error");
-          me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).focus();
-          me.validate.required[key]=0;
-          return false;
+      try{
+        let me = this,
+            checkVal = true;
+        // validate tên 
+        me.dataForm.Potential.FirstName = me.dataForm.Potential.FirstName.trim();
+        if(!me.dataForm.Potential.FirstName){
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=FirstName]`).classList.add("input-validate-error");
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=FirstName]`).focus();
+          me.$emit("showToastMessage",2,"Tên không được để trống");
+          checkVal = false;
+          me.validate.required.FirstName=0;
         }else{
-          me.$refs.addMainContentRef.querySelector(`[FieldSet=${key}]`).classList.remove("input-validate-error");
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=FirstName]`).classList.remove("input-validate-error");
+          me.validate.required.FirstName=1;
         }
-      }
-      return true;
-    },
-
-    /**
-     * check validate của các hàng có blur validateRequire()
-     * created by SONTD(12.08.2022)
-     */
-    validateRequired(event){
-      if (!event.target.value){
-        event.target.classList.add("input-validate-error");
-        this.validate.required[event.target.getAttribute("FieldSet")] = 0;
-      }else{
-        event.target.classList.remove("input-validate-error");
-        this.validate.required[event.target.getAttribute("FieldSet")] = 1;
+        // validate email 
+        if(me.dataForm.Potential.Email && !val.Email(me.dataForm.Potential.Email)){
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=Email]`).classList.add("input-validate-error");
+          if(checkVal){
+            me.$refs.addMainContentRef.querySelector(`[FieldSet=Email]`).focus();
+            me.$emit("showToastMessage",2,"Email không hợp lệ");
+          }
+          me.validate.emailVal.Email=1;
+          checkVal = false;
+        }else{
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=Email]`).classList.remove("input-validate-error");
+          me.validate.emailVal.Email=0;
+        }
+        // validate office email 
+        if(me.dataForm.Potential.OfficeEmail && !val.Email(me.dataForm.Potential.OfficeEmail)){
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=OfficeEmail]`).classList.add("input-validate-error");
+          if(checkVal){
+            me.$refs.addMainContentRef.querySelector(`[FieldSet=OfficeEmail]`).focus();
+            me.$emit("showToastMessage",2,"Email không hợp lệ");
+          }
+          me.validate.emailVal.OfficeEmail=1;
+          checkVal = false;
+        }else{
+          me.$refs.addMainContentRef.querySelector(`[FieldSet=OfficeEmail]`).classList.remove("input-validate-error");
+          me.validate.emailVal.OfficeEmail=0;
+        }
+        return checkVal;
+      }catch(error){
+        console.log(error);
       }
     },
 
@@ -762,15 +756,6 @@ export default {
     },
 
     /**
-     * hàm ẩn hiện tooltip
-     * created by SONTD(27.08.2022)
-     */
-    hideShowTooltip(tooltipName){
-        let me = this;
-        me.tooltip[tooltipName] = !me.tooltip[tooltipName];
-    },
-
-    /**
      * hàm thực hiện khi ấn ra ngoài toottip, dùng để ẩn tooltip
      * @param {*} tooltipName 
      */
@@ -786,16 +771,30 @@ export default {
     customTabIndex(event){
       let me = this,
           currentIndex = event.target.getAttribute("tabindex");
-      if(event.keyCode == 9){
-          if(currentIndex){
-              let nextIndex = parseInt(currentIndex)+1,
-                  nextField = me.$refs.addMainContentRef.querySelector(`[tabindex='${nextIndex}']`);
-              if(nextField){
-                  nextField.click();
-              }
+      // quay vòng index
+      if(currentIndex=="34"){
+        if(event.keyCode==9){
+          let nextField = me.$refs.addMainContentRef.querySelector("[tabindex='1']");
+          if(nextField){
+            nextField.focus();
           }
-      }else if(event.keyCode == 13){
-          event.target.click();
+        }
+      }
+      else{
+        if(event.keyCode == 9){
+            if(currentIndex){
+                let nextIndex = parseInt(currentIndex)+1,
+                    nextField = me.$refs.addMainContentRef.querySelector(`[tabindex='${nextIndex}']`);
+                if(nextField){
+                    nextField.click();
+                    if(nextField.getAttribute("type") == "checkbox"){
+                        nextField.click();
+                    }
+                }
+            }
+        }else if(event.keyCode == 13){
+            event.target.click();
+        }
       }
     },
 
@@ -808,6 +807,7 @@ export default {
     }
   },
   created() {
+    // khởi tạo các giá trị ban đầu cho màn add 
     this.init();
   },
   mounted() {
@@ -988,14 +988,10 @@ export default {
           let me = this,
               input = me.$refs.addMainContentRef.querySelector("[FieldSet=FirstName]");
           if (newValue){
-              if(newValue!=" "){
-                  me.validate.required.FirstName = 1;
-                  if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
-                      input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
-                  } 
-              }else{
-                  me.dataForm.Potential.FirstName = "";
-              }
+              me.validate.required.FirstName = 1;
+              if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
+                  input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="visible";
+              } 
           }else{
               me.validate.required.FirstName = 0;
               if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
@@ -1058,6 +1054,12 @@ export default {
                   input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
               } 
           }
+
+          //validate 
+          if((newValue && val.Email(newValue)) || !newValue){
+              input.classList.remove("input-validate-error");
+              me.validate.emailVal.Email=0;
+          }
       },
       // kiểm tra thay đổi biến OfficeEmail
       'dataForm.Potential.OfficeEmail':function(newValue){
@@ -1071,6 +1073,11 @@ export default {
               if(input && input.closest(".add-item") && input.closest(".add-item").querySelector(".add-item-delete-all-icon-box")){
                   input.closest(".add-item").querySelector(".add-item-delete-all-icon-box").style.visibility="hidden";
               } 
+          }
+          //validate 
+          if((newValue && val.Email(newValue)) || !newValue){
+              input.classList.remove("input-validate-error");
+              me.validate.emailVal.OfficeEmail=0;
           }
       },
       // kiểm tra thay đổi biến Organization

@@ -106,7 +106,7 @@
           </div>
         </div>
         <div class="footer" ref="showPotentialFooter">
-          <div class="footer-left">Total: <span :innerHTML="numberOfRecord"></span></div>
+          <div class="footer-left">Tổng số: <span :innerHTML="numberOfRecord"></span></div>
           <div class="footer-right">
             <div class="footer-page-size" @click="pageSizeOnClick" v-click-outside="selectPageSizeOnClickOutside"><span>{{pageSize}}</span> 
                Bản ghi trên Trang
@@ -276,10 +276,14 @@ export default {
      * created by SONTD(24.08.2022)
      */
     rowOnMouseOver(event){
-        if (event.target.closest(".s-tr")){
-            if (event.target.closest(".s-tr").querySelector(".s-td-update-icon")){
-                event.target.closest(".s-tr").querySelector(".s-td-update-icon").style.visibility="visible";
-            }
+        try{
+          if (event.target.closest(".s-tr")){
+              if (event.target.closest(".s-tr").querySelector(".s-td-update-icon")){
+                  event.target.closest(".s-tr").querySelector(".s-td-update-icon").style.visibility="visible";
+              }
+          }
+        }catch(error){
+          console.log(error);
         }
     },
 
@@ -288,10 +292,14 @@ export default {
      * created by SONTD(24.08.2022)
      */
     rowOnMouseLeave(event){
-        if (event.target.closest(".s-tr")){
-            if (event.target.closest(".s-tr").querySelector(".s-td-update-icon")){
-                event.target.closest(".s-tr").querySelector(".s-td-update-icon").style.visibility="hidden";
-            }
+        try{
+          if (event.target.closest(".s-tr")){
+              if (event.target.closest(".s-tr").querySelector(".s-td-update-icon")){
+                  event.target.closest(".s-tr").querySelector(".s-td-update-icon").style.visibility="hidden";
+              }
+          }
+        }catch(error){
+          console.log(error);
         }
     },
 

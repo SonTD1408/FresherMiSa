@@ -45,5 +45,7 @@ export default {
 :deep(.el-input__wrapper){
     box-sizing: border-box;
     border-radius: 4px;
+    font-family: Roboto;
+    font-size: 13px;
 }
 </style>
